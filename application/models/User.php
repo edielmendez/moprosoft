@@ -4,11 +4,6 @@
  */
 class User extends CI_Model
 {
-
-
-
-
-
   function login($username,$password){
 
      $this -> db -> select('*');
@@ -34,7 +29,7 @@ class User extends CI_Model
       $this -> db -> select('*');
       $this-> db-> from('rol');
       $this-> db-> where('id', $rol_id);
-      
+
       $this -> db -> limit(1);
 
       $query = $this -> db -> get();

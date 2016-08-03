@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -10,11 +10,12 @@ class Estudiantes extends CI_Controller {
       parent::__construct();
 
       $this->load->model('modelo','',TRUE);
+			 $this->load->helper('url'); 
    }
 
    public function nuevo(){
    	if($this->session->userdata('logged_in')){
-   		
+
    		$this->load->view('nuevo_estudiante');
    	}else{
    		//si no hay session se redirecciona la vista de login

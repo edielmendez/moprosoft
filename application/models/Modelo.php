@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
 */
 class Modelo extends CI_Model
 {
@@ -21,9 +21,6 @@ class Modelo extends CI_Model
 			return false;
 		}
 	}
-
-	
-
 
 }
  ?>

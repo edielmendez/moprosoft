@@ -13,6 +13,7 @@ class Home extends CI_Controller {
       $this->load->model('modelo','',TRUE);
       $this->load->model('user','',TRUE);
       $this->load->model('equipo','',TRUE);
+       $this->load->helper('url'); 
    }
 
    function index()
@@ -27,7 +28,7 @@ class Home extends CI_Controller {
             $result = $this->user->getUsers();
             $usuarios = array();
             if($result){
-               
+
                foreach ($result as $row ) {
 
                   $usuario = array(
@@ -47,11 +48,11 @@ class Home extends CI_Controller {
 
             /*se obtienen todos los equipos creados hasta el momento
             */
-           
+
             $result = $this->equipo->getEquipos();
             $equipos = array();
             if($result){
-               
+
                foreach ($result as $row ) {
 
                   $equipo = array(
@@ -61,7 +62,7 @@ class Home extends CI_Controller {
                   $integrantes =  array();
                   $result2 = $result = $this->user->getByEquipo($row->id);
                   if($result2){
-               
+
                      foreach ($result2 as $row2 ) {
 
                         $usuario = array(
@@ -87,15 +88,15 @@ class Home extends CI_Controller {
             $datos_vista['usuarios'] = $usuarios;
             $datos_vista['equipos'] = $equipos;
 
-            
+
             $this->load->view('admin_page',$datos_vista);
-            
+
          }else{
             if(strcmp($data['rol'],"JEFE")==0){
                $result = $this->modelo->getModels($data['team_id']);
                $modelos = array();
                if($result){
-                  
+
                   foreach ($result as $row ) {
 
                      $modelo = array(
@@ -114,13 +115,13 @@ class Home extends CI_Controller {
 
 
                $this->load->view('jefe_page',$datos_vista);
-               
+
             }else{
-               
+
                $this->load->view('estudiante_page');
             }
          }
-     
+
 
 
 

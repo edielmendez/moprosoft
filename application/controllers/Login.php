@@ -21,6 +21,7 @@ class Login extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('User');
+		 $this->load->helper('url'); 
 	}
 	public function index()
 	{
@@ -28,7 +29,7 @@ class Login extends CI_Controller {
 			redirect('Home', 'refresh');
 		}else{
 			$this->form_validation->set_rules('username', 'username', 'trim|required');
-   
+
    		$this->form_validation->set_rules('password', 'password', 'trim|required|callback_check_database');
 
 			if($this->form_validation->run() == FALSE)
@@ -41,13 +42,13 @@ class Login extends CI_Controller {
 		   		redirect('Home', 'refresh');
 		   }
 		}
-		
-		
+
+
 		/*
 		$this->form_validation->set_rules('username', 'username', 'trim|required');
 		$this->form_validation->set_rules('password', 'password', 'trim|required|callback_check_database');
 		//print_r( $this->session->userdata['logged_in']);
-		
+
 		if ($this->form_validation->run() == FALSE) {
 			if(isset($this->session->userdata['logged_in'])){
 				$this->load->view('admin_page');
@@ -55,7 +56,7 @@ class Login extends CI_Controller {
 				$this->load->view('login');
 			}
 		} else {
-			
+
 			$data = array(
 			'username' => $this->input->post('username'),
 			'password' => $this->input->post('password')
@@ -117,7 +118,7 @@ class Login extends CI_Controller {
 	     	foreach($datos_rol as $row)
 	     {
 	       $sess_array["rol"] = $row->type;
-	       
+
 	     }
 
 	     	$this->session->set_userdata('logged_in', $sess_array);
@@ -132,8 +133,8 @@ class Login extends CI_Controller {
  	}
 
 	public function logout(){
-		
+
 	}
 
-	
+
 }
