@@ -28,18 +28,74 @@
 
 </head>
 <body>
-	<h1>ediel</h1>
 	<div class="wrapper">
-	    <div class="sidebar" data-background-color="white" data-active-color="danger">
+				<div id="myModal" class="modal fade">
+					<div class="modal-dialog">
+							<div class="modal-content">
+									<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h4 class="modal-title">Nuevo Modelo</h4>
+									</div>
+									<div class="modal-body">
+										<form>
+												<div class="row">
+														<div class="col-md-12">
+																<div class="form-group">
+																		<label>Nombre</label>
+																		<input type="text" class="form-control border-input" placeholder="Nombre" >
+																</div>
+														</div>
+												</div>
 
+												<div class="row">
+														<div class="col-md-6">
+																<div class="form-group">
+																		<label>Versión</label>
+																		<input type="text" class="form-control border-input" placeholder="Version" >
+																</div>
+														</div>
+														<div class="col-md-6">
+															<label>Nivel</label>
+															<select class="form-control">
+																<option>0</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+															</select>
+														</div>
+												</div>
+
+												<div class="row">
+														<div class="col-md-12">
+																<div class="form-group">
+																		<label>Se trabajará con Fases o Objetivos</label>
+																		<select class="form-control">
+																			<option>Fases</option>
+																			<option>Objetivos</option>
+																		</select>
+																</div>
+														</div>
+												</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+											<button type="button" class="btn btn-info btn-fill btn-wd">Guardar</button>
+									</div>
+							</div>
+					</div>
+			</div>
+
+	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
 			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
 			Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
 		-->
-
-	    	<div class="sidebar-wrapper">
+	    	<div class="sidebar-wrapper2">
 	            <div class="logo">
-	                <a href="http://www.creative-tim.com" class="simple-text">
+	                <a href="#" class="simple-text">
 	                    Moprosoft
 	                </a>
 	            </div>
@@ -67,7 +123,7 @@
 	    	</div>
 	    </div>
 
-	    <div class="main-panel">
+	    <div class="main-panel2">
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 	                <div class="navbar-header">
@@ -89,7 +145,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <li><a href="#">Perfil</a></li>
+	                                <!--li><a href="#">Perfil</a></li-->
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
@@ -101,7 +157,8 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<a href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br>
+								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
+								<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Modelo">Nuevo</button><br><br>
 	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
 	                <div class="row">
 
@@ -113,21 +170,21 @@
                             <div class="content">
                                 <div class="row">
                                   <div class="col-xs-3">
-                                    <img src="<?php echo base_url(); ?>/public/img/modelo.png" style="width:60px; height:60px" alt="Procesos" /><br><br><br>
+																		<a href="<?php echo base_url() ?>index.php/Modelos/abrir_modelo"><img src="<?php echo base_url(); ?>/public/img/modelo.png" style="width:60px; height:60px" alt="Procesos" /><br><br><br></a>
                                   </div>
                                   <div class="col-xs-9">
-                                    <p><?php echo $modelo['name'] ?></p>
+                                    <h4><a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php echo $modelo['name'] ?></a></h4>
                                   </div>
                                   <div class="col-xs-12" style="text-align: right;">
                                     <br>
-                                      <a href="edit_proceso.html">Editar</a>
+                                      <a href="<?php echo base_url(); ?>index.php/Modelos/edit_modelo">Editar</a>
                                       <br>
                                   </div>
                                 </div>
                                 <div class="footer">
                                     <hr />
                                     <div class="stats">
-                                        <i class="ti-eye"></i><?php echo $modelo['level'] ?>
+                                        <i class="ti-star"></i>Versión <?php echo $modelo['version'] ?>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +193,6 @@
 										<?php
 											}
 										?>
-										<h1>hola mundo</h1>
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
@@ -214,15 +270,21 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-			demo.initChartist();
-			$.notify({
+			//demo.initChartist();
+			/*$.notify({
 					icon: 'ti-gift',
 					message: "Bienvenido <b>themike123</b> , usted a iniciado sessión."
 
 				},{
 						type: 'success',
 						timer: 4000
-				});
+				});*/
+
+				$("#myModal").on('show.bs.modal', function(event){
+        	var button = $(event.relatedTarget);  // Button that triggered the modal
+        	var titleData = button.data('title'); // Extract value from data-* attributes
+        	$(this).find('.modal-title').text(titleData);
+    		});
 	});
 </script>
 
