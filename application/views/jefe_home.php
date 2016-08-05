@@ -29,65 +29,6 @@
 </head>
 <body>
 	<div class="wrapper">
-				<div id="myModal" class="modal fade">
-					<div class="modal-dialog">
-							<div class="modal-content">
-									<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Nuevo Modelo</h4>
-									</div>
-									<div class="modal-body">
-										<form>
-												<div class="row">
-														<div class="col-md-12">
-																<div class="form-group">
-																		<label>Nombre</label>
-																		<input type="text" class="form-control border-input" placeholder="Nombre" >
-																</div>
-														</div>
-												</div>
-
-												<div class="row">
-														<div class="col-md-6">
-																<div class="form-group">
-																		<label>Versión</label>
-																		<input type="text" class="form-control border-input" placeholder="Version" >
-																</div>
-														</div>
-														<div class="col-md-6">
-															<label>Nivel</label>
-															<select class="form-control">
-																<option>0</option>
-																<option>1</option>
-																<option>2</option>
-																<option>3</option>
-																<option>4</option>
-																<option>5</option>
-															</select>
-														</div>
-												</div>
-
-												<div class="row">
-														<div class="col-md-12">
-																<div class="form-group">
-																		<label>Se trabajará con Fases o Objetivos</label>
-																		<select class="form-control">
-																			<option>Fases</option>
-																			<option>Objetivos</option>
-																		</select>
-																</div>
-														</div>
-												</div>
-										</form>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-primary">Guardar</button>
-									</div>
-							</div>
-					</div>
-			</div>
-
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
 			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
@@ -96,24 +37,25 @@
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
 	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+										<!--Nombre del Modelo-->
+	                    <?php  print_r($_SESSION['modelsessioname']) ?>
 	                </a>
 	            </div>
 
 	            <ul class="nav">
 	                <li class="active">
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-panel"></i>
+	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
 	                </li>
 	                <li >
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
-	                        <i class="ti-user"></i>
+	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
@@ -121,10 +63,10 @@
 	                </li>
 									<li>
 	                    <a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
-	                        <i class="ti-view-list-alt"></i>
+	                        <i class="ti-book"></i>
 	                        <p>Cuestionarios</p>
 	                    </a>
-	                </li>
+	                </li-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -172,25 +114,24 @@
                         <div class="card">
                             <div class="content">
 															<div class="text-center">
-																	<h1>Moprosoft</h1>
+																	<h1><?php print_r($_SESSION['modelsessioname']) ?></h1>
 															</div>
                                 <p class="description text-center">
-                                    "I like the way you work it <br>
-                                    No diggity <br>
-                                    I wanna bag it up"
+																	"Para ver todos los modelo"<br>
+																		precione el botón de <b>inicio</b>
                                 </p>
                             </div>
                             <hr>
                             <div class="text-center">
                                 <div class="row">
                                     <div class="col-md-3 col-md-offset-1">
-                                        <h5>9<br /><small>Procesos</small></h5>
+                                        <h5><?php echo $NumProcess ?><br /><small>Procesos</small></h5>
                                     </div>
                                     <div class="col-md-4">
-                                        <h5>20<br /><small>Fases</small></h5>
+                                        <h5>0<br /><small>Fases</small></h5>
                                     </div>
                                     <div class="col-md-3">
-                                        <h5>10<br /><small>Cuestionarios</small></h5>
+                                        <h5>0<br /><small>Cuestionarios</small></h5>
                                     </div>
                                 </div>
                             </div>

@@ -37,21 +37,22 @@
 											<h4 class="modal-title">Nuevo Modelo</h4>
 									</div>
 									<div class="modal-body">
-                    <form>
+                    <form  action="<?php echo base_url() ?>index.php/process_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nombre</label>
-                                    <input type="text" class="form-control border-input" placeholder="Nombre" >
+                                    <input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" >
                                 </div>
                             </div>
                         </div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+												</div>
                     </form>
 									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
-									</div>
+
 							</div>
 					</div>
 			</div>
@@ -64,24 +65,25 @@
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
 	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+										<!--Nombre del Modelo-->
+	                    <?php  print_r($_SESSION['modelsessioname']) ?>
 	                </a>
 	            </div>
 
 	            <ul class="nav">
 	                <li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-panel"></i>
+	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
 	                </li>
 	                <li class="active">
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
-	                        <i class="ti-user"></i>
+	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
@@ -89,10 +91,10 @@
 	                </li>
 									<li>
 											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
-													<i class="ti-view-list-alt"></i>
+													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
-									</li>
+									</li-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -131,38 +133,26 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br>
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                <!--a href="nuevo_proceso.html" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</a><br><br-->
-                <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                  <div class="row">
-                      <div class="col-lg-3 col-sm-6">
-                          <div class="card">
-                              <div class="content">
-                                  <div class="row">
-                                    <div class="col-xs-2">
-                                      <img src="<?php echo base_url() ?>public/img/procesos2.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
-                                    </div>
-                                    <div class="col-xs-10">
-                                      <p><p>Recursos Humanos y Ambiente de trabajo, ya no se que mas poner para probar. final final jejejejejjejej jeje </p></p>
-                                    </div>
-                                    <div class="col-xs-12" style="text-align: right;">
-                                      <br>
-                                        <a href="<?php echo base_url() ?>index.php/process_Controller/edit">Editar</a>
-                                        <br>
-                                    </div>
-                                  </div>
-                                  <div class="footer">
-                                      <hr />
-                                      <div class="stats">
-                                          <i class="ti-eye"></i><a href="#">Ver Fases</a>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+								<?php
+				        //Si existen las sesiones flasdata que se muestren
+				            if($this->session->flashdata('correcto'))
+											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
 
+				            if($this->session->flashdata('incorrecto'))
+				              echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
+				        ?>
+
+								<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br>
+								<?php
+									if ($fases==false) {
+										echo "<br><br>";
+										echo '<h2>Por el momento no existe ningún Proceso<h2>';
+									}
+								?>
+                  <div class="row">
+										<?php
+											foreach($fases as $fase){
+										?>
                       <div class="col-lg-3 col-sm-6">
                           <div class="card">
                               <div class="content">
@@ -171,23 +161,26 @@
                                       <img src="<?php echo base_url() ?>public/img/procesos2.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
                                     </div>
                                     <div class="col-xs-10">
-                                      <p><p>Recursos Humanos y Ambiente de trabajo, ya no se que mas poner para probar. final final jejejejejjejej jeje </p></p>
+                                      <p><?php echo $fase['name'] ?></p>
                                     </div>
                                     <div class="col-xs-12" style="text-align: right;">
                                       <br>
-                                        <a href="edit_proceso.html">Editar</a>
+                                        <a href="<?php echo base_url(); ?>index.php/process_Controller/edit/<?php echo $fase['id']; ?>">Editar</a>
                                         <br>
                                     </div>
                                   </div>
                                   <div class="footer">
                                       <hr />
                                       <div class="stats">
-                                          <i class="ti-eye"></i><a href="#">Ver Fases</a>
+                                          <i class="ti-eye"></i><a href="#">Ver Fases/Objetivos</a>
                                       </div>
                                   </div>
                               </div>
                           </div>
                       </div>
+											<?php
+											}
+											?>
                   </div>
 
 	                <div class="row">

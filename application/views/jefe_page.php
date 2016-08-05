@@ -37,12 +37,12 @@
 											<h4 class="modal-title">Nuevo Modelo</h4>
 									</div>
 									<div class="modal-body">
-										<form>
+										<form action="<?php echo base_url() ?>index.php/Modelos/save" method="post">
 												<div class="row">
 														<div class="col-md-12">
 																<div class="form-group">
 																		<label>Nombre</label>
-																		<input type="text" class="form-control border-input" placeholder="Nombre" >
+																		<input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" >
 																</div>
 														</div>
 												</div>
@@ -51,18 +51,18 @@
 														<div class="col-md-6">
 																<div class="form-group">
 																		<label>Versión</label>
-																		<input type="text" class="form-control border-input" placeholder="Version" >
+																		<input required="true" name="version" id="version" type="text" class="form-control border-input" placeholder="Version" >
 																</div>
 														</div>
 														<div class="col-md-6">
 															<label>Nivel</label>
-															<select class="form-control">
-																<option>0</option>
-																<option>1</option>
-																<option>2</option>
-																<option>3</option>
-																<option>4</option>
-																<option>5</option>
+															<select class="form-control" name="nivel" id="nivel">
+																<option value="0">0</option>
+																<option value="1">1</option>
+																<option value="2">2</option>
+																<option value="3">3</option>
+																<option value="4">4</option>
+																<option value="5">5</option>
 															</select>
 														</div>
 												</div>
@@ -70,19 +70,20 @@
 												<div class="row">
 														<div class="col-md-12">
 																<div class="form-group">
-																		<label>Se trabajará con Fases o Objetivos</label>
-																		<select class="form-control">
-																			<option>Fases</option>
-																			<option>Objetivos</option>
-																		</select>
+																		<label>Se trabajará con <b>Fases</b> o <b>Objetivos<b></label>
+																		<input required="true" name="trabajara" id="trabajara" type="text" class="form-control border-input" placeholder="Fases/Objetivos" >
+																		<!--select class="form-control" name="trabajara" id="trabajara">
+																			<option value="Fases">Fases</option>
+																			<option value="Objetivos">Objetivos</option>
+																		</select-->
 																</div>
 														</div>
 												</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+												<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+											</div>
 										</form>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd">Guardar</button>
 									</div>
 							</div>
 					</div>
@@ -157,27 +158,39 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Modelo">Nuevo</button><br><br>
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-	                <div class="row">
+								<?php
+				        //Si existen las sesiones flasdata que se muestren
+				            if($this->session->flashdata('correcto'))
+											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
 
+				            if($this->session->flashdata('incorrecto'))
+				              echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
+				        ?>
+
+								<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Modelo">Nuevo</button><br><br>
+								<?php
+									if ($modelos==false) {
+										echo "<br><br>";
+										echo '<h2>Por el momento no existe ningún Modelo<h2>';
+									}
+								?>
+	                <div class="row">
 										<?php
-											foreach($modelos as $modelo){
-										?>
+										foreach($modelos as $modelo){
+											?>
 										<div class="col-lg-3 col-sm-6">
                         <div class="card">
                             <div class="content">
                                 <div class="row">
                                   <div class="col-xs-3">
-																		<a href="<?php echo base_url() ?>index.php/Modelos/abrir_modelo"><img src="<?php echo base_url(); ?>/public/img/modelo.png" style="width:60px; height:60px" alt="Procesos" /><br><br><br></a>
+																		<a href="<?php echo base_url() ?>index.php/Modelos/cargar_modelo/<?php echo $modelo['id']; ?>"><img src="<?php echo base_url(); ?>/public/img/modelo.png" style="width:60px; height:60px" alt="Procesos" /><br><br><br></a>
                                   </div>
                                   <div class="col-xs-9">
-                                    <h4><a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php echo $modelo['name'] ?></a></h4>
+                                    <h4><a href="<?php echo base_url(); ?>index.php/Modelos/cargar_modelo/<?php echo $modelo['id']; ?>"><?php echo $modelo['name'] ?></a></h4>
                                   </div>
                                   <div class="col-xs-12" style="text-align: right;">
                                     <br>
-                                      <a href="<?php echo base_url(); ?>index.php/Modelos/edit_modelo">Editar</a>
+                                      <a href="<?php echo base_url(); ?>index.php/Modelos/Actualizar/<?php echo $modelo['id']; ?>" >Editar</a>
                                       <br>
                                   </div>
                                 </div>

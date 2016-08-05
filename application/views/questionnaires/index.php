@@ -71,13 +71,13 @@
 	            <ul class="nav">
 	                <li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-panel"></i>
+	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
-	                        <i class="ti-user"></i>
+	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
@@ -89,7 +89,7 @@
 	                </li>
 									<li   class="active">
 											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
-													<i class="ti-view-list-alt"></i>
+													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
 									</li>

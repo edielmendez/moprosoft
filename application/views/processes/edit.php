@@ -24,7 +24,24 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-
+	<script type="text/javascript">
+	function Eliminar() {
+		var id = $("#id_process").val();
+		$.ajax({
+			url : '<?php echo base_url(); ?>index.php/process_Controller/Eliminar/'+id,
+			type : 'POST',
+			dataType : 'json',
+			success : function(json) {
+				//alert("Bien")
+				window.location.href= '<?php echo base_url(); ?>index.php/process_Controller/index';
+			},
+			error : function(xhr, status) {
+				//alert('Disculpe, existió un problema');
+				window.location.href= '<?php echo base_url(); ?>index.php/process_Controller/index';
+			}
+		});
+	}
+</script>
 
 </head>
 <body>
@@ -32,26 +49,26 @@
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
 							<div class="modal-content">
-									<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Nuevo Modelo</h4>
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									<h4 class="modal-title">Cuidado !!</h4>
+								</div>
+								<div class="modal-body">
+
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<p>Al eliminar el proceso se <b>eliminarán</b> todos las <b>Fases/Objetivos, Cuestionarios y preguntas</b> relacionados con este proceso.</p>
+											</div>
+										</div>
 									</div>
-									<div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control border-input" placeholder="Nombre" >
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-									</div>
+									<!--form action="<?php echo base_url() ?>index.php/Modelos/save" method="post"-->
 									<div class="modal-footer">
 											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
-									</div>
+											<button onclick="Eliminar()" type="button" class="btn btn-danger btn-fill btn-wd" data-dismiss="modal">Eliminar</button>
+											<!--input type="submit"  class="btn btn-danger btn-fill btn-wd" name="submit" value="Eliminar" /-->
+										</div>
+								</div>
 							</div>
 					</div>
 			</div>
@@ -64,29 +81,36 @@
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
 	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+										<!--Nombre del Modelo-->
+											<?php  print_r($_SESSION['modelsessioname']) ?>
 	                </a>
 	            </div>
 
 	            <ul class="nav">
 	                <li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-panel"></i>
+	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
 	                </li>
 	                <li class="active">
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
-	                        <i class="ti-user"></i>
+	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <!--li>
 	                    <a href="table.html">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
+									<li>
+											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+													<i class="ti-book"></i>
+													<p>Cuestionarios</p>
+											</a>
+									</li-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -137,19 +161,22 @@
                                 <h4 class="title">Editar Proceso</h4>
                             </div>
                             <div class="content">
-                                <form>
+                                <form action="" method="POST">
+																		<?php foreach ($processes as $process){ ?>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Nombre</label>
-                                                <input type="text" class="form-control border-input" placeholder="Nombre" >
+																								<input required="true" id="nombre" name="nombre" type="text" class="form-control border-input" placeholder="Nombre" value="<?php echo $process->name  ?>">
+																								<input type="hidden" name="id_process" id="id_process" value="<?php echo $process->id ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <br><br>
                                     <a href="<?php echo base_url() ?>index.php/process_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
-                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Guardar</button>
-                                    <button type="submit" class="btn btn-danger btn-fill btn-wd">Eliminar</button><br><br>
+																		<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+																		<button  type="button" class="btn btn-danger btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Cuidado !!!" >Eliminar</button><br><br>
+																		<?php } ?>
                                 </form>
                             </div>
                         </div>
