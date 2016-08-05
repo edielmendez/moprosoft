@@ -61,9 +61,17 @@ $("#form_actualizar_estudiante").submit(function(event){
 
 $(document).on('click','.eliminarUsuario',function(){
 	var id = $(this).attr('id');
+	var rol = $(this).parent().attr('id');
 	$("#id_est_elim").val(id);
-	console.log(id);
-	$("#modal_elim_usr").modal();
+	if(rol == 2){
+		toastr.info('El estudiante no se puede eliminar por que es jefe de equipo');
+	}else{
+		
+		$("#modal_elim_usr").modal();
+	}
+	
+	
+	
 });
 
 $(document).on('click','#btn_acept_elim_est',function(){
@@ -141,7 +149,7 @@ var showModalDeleteTeam = function(data){
 	  "positionClass": "toast-top-center"
 	}
 	if(estudiantes.length != 0){
-		toastr.info('Un equipo con integrantes so se pude eliminar !!');
+		toastr.info('Un equipo con integrantes no se pude eliminar !!');
 	}else{
 		$("#modal_elim_equipo").modal();	
 	}

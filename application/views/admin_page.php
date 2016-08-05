@@ -18,7 +18,7 @@
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/datatables.min.css"); ?>" rel="stylesheet">
-
+	<link href="<?php echo base_url("libs/css/toastr.min.css"); ?>" rel="stylesheet">
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 
@@ -40,7 +40,7 @@
 
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="http://www.creative-tim.com" class="simple-text">
+	                <a class="simple-text">
 	                    ESTUDIANTES
 	                </a>
 	            </div>
@@ -144,7 +144,7 @@
                         		echo "<td>".$usuarios[$i]['email']."</td>";
                         		echo "<td>".$usuarios[$i]['grupo']."</td>";
                         		echo "<td><a class='btn btn-primary' href='".base_url()."index.php/Estudiantes/edit/".$usuarios[$i]['id']."'>Actualizar</a></td>";
-                        		echo "<td><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
+                        		echo "<td id='".$usuarios[$i]['rol_id']."'><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
                         	echo "</tr>";
                         }
                         
@@ -234,6 +234,7 @@
 <script src="<?php echo base_url(); ?>public/js/demo.js"></script>
 
 <script src="<?php echo base_url("libs/js/datatables.min.js"); ?>"></script>
+<script src="<?php echo base_url("libs/js/toastr.min.js"); ?>"></script>
 <script src="<?php echo base_url("libs/js/script.js"); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
