@@ -43,12 +43,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li class="active">
+	                <!--li class="active">
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li >
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -116,10 +116,16 @@
 															<div class="text-center">
 																	<h1><?php print_r($_SESSION['modelsessioname']) ?></h1>
 															</div>
-                                <p class="description text-center">
-																	"Para ver todos los modelo"<br>
-																		precione el botón de <b>inicio</b>
-                                </p>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="text-center">
+                                      <p><b>Versión:</b> <?php print_r($_SESSION['modelsessionversion']) ?></p>
+                                      <p><b>Nivel:</b> <?php print_r($_SESSION['modelsessionivel']) ?></p>
+                                      <a href="<?php echo base_url() ?>index.php/Home/index" class="btn btn-info btn-fill btn-wd">Ver Todos los Modelos</a>
+                                    </div>
+
+                                  </div>
+                                </div>
                             </div>
                             <hr>
                             <div class="text-center">
@@ -128,7 +134,7 @@
                                         <h5><?php echo $NumProcess ?><br /><small>Procesos</small></h5>
                                     </div>
                                     <div class="col-md-4">
-                                        <h5>0<br /><small>Fases</small></h5>
+                                        <h5>0<br /><small><?php print_r($_SESSION['modelsessiontrabajar']) ?></small></h5>
                                     </div>
                                     <div class="col-md-3">
                                         <h5>0<br /><small>Cuestionarios</small></h5>

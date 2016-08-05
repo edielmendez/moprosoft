@@ -103,22 +103,11 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li class="active">
-	                    <a href="dashboard.html">
-	                        <i class="ti-panel"></i>
-	                        <p>Modelos</p>
-	                    </a>
-	                </li>
+
 	                <li >
-	                    <a href="user.html">
+	                    <a href="<?php echo base_url() ?>index.php/Home/index">
 	                        <i class="ti-user"></i>
 	                        <p>Procesos</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="table.html">
-	                        <i class="ti-view-list-alt"></i>
-	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 	            </ul>
@@ -207,10 +196,6 @@
 										<?php
 											}
 										?>
-<<<<<<< HEAD
-										
-=======
->>>>>>> origin/master
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
@@ -233,7 +218,7 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <nav class="pull-left">
+	                <!--nav class="pull-left">
 	                    <ul>
 
 	                        <li>
@@ -255,7 +240,7 @@
 	                </nav>
 	                <div class="copyright pull-right">
 	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
+	                </div-->
 	            </div>
 	        </footer>
 

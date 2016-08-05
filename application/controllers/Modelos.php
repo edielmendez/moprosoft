@@ -43,21 +43,49 @@ class Modelos extends CI_Controller {
 		 {
 			 $sess_array = array(
 				 'id' => $row->id,
-				 'name' => $row->name
+				 'name' => $row->name,
+				 'version' => $row->version,
+				 'level' => $row->level,
+				 'trabajara' =>$row->phase_objetive
 			 );
 		 }
 
+		 //Id
 			if (!isset($_SESSION['modelsessionid'])) {
 				$_SESSION['modelsessionid'] = $sess_array['id'];
 			} else {
 				$_SESSION['modelsessionid'] = $sess_array['id'];
 			}
 
+			//Nombre
 			if (!isset($_SESSION['modelsessioname'])) {
 				$_SESSION['modelsessioname'] = $sess_array['name'];
 			} else {
 				$_SESSION['modelsessioname'] = $sess_array['name'];
 			}
+
+			//Version
+			if (!isset($_SESSION['modelsessionversion'])) {
+				$_SESSION['modelsessionversion'] = $sess_array['version'];
+			} else {
+				$_SESSION['modelsessionversion'] = $sess_array['version'];
+			}
+
+			//Nivel
+			if (!isset($_SESSION['modelsessionivel'])) {
+				$_SESSION['modelsessionivel'] = $sess_array['level'];
+			} else {
+				$_SESSION['modelsessionivel'] = $sess_array['level'];
+			}
+
+			//trabajara
+			if (!isset($_SESSION['modelsessiontrabajar'])) {
+				$_SESSION['modelsessiontrabajar'] = $sess_array['trabajara'];
+			} else {
+				$_SESSION['modelsessiontrabajar'] = $sess_array['trabajara'];
+			}
+
+
 
 			//$this->session->set_usermodel('modelo',$modelSeleccionado);
 			//$this->session->set_flashdata('correcto', 'El Modelo ha sido creado de forma satisfactoria');
