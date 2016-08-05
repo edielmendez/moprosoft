@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>ADMINISTRADOR</title>
+	<title>ACTUALIZAR ESTUDIANTE</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
@@ -18,6 +18,7 @@
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/datatables.min.css"); ?>" rel="stylesheet">
+	<link href="<?php echo base_url("libs/css/toastr.min.css"); ?>" rel="stylesheet">
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -33,10 +34,7 @@
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-	    <!--
-			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-			Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-		-->
+	   
 
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
@@ -46,8 +44,8 @@
 	            </div>
 
 	            <ul class="nav">
-	            	<li class="active">
-	                    <a href="#">
+	            	<li >
+	                    <a href="<?php echo base_url() ?>index.php/Home/">
 	                        <i class="ti-user"></i>
 	                        <p>Estudiantes</p>
 	                    </a>
@@ -76,8 +74,6 @@
 	    </div>
 
 	    <div class="main-panel">
-	    	
-	    	
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 
@@ -88,7 +84,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="#">ESTUDIANTES</a>
+	                    <a class="navbar-brand" href="#">ACTUALIZAR ESTUDIANTE</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -110,110 +106,93 @@
 	            </div>
 	        </nav>
 
-	        <div class="row">
-	    		<div class="col-md-6 col-md-offset-3">
-	    			<?php 
-	    			
-	    			echo $this->session->flashdata('message');
-	    			 ?>
-	    			
-	                
-	    		</div>
-	    	</div>
-
 	        <div class="content container">
-	        	<a href="<?php echo base_url() ?>index.php/Estudiantes/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Estudiante</a><br><br>
-	            <div class="content table-responsive table-full-width">
+	        	<a href="<?php echo base_url() ?>index.php/Home" class='btn btn-info'><i class="ti-arrow-left"></i>  Regresar</a><br><br><br><hr>
+	        	<div class="card">
+		            <div class="content">
+	                    <?php echo form_open('Estudiantes/actualizar',array('id'=>'form_actualizar_estudiante')); ?>
+	                        <div class="row">
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                	<input type="hidden" name="id" id="id_estudiante_act" value="<?php echo $estudiante['id'] ?>" >
+	                                    <label>Nombre Completo</label>
+	                                    <input type="text" class="form-control border-input"  placeholder="nombre completo" name="nombre" value="<?php echo $estudiante['name'] ?>" required="" >
+	                                </div>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                    <label>Username</label>
+	                                    <input type="text" class="form-control border-input" id="username" placeholder="username" name="username" value="<?php echo $estudiante['username'] ?>" required="">
+	                                </div>
+	                            </div>
+	                            <!--<div class="col-md-4">
+	                                <div class="form-group">
+	                                    <label for="exampleInputEmail1">Password</label>
+	                                    <input type="password" class="form-control border-input" placeholder="password" name="password" value="<?php echo $estudiante['password'] ?>" required="">
+	                                </div>
+	                            </div>-->
+	                        </div>
 
-                    <table class="table table-striped" id="tabla_estudiantes">
-                        <thead>
-                            <th>nombre</th>
-                        	<th>username</th>
-                        	<th>email</th>
-                        	<th>grupo</th>
-                        	<th></th>
-                        	<th></th>
-                        </thead>
-                        <tbody>
-                        <?php
-                        for ($i=1; $i < count($usuarios) ; $i++) { 
-                        	# code...
-                        	echo "<tr>";
-                        		echo "<td>".$usuarios[$i]['name']."</td>";
-                        		echo "<td>".$usuarios[$i]['username']."</td>";
-                        		echo "<td>".$usuarios[$i]['email']."</td>";
-                        		echo "<td>".$usuarios[$i]['grupo']."</td>";
-                        		echo "<td><a class='btn btn-primary' href='".base_url()."index.php/Estudiantes/edit/".$usuarios[$i]['id']."'>Actualizar</a></td>";
-                        		echo "<td><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
-                        	echo "</tr>";
-                        }
-                        
-                        ?>
-                        	
-                            
-                            
-                        </tbody>
-                    </table>
+	                        <div class="row">
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                    <label>Email</label>
+	                                    <input type="email" class="form-control border-input" placeholder="email" name="email" value="<?php echo $estudiante['email'] ?>" required="">
+	                                </div>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                    <label>Grupo</label>
+	                                    <input type="text" class="form-control border-input" placeholder="grupo" name="grupo"  value="<?php echo $estudiante['grupo'] ?>" required="">
+	                                </div>
+	                            </div>
+	                            
+	                            <!--<div class="col-md-4">
+	                                <div class="form-group">
+	                                    <label>Equipo</label>
 
-                </div>
+	                                    <select name="equipo" id="equipo" value='2'>
+	                                    	<option selected="" disabled=""  >Selecciona un equipo</option>
+	                                    	<?php
+	                                    	foreach ($equipos as $equipo) {
+	                                    		if($equipo['id'] == $estudiante['team_id'] ){
+	                                    			echo "<option value='".$equipo['id']."' selected>".$equipo['name']."</option>";
+	                                    		}else{
+	                                    			echo "<option value='".$equipo['id']."'>".$equipo['name']."</option>";	
+	                                    		}
+	                                    		
+	                                    	}
+	                                    	 ?>
+	                                    </select>
+	                                </div>
+	                            </div>-->
+	                        </div>
+
+	                        
+
+	                        
+
+	                        
+	                        <div class="text-center">
+	                            <button type="submit" class="btn btn-info btn-fill btn-wd">Actualizar</button>
+	                        </div>
+	                        <div class="clearfix"></div>
+	                    </form>
+	                </div>
+                <div>
 	        </div>
 
 
-	        <footer class="footer">
-	            <div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>
-	        </footer>
+	        
 
 	    </div>
 	</div>
-
-	<!-- Modales-->
-	<div class="modal fade" tabindex="-1" role="dialog" id="modal_elim_usr">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	        <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title">Eliminar Estudiante</h4>
-	        </div>
-	      <div class="modal-body">
-	        <p>Esta seguro de eliminar el estudiante ?</p>
-	        <input type="hidden" name="" id="id_est_elim" value="">
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-	        <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_acept_elim_est">Eliminar</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
 </body>
 
 <!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+<script src="<?php echo base_url("libs/js/jquery-3.1.0.min.js"); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+
 
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
@@ -234,22 +213,14 @@
 <script src="<?php echo base_url(); ?>public/js/demo.js"></script>
 
 <script src="<?php echo base_url("libs/js/datatables.min.js"); ?>"></script>
+<script src="<?php echo base_url("libs/js/toastr.min.js"); ?>"></script>
 <script src="<?php echo base_url("libs/js/script.js"); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*
-			demo.initChartist();
-			$.notify({
-					icon: 'ti-gift',
-					message: "Bienvenido <b>ediel</b> , usted a iniciado sessión."
-
-				},{
-						type: 'success',
-						timer: 4000
-				});
-				*/
+			$('.collapse').collapse()
+			
 	});
 </script>
 

@@ -28,6 +28,7 @@
 
 </head>
 <body>
+
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
@@ -206,6 +207,10 @@
 										<?php
 											}
 										?>
+<<<<<<< HEAD
+										
+=======
+>>>>>>> origin/master
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
