@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="question">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -17,6 +17,9 @@
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
+
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -25,33 +28,33 @@
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
 
-
 </head>
-<body>
+<body ng-controller="question_Controller as vm" ng-init="index()">
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
 							<div class="modal-content">
 									<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Nuevo Cuestionario</h4>
+											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form>
+                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Pregunta</label>
-                                    <input type="text" class="form-control border-input" placeholder="La pregunta sera sin signos de interrogación" >
+                                    <input name="pregunta"  id="pregunta" required type="text" class="form-control border-input" placeholder="La pregunta sera sin signos de interrogación" >
                                 </div>
                             </div>
                         </div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+												</div>
                     </form>
 									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
-									</div>
+
 							</div>
 					</div>
 			</div>
@@ -69,12 +72,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -107,7 +110,8 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Nombre_de_Cuestionario_Seleccionado</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Cuestionarios</a><p class="navbar-brand" >/</p>
+										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index"><?php echo $_SESSION['Questionary_name'] ?></a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -131,58 +135,41 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br-->
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                <!--a href="nuevo_proceso.html" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</a><br><br-->
-                <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
+								<h1>Todos</h1>
+								<?php
+								//Si existen las sesiones flasdata que se muestren
+										if($this->session->flashdata('correcto'))
+											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
+
+										if($this->session->flashdata('incorrecto'))
+											echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
+								?>
                 <button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nueva Pregunta">Nuevo</button><br><br>
 	                <div class="row">
 										<div style='height:20px;'></div>
                     <div class="col-md-12">
+											<div class="form-group">
+												<label>Buscar</label>
+												<input type="text" ng-model="buscar" name="buscar" id="buscar" class="form-control border-input" placeholder="Nombre" >
+											</div>
                          <div class="card">
                              <div class="header">
                                  <h4 class="title">Preguntas</h4>
-                                 <p class="category">Cuestionario fulanito</p>
+                                 <p class="category">Cuestionario <?php echo $_SESSION['Questionary_name'] ?></p>
                              </div>
-                             <div class="content table-responsive table-full-width">
+                             <div class="content table-responsive table-full-width"  >
                                  <table class="table table-striped">
-                                     <thead>
-                                      <th>N</th>
-                                     	<th>Pregunta</th>
-                                     	<th>Respuesta</th>
-                                     </thead>
                                      <tbody>
-                                         <tr>
-                                         	<td>1</td>
-                                         	<td>¿ Quien fue primero la gallina o el huevo ??????????????????? ???????? ? ??? ??????? ??</td>
-                                         	<td>$36,738</td>
-																					<td><button type="button" class="btn btn-default" >Ver</button></td>
-																					<td><a href="<?php echo base_url() ?>index.php/question_Controller/edith" class="btn btn-info">Editar</a></td>
-																					<!--td><button type="button" class="btn btn-info" >Editar</button></td-->
-																					<td><button type="button" class="btn btn-danger" >Eliminar</button></td>
-                                         </tr>
+                                         <tr ng-repeat="pregunta in questions | filter:buscar">
+ 																				 		<td ng-if='bandera'>¿<span ng-bind='pregunta.question'></span>?</td>
+																						<td ng-if='bandera'><a href="<?php echo base_url() ?>index.php/question_Controller/edit/{{pregunta.id}}" class="btn btn-info">Editar</a></td>
+																					</tr>
                                      </tbody>
                                  </table>
-
                              </div>
                          </div>
+												<h1 ng-if='!bandera'>No hay preguntas</h1>
                      </div>
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
 	                </div>
 	            </div>
 	        </div>

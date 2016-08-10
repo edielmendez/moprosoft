@@ -24,7 +24,24 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-
+	<script type="text/javascript">
+	function Eliminar() {
+		var id = $("#id_question").val();
+		$.ajax({
+			url : '<?php echo base_url(); ?>index.php/question_Controller/Eliminar/'+id,
+			type : 'POST',
+			dataType : 'json',
+			success : function(json) {
+				//alert("Bien")
+				window.location.href= '<?php echo base_url(); ?>index.php/question_Controller/back';
+			},
+			error : function(xhr, status) {
+				//alert('Disculpe, existió un problema');
+				window.location.href= '<?php echo base_url(); ?>index.php/question_Controller/back';
+			}
+		});
+	}
+	</script>
 
 </head>
 <body>
@@ -40,17 +57,16 @@
                     <form>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control border-input" placeholder="Nombre" >
-                                </div>
+															<div class="form-group">
+																<p>¿ Está seguro de eliminar la pregunta ?</p>
+															</div>
                             </div>
                         </div>
                     </form>
 									</div>
 									<div class="modal-footer">
 											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
+											<button onclick="Eliminar()" type="button" class="btn btn-danger btn-fill btn-wd" data-dismiss="modal">Eliminar</button>
 									</div>
 							</div>
 					</div>
@@ -69,12 +85,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -107,7 +123,8 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/question_Controller/index">Nombre_de_Cuestionario_Seleccionado</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Cuestionarios</a><p class="navbar-brand" >/</p>
+										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/question_Controller/back"><?php echo $_SESSION['Questionary_name'] ?></a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -131,11 +148,6 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br-->
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                <!--a href="nuevo_proceso.html" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</a><br><br-->
-                <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
                 <div class="row">
 									<div class="col-md-12">
 											<div class="card">
@@ -143,44 +155,27 @@
 															<h4 class="title">Editar Pregunta</h4>
 													</div>
 													<div class="content">
-															<form>
+															<form  action="" method="post">
+																<?php foreach ($question as $q){ ?>
 																	<div class="row">
 																			<div class="col-md-12">
 																					<div class="form-group">
 																							<label>Pregunta</label>
-																							<input type="text" class="form-control border-input" placeholder="Pregunta" >
+																							<input name="pregunta" id="pregunta" required type="text" class="form-control border-input" placeholder="Pregunta" value="<?php echo $q->question ?>">
+																							<input type="hidden" name="id_question" id="id_question" value="<?php echo $q->id ?>">
 																					</div>
 																			</div>
 																	</div>
 																	<br><br>
-																	<a href="<?php echo base_url() ?>index.php/question_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
-																	<button type="submit" class="btn btn-info btn-fill btn-wd">Guardar</button>
-																	<button type="submit" class="btn btn-danger btn-fill btn-wd">Eliminar</button><br><br>
+																	<a href="<?php echo base_url() ?>index.php/question_Controller/back" class="btn btn-default btn-wd">Cancelar</a>
+																	<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+																	<button  type="button" class="btn btn-danger btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Cuidado !!!" >Eliminar</button><br><br>
+																	<?php } ?>
 															</form>
 													</div>
 											</div>
 									</div>
                 </div>
-
-	                <div class="row">
-
-
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
-	                </div>
 	            </div>
 	        </div>
 
@@ -225,7 +220,7 @@
 <script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
 
 <!--  Charts Plugin -->
-<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
+<!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
@@ -241,9 +236,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-
-			demo.initChartist();
-
+			//demo.initChartist();
 				$("#myModal").on('show.bs.modal', function(event){
         	var button = $(event.relatedTarget);  // Button that triggered the modal
         	var titleData = button.data('title'); // Extract value from data-* attributes

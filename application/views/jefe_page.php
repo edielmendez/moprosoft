@@ -72,11 +72,10 @@
 														<div class="col-md-12">
 																<div class="form-group">
 																		<label>Se trabajará con <b>Fases</b> o <b>Objetivos<b></label>
-																		<input required="true" name="trabajara" id="trabajara" type="text" class="form-control border-input" placeholder="Fases/Objetivos" >
-																		<!--select class="form-control" name="trabajara" id="trabajara">
+																		<select class="form-control" name="trabajara" id="trabajara">
 																			<option value="Fases">Fases</option>
 																			<option value="Objetivos">Objetivos</option>
-																		</select-->
+																		</select>
 																</div>
 														</div>
 												</div>
