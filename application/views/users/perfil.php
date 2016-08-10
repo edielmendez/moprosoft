@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>ADMINISTRADOR</title>
+	<title>MI PERFIL</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
@@ -41,7 +41,7 @@
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
 	                <a class="simple-text">
-	                    ESTUDIANTES
+	                    MI PERFIL
 	                </a>
 	            </div>
 
@@ -88,7 +88,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="#">ESTUDIANTES</a>
+	                    <a class="navbar-brand" href="#"><?php echo $this->session->userdata('logged_in')['name'] ?></a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -100,7 +100,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <li><a href="<?php echo base_url() ?>index.php/Home/perfil">Perfil</a></li>
+	                                <li><a href="<?php echo base_url() ?>index.php/Estudiantes/perfil">Perfil</a></li>
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
@@ -120,42 +120,57 @@
 	                
 	    		</div>
 	    	</div>
-
+			
 	        <div class="content container">
-	        	<a href="<?php echo base_url() ?>index.php/Estudiantes/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Estudiante</a><br><br>
-	            <div class="content table-responsive table-full-width">
-
-                    <table class="table table-striped" id="tabla_estudiantes">
-                        <thead>
-                            <th>nombre</th>
-                        	<th>username</th>
-                        	<th>email</th>
-                        	<th>grupo</th>
-                        	<th></th>
-                        	<th></th>
-                        </thead>
-                        <tbody>
-                        <?php
-                        for ($i=1; $i < count($usuarios) ; $i++) { 
-                        	# code...
-                        	echo "<tr>";
-                        		echo "<td>".$usuarios[$i]['name']."</td>";
-                        		echo "<td>".$usuarios[$i]['username']."</td>";
-                        		echo "<td>".$usuarios[$i]['email']."</td>";
-                        		echo "<td>".$usuarios[$i]['grupo']."</td>";
-                        		echo "<td><a class='btn btn-primary' href='".base_url()."index.php/Estudiantes/edit/".$usuarios[$i]['id']."'>Actualizar</a></td>";
-                        		echo "<td id='".$usuarios[$i]['rol_id']."'><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
-                        	echo "</tr>";
-                        }
-                        
-                        ?>
-                        	
-                            
-                            
-                        </tbody>
-                    </table>
-
-                </div>
+	        	<div class="row">
+	        		<div class="col-md-12 col-xl-12">
+	        			<div class="card">
+                            <div class="header">
+                                <h4 class="title">Editar mi perfil</h4>
+                            </div>
+                            <div class="content">
+                                <?php echo form_open('Home/update_perfil'); ?>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>username</label>
+                                                <input type="hidden" name="id" value="<?php echo $this->session->userdata('logged_in')['id'] ?>">
+                                                <input type="text" class="form-control border-input" name="username"  placeholder="username" required="" value="<?php echo $this->session->userdata('logged_in')['username'] ?>"/>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>password</label>
+                                                <input type="password" name="password" class="form-control border-input"  placeholder="password" value="">
+                                                <span>Para cambiar la contraseña, introduzca la nueva contraseña en este campo. Si desea mantener la actual, deje vacío el campo.</span>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>email</label>
+                                                <input type="email" name="email" class="form-control border-input"  placeholder="email" value="<?php echo $this->session->userdata('logged_in')['email'] ?>">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Actualizar Perfil</button>
+                                        <a href="<?php echo base_url() ?>index.php/Home" class="btn btn-danger btn-fill btn-wd">Cancelar</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+	        		</div>
+	        	</div>
 	        </div>
 
 

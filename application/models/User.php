@@ -207,6 +207,29 @@ class User extends CI_Model
       return $rowAfects;
    }
 
+   public function actualizarPerfil($username,$password,$email,$id){
+      $data = array(
+         'username' => $username,
+         'password' => MD5($password),
+         'email' => $email
+      );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+
+
+   }
+
+   public function actualizarPerfilSinPassword($username,$email,$id){
+      $data = array(
+         'username' => $username,
+         'email' => $email
+      );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+   }
+
 
 }
 
