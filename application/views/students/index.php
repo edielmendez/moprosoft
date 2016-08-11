@@ -17,6 +17,9 @@
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
+
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -24,24 +27,6 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-	<script type="text/javascript">
-	function Eliminar() {
-		var id = $("#id_cuestionario").val();
-		$.ajax({
-			url : '<?php echo base_url(); ?>index.php/questionary_Controller/Eliminar/'+id,
-			type : 'POST',
-			dataType : 'json',
-			success : function(json) {
-				//alert("Bien")
-				window.location.href= '<?php echo base_url(); ?>index.php/questionary_Controller/index';
-			},
-			error : function(xhr, status) {
-				//alert('Disculpe, existió un problema');
-				window.location.href= '<?php echo base_url(); ?>index.php/questionary_Controller/index';
-			}
-		});
-	}
-	</script>
 
 </head>
 <body>
@@ -51,22 +36,23 @@
 							<div class="modal-content">
 									<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Nuevo Cuestionario</h4>
+											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form>
+                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    	<p>Al eliminar el cuestionario se <b>eliminarán</b> todos las <b>preguntas</b> relacionados con el Cuestionario.</p>
+                                    <label>Pregunta</label>
+                                    <input name="pregunta"  id="pregunta" required type="text" class="form-control border-input" placeholder="La pregunta sera sin signos de interrogación" >
                                 </div>
                             </div>
                         </div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+												</div>
                     </form>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button onclick="Eliminar()" type="button" class="btn btn-danger btn-fill btn-wd" data-dismiss="modal">Eliminar</button>
 									</div>
 							</div>
 					</div>
@@ -86,29 +72,29 @@
 
 	            <ul class="nav">
 	                <!--li>
-	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-star"></i>
-	                        <p>Modelos</p>
-	                    </a>
-	                </li-->
-	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
-	                        <p>Procesos</p>
+	                        <p>Cuestionarios</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="table.html">
+	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
-	                </li>
-                  <li   class="active">
-                      <a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
-                          <i class="ti-book"></i>
-                          <p>Cuestionarios</p>
+	                </li-->
+									<li   class="active">
+											<a href="<?php echo base_url() ?>index.php/student_Controller/index">
+													<i class="ti-book"></i>
+													<p>Cuestionarios</p>
+											</a>
+									</li>
+                  <!--li>
+                      <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+                          <i class="ti-view-list-alt"></i>
+                          <p>Historial</p>
                       </a>
-                  </li>
+                  </li-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -123,7 +109,6 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Cuestionarios</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -147,52 +132,74 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br-->
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                <!--a href="nuevo_proceso.html" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</a><br><br-->
-                <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                  <div class="row">
-                    <div class="col-md-12">
+								<?php
+								//Si existen las sesiones flasdata que se muestren
+										if($this->session->flashdata('correcto'))
+											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
+
+										if($this->session->flashdata('incorrecto'))
+											echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
+								?>
+                <div class="info-questionary">
+                  <?php
+                    if ($nuevo>0) {
+                      echo "<h3>$nuevo Cuestionario(s) <b>nuevos</b> por contestar.</h3>";
+                    }
+
+                    if ($pendientes>0) {
+                      echo '<h3>$pendientes Cuestionario(s) <b>pendientes.</b></h3>';
+                    }
+                   ?>
+                </div>
+                <div class="row">
+                  <?php
+                    foreach($cuestionarios as $c){
+                  ?>
+                    <div class="col-lg-3 col-sm-6" >
                         <div class="card">
-                            <div class="header">
-                                <h4 class="title">Editar Cuestionario</h4>
-                            </div>
                             <div class="content">
-                                <form action=""  method="POST">
-																	<?php foreach ($cuestionario as $cues){ ?>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Nombre</label>
-                                                <input name="nombre" id="nombre" required type="text" class="form-control border-input" placeholder="Nombre"  value="<?php echo $cues->name ?>">
-																								<input type="hidden" name="id_cuestionario" id="id_cuestionario" value="<?php echo $cues->id ?>">
-                                            </div>
-																						<div class="form-group">
-																							<?php
-																								if ($numPreguntas>4) {
-																									if ($cues->status==1) {
-																										echo '<label>Liberar</label><select class="form-control" id="liberacion" name="liberacion"><option value="1" selected>SI</option><option value="0">NO</option></select>';
-																									}else {
-																										echo '<label>Liberar</label><select class="form-control" id="liberacion" name="liberacion"><option value="1">SI</option><option value="0" selected>NO</option></select>';
-																									}
-																								}else{
-																									echo '<input type="hidden" name="liberacion" id="liberacion" value="0">';
-																								}
-																							?>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                  <div class="col-xs-2">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<img src="'.base_url().'public/img/cuestionariovacio2.jpg" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }else {
+                                        echo '<img src="'.base_url().'public/img/cuestionarioincompleto.png" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-10">
+                                    <p><?php echo $c['name']?></p>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: right;">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/student_Controller/Contestar/'.$c['questionary_id'].'">Contestar</a>';
+                                      }else {
+                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/student_Controller/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: left;">
+                                  </div>
+                                </div>
+                                <div class="footer">
+                                    <hr/>
+                                    <div class="stats">
+                                        <i class="ti-info-alt"></i><?php
+                                          if ($c['status']==0) {
+                                            echo 'Conteste el Cuestionario';
+                                          }else {
+                                            echo 'Cuestionario Pendiente';
+                                          }
+                                        ?>
                                     </div>
-                                    <br><br>
-                                    <a href="<?php echo base_url() ?>index.php/questionary_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
-																		<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
-																		<button  type="button" class="btn btn-danger btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Cuidado !!!" >Eliminar</button><br><br>
-																		<?php } ?>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                  </div>
+                    <?php } ?>
+                </div>
 	            </div>
 	        </div>
 
@@ -237,7 +244,7 @@
 <script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
 
 <!--  Charts Plugin -->
-<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
+<!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
@@ -254,15 +261,13 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-			//demo.initChartist();
+		//	demo.initChartist();
 
 				$("#myModal").on('show.bs.modal', function(event){
         	var button = $(event.relatedTarget);  // Button that triggered the modal
         	var titleData = button.data('title'); // Extract value from data-* attributes
-        	$(this).find('.modal-title').text(titleData);
+					$(this).find('.modal-title').text(titleData);
     		});
-
-				
 	});
 </script>
 

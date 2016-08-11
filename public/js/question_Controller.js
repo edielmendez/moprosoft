@@ -11,8 +11,14 @@ app.controller('question_Controller', function($scope, $http) {
           $scope.questions=response;
           $scope.bandera=true;
       }
-      }
+    }
     );
+
   }
+
+  $scope.liberar = function(){
+    alert("Hola Mundo");
+  }
+
 
 });

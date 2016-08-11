@@ -13,7 +13,7 @@ class Home extends CI_Controller {
       $this->load->model('modelo','',TRUE);
       $this->load->model('user','',TRUE);
       $this->load->model('equipo','',TRUE);
-       $this->load->helper('url'); 
+       $this->load->helper('url');
    }
 
    function index()
@@ -117,7 +117,7 @@ class Home extends CI_Controller {
                $this->load->view('jefe_page',$datos_vista);
 
             }else{
-               $result = $this->modelo->getModels($data['team_id']);
+               /*$result = $this->modelo->getModels($data['team_id']);
                $modelos = array();
                if($result){
 
@@ -136,7 +136,8 @@ class Home extends CI_Controller {
                }
 
                $datos_vista['modelos'] = $modelos;
-               $this->load->view('estudiante_page',$datos_vista);
+               $this->load->view('students/index',$datos_vista);*/
+              redirect('student_Controller', 'refresh');
             }
          }
 
@@ -186,10 +187,10 @@ class Home extends CI_Controller {
          }else{
             $result = $this->user->actualizarPerfil($username,$password,$email,$id);
          }
-         
 
-         
-      
+
+
+
          if($result){
             /*
             $mensaje.="<div class='alert alert-info'>";
@@ -209,7 +210,7 @@ class Home extends CI_Controller {
             $this->session->set_flashdata('message', $mensaje);
             redirect('Home/');
          }
-         
+
 
       }else{
          redirect('login', 'refresh');
@@ -221,7 +222,7 @@ class Home extends CI_Controller {
 
       $this->email->from('mendezediel@gmail.com', 'Ediel');
       $this->email->to('mendezjunior2015@gmail.com');
-   
+
 
       $this->email->subject('Email Test');
       $this->email->message('Testing the email class.');
