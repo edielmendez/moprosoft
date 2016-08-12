@@ -159,7 +159,7 @@
                         <div class="card">
                             <div class="content">
                                 <div class="row">
-                                  <div class="col-xs-2">
+                                  <div class="col-xs-3">
                                     <?php
                                       if ($c['status']==0) {
                                         echo '<img src="'.base_url().'public/img/cuestionariovacio2.jpg" style="width:65px; height:70px" alt="Procesos" /><br><br>';
@@ -168,7 +168,7 @@
                                       }
                                     ?>
                                   </div>
-                                  <div class="col-xs-10">
+                                  <div class="col-xs-9">
                                     <p><?php echo $c['name']?></p>
                                   </div>
                                   <div class="col-xs-12" style="text-align: right;">

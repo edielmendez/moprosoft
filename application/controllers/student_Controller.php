@@ -63,12 +63,97 @@ class student_Controller extends CI_Controller {
             array_push($Questionary,$questionary);
          }
       }
-      
+
+			$result2 = $this->Student->getQuestions($id);
+			$Question= array();
+			if($result2){
+				$contador=0;
+				 foreach ($result2 as $row ) {
+					 if ($contador<2) {
+						 $question = array(
+							 'id' => $row->id,
+							 'question' => $row->question,
+							 'answer_id' => $row->answer_id,
+							 'questionary_id' => $row->questionary_id
+						 );
+						 array_push($Question,$question);
+					 }
+					 $contador=$contador+1;
+				 }
+			}
+
+			$result3 = $this->Student->getQuestionsCount($id);
+			$resultado = $this->numTabs($result3);
 
       $datos_vista['cuestionario'] = $Questionary;
+			$datos_vista['preguntas'] = $Question;
+			$datos_vista['numpreguntas'] = $resultado;
       $this->load->view('students/contestar_preguntas',$datos_vista);
    }
 
+
+	 public function getQuestions($id)
+	 {
+		 $result2 = $this->Student->getQuestions($id);
+		 $Question= array();
+		 if($result2){
+				foreach ($result2 as $row ) {
+					 $question = array(
+						 'id' => $row->id,
+						 'question' => $row->question,
+						 'answer_id' => $row->answer_id,
+						 'questionary_id' => $row->questionary_id
+					 );
+					 array_push($Question,$question);
+				}
+		 }
+
+		 echo json_encode($Question);
+	 }
+
+	 public function numTabs($num)
+	 {
+		 if ($num<=10) {
+		 	return 1;
+		 }
+
+		 if ($num<=20) {
+		 	return 2;
+		 }
+
+		 if ($num<=30) {
+		 	return 3;
+		 }
+
+		 if ($num<=40) {
+		 	return 4;
+		 }
+
+		 if ($num<=50) {
+			return 5;
+		 }
+
+		 if ($num<=60) {
+			return 6;
+		 }
+
+		 if ($num<=70) {
+			return 7;
+		 }
+
+		 if ($num<=80) {
+			return 8;
+		 }
+
+		 if ($num<=90) {
+			return 9;
+		 }
+
+		 if ($num<=100) {
+			return 10;
+		 }
+
+	 }
 
 }
 ?>

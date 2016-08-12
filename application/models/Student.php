@@ -23,9 +23,15 @@ class Student extends CI_Model
 
   public function getQuestions($id)
   {
-
+    $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
+    return $consulta->result();
   }
-  
+
+  public function getQuestionsCount($id)
+  {
+    $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
+    return $consulta->num_rows();
+  }
 
 }
  ?>

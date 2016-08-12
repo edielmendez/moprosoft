@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="student">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -18,7 +18,7 @@
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
-	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/student_Controller.js"></script>
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 	<!-- -->
 
 </head>
-<body>
+<body ng-Controller="student_Controller"  ng-init="index()">
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
@@ -112,7 +112,7 @@
                       <?php
                         foreach($cuestionario as $c){
                           echo "<p class=navbar-brand>Cuestionario: $c[name]</p>";
-                          echo '<input type="hidden" name="cuestionario_id" id="cuestionario_id" value="'.$c['id'].'">';
+                          echo '<input type="hidden" ng-model="cuestionario_id" name="cuestionario_id" id="cuestionario_id" value="'.$c['id'].'">';
                         }
                       ?>
 	                </div>
@@ -155,33 +155,112 @@
                                   <div class="col-xs-12">
                                     <div class="progress progress-striped">
                                       <div class="progress-bar progress-bar-info" role="progressbar"
-                                           aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                                           style="width: 5%">
-                                        <span class="sr-only">20% completado</span>
+                                           aria-valuenow="{{porcentaje}}" aria-valuemin="0" aria-valuemax="100"
+                                           style="width: {{porcentaje}}%">
+                                        <span class="sr-only">{{porcentaje}} completado</span>
                                       </div>
                                     </div>
                                   </div>
 
                                   <div class="col-xs-12">
                                     <ul class="nav nav-tabs">
-                                      <li class="active"><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-                                      <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-                                      <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
-                                      <li><a data-toggle="tab" href="#menu4">Menu 4</a></li>
-                                      <li><a data-toggle="tab" href="#menu5">Menu 5</a></li>
-                                      <li><a data-toggle="tab" href="#menu6">Menu 6</a></li>
-                                      <li><a data-toggle="tab" href="#menu7">Menu 7</a></li>
-                                      <li><a data-toggle="tab" href="#menu8">Menu 8</a></li>
-                                      <li><a data-toggle="tab" href="#menu9">Menu 9</a></li>
-                                      <li><a data-toggle="tab" href="#menu10">Menu 10</a></li>
+                                      <li class="active"><a data-toggle="tab" href="#menu1">Seccion 1</a></li>
+																			<?php
+																			for ($i = 1; $i <$numpreguntas; $i++) {
+																				  echo '<li><a data-toggle=tab href=#menu2>Seccion 2</a></li>';
+																			}
+																			?>
+                                      <!--li><a data-toggle="tab" href="#menu2">Seccion 2</a></li>
+                                      <li><a data-toggle="tab" href="#menu3">Seccion 3</a></li>
+                                      <li><a data-toggle="tab" href="#menu4">Seccion 4</a></li>
+                                      <li><a data-toggle="tab" href="#menu5">Seccion 5</a></li>
+                                      <li><a data-toggle="tab" href="#menu6">Seccion 6</a></li>
+                                      <li><a data-toggle="tab" href="#menu7">Seccion 7</a></li>
+                                      <li><a data-toggle="tab" href="#menu8">Seccion 8</a></li>
+                                      <li><a data-toggle="tab" href="#menu9">Seccion 9</a></li>
+                                      <li><a data-toggle="tab" href="#menu10">Seccion 10</a></li-->
+
                                     </ul>
 
                                     <div class="tab-content">
-                                      <h1>iiu</h1>
                                       <div id="menu1" class="tab-pane fade in active">
-                                        <h3>Menu 1</h3>
-                                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-                                      </div>
+																					<br>
+																					<div class="col-xs-12">
+																							<div class="row">
+																									<div class="col-xs-8">
+																										<div id="pregunta1">
+																											<p>{{numPregunta1}} ¿  {{preguntasFiltradas[0].question}}  ?</p>
+																										</div>
+																									</div>
+																									<div class="col-xs-4">
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="1">Siempre</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="2">Usualmente</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="3">Algunas Veces</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="4">Rara Vez</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="5">Nunca</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="6">No Sabe</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta1" value="7">No Aplica</label>
+																										</div>
+																									</div>
+																							</div>
+																							<hr/>
+																							<div class="row" id="ContenedorPregunta2">
+																									<div class="col-xs-8">
+																										<?php //print_r($preguntas);print_r($numpreguntas);?>
+																										<div id="pregunta1">
+																												<p>{{numPregunta2}} ¿  {{preguntasFiltradas[1].question}}  ?</p>
+																										</div>
+																									</div>
+																									<div class="col-xs-4">
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="1" id="p1" >Siempre</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="2">Usualmente</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="3">Algunas Veces</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="4">Rara Vez</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="5">Nunca</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="6">No Sabe</label>
+																										</div>
+																										<div class="radio">
+																											<label><input type="radio" name="respuesta2" value="7">No Aplica</label>
+																										</div>
+																									</div>
+																							</div>
+
+																							<div class="row">
+																								<br>
+																								<div class="col-xs-12" id="botones">
+																									<button id="atras" ng-click="atras()" type="button"  class="btn btn-default btn-wd">Atrás</button>
+																									<span ng-if='end!=10'><button ng-click="siguiente()"  type="button"  class="btn btn-info btn-wd" >Siguiente</button></span>
+																									<span ng-if='end==10'><button ng-click="terminar()" id="btnsiguiente" type="button"  class="btn btn-info btn-wd" >Terminar</button></span>
+																								</div>
+
+																							</div>
+
+																						</div>
+																		  </div>
                                       <div id="menu2" class="tab-pane fade">
                                         <h3>Menu 2</h3>
                                         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
