@@ -84,7 +84,7 @@
 	                    </a>
 	                </li-->
 									<li   class="active">
-											<a href="<?php echo base_url() ?>index.php/student_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Student_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -161,25 +161,15 @@
                                       </div>
                                     </div>
                                   </div>
-
                                   <div class="col-xs-12">
                                     <ul class="nav nav-tabs">
-                                      <li class="active"><a data-toggle="tab" href="#menu1">Seccion 1</a></li>
+                                      <li class="active"><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#menu1" data-seccion="1">Seccion 1</a></li>
 																			<?php
 																			for ($i = 1; $i <$numpreguntas; $i++) {
-																				  echo '<li><a data-toggle=tab href=#menu2>Seccion 2</a></li>';
+																					$var=$i+1;
+																				  echo "<li><a data-toggle=tab id=tabMostrar$var ng-click=secciones($var) href=#menu1 data-seccion=$var>Seccion $var</a></li>";
 																			}
 																			?>
-                                      <!--li><a data-toggle="tab" href="#menu2">Seccion 2</a></li>
-                                      <li><a data-toggle="tab" href="#menu3">Seccion 3</a></li>
-                                      <li><a data-toggle="tab" href="#menu4">Seccion 4</a></li>
-                                      <li><a data-toggle="tab" href="#menu5">Seccion 5</a></li>
-                                      <li><a data-toggle="tab" href="#menu6">Seccion 6</a></li>
-                                      <li><a data-toggle="tab" href="#menu7">Seccion 7</a></li>
-                                      <li><a data-toggle="tab" href="#menu8">Seccion 8</a></li>
-                                      <li><a data-toggle="tab" href="#menu9">Seccion 9</a></li>
-                                      <li><a data-toggle="tab" href="#menu10">Seccion 10</a></li-->
-
                                     </ul>
 
                                     <div class="tab-content">
@@ -187,65 +177,38 @@
 																					<br>
 																					<div class="col-xs-12">
 																							<div class="row">
-																									<div class="col-xs-8">
+																									<div class="col-xs-9">
+																										<span id="pre1"></span>
 																										<div id="pregunta1">
 																											<p>{{numPregunta1}} ¿  {{preguntasFiltradas[0].question}}  ?</p>
 																										</div>
 																									</div>
-																									<div class="col-xs-4">
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="1">Siempre</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="2">Usualmente</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="3">Algunas Veces</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="4">Rara Vez</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="5">Nunca</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="6">No Sabe</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta1" value="7">No Aplica</label>
-																										</div>
+																									<div class="col-xs-3" id="respuestas1">
+																											<label><input type="radio" name="respuesta1" value="1">Siempre</label><br>
+																											<label><input type="radio" name="respuesta1" value="2">Usualmente</label><br>
+																											<label><input type="radio" name="respuesta1" value="3">Algunas Veces</label><br>
+																											<label><input type="radio" name="respuesta1" value="4">Rara Vez</label><br>
+																											<label><input type="radio" name="respuesta1" value="5">Nunca</label><br>
+																											<label><input type="radio" name="respuesta1" value="6">No Sabe</label><br>
+																											<label><input type="radio" name="respuesta1" value="7">No Aplica</label><br>
 																									</div>
 																							</div>
 																							<hr/>
 																							<div class="row" id="ContenedorPregunta2">
-																									<div class="col-xs-8">
-																										<?php //print_r($preguntas);print_r($numpreguntas);?>
+																									<div class="col-xs-9">
+																										<span id="pre2"></span>
 																										<div id="pregunta1">
 																												<p>{{numPregunta2}} ¿  {{preguntasFiltradas[1].question}}  ?</p>
 																										</div>
 																									</div>
-																									<div class="col-xs-4">
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="1" id="p1" >Siempre</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="2">Usualmente</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="3">Algunas Veces</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="4">Rara Vez</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="5">Nunca</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="6">No Sabe</label>
-																										</div>
-																										<div class="radio">
-																											<label><input type="radio" name="respuesta2" value="7">No Aplica</label>
-																										</div>
+																									<div class="col-xs-3" id="respuestas2">
+																										<label><input type="radio" name="respuesta2" value="1">Siempre</label><br>
+																										<label><input type="radio" name="respuesta2" value="2">Usualmente</label><br>
+																										<label><input type="radio" name="respuesta2" value="3">Algunas Veces</label><br>
+																										<label><input type="radio" name="respuesta2" value="4">Rara Vez</label><br>
+																										<label><input type="radio" name="respuesta2" value="5">Nunca</label><br>
+																										<label><input type="radio" name="respuesta2" value="6">No Sabe</label><br>
+																										<label><input type="radio" name="respuesta2" value="7">No Aplica</label><br>
 																									</div>
 																							</div>
 
@@ -253,50 +216,13 @@
 																								<br>
 																								<div class="col-xs-12" id="botones">
 																									<button id="atras" ng-click="atras()" type="button"  class="btn btn-default btn-wd">Atrás</button>
-																									<span ng-if='end!=10'><button ng-click="siguiente()"  type="button"  class="btn btn-info btn-wd" >Siguiente</button></span>
-																									<span ng-if='end==10'><button ng-click="terminar()" id="btnsiguiente" type="button"  class="btn btn-info btn-wd" >Terminar</button></span>
+																									<span ng-if='terminar!=1'><button ng-click="siguiente()"  type="button"  class="btn btn-info btn-wd" >Siguiente</button></span>
+																									<span ng-if='terminar==1'><button ng-click="terminarEncuesta()" id="btnsiguiente" type="button"  class="btn btn-info btn-wd" >Terminar</button></span>
 																								</div>
 
 																							</div>
-
 																						</div>
 																		  </div>
-                                      <div id="menu2" class="tab-pane fade">
-                                        <h3>Menu 2</h3>
-                                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-                                      </div>
-                                      <div id="menu3" class="tab-pane fade">
-                                        <h3>Menu 3</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu4" class="tab-pane fade">
-                                        <h3>Menu 4</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu5" class="tab-pane fade">
-                                        <h3>Menu 5</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu6" class="tab-pane fade">
-                                        <h3>Menu 6</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu7" class="tab-pane fade">
-                                        <h3>Menu 7</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu8" class="tab-pane fade">
-                                        <h3>Menu 8</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu9" class="tab-pane fade">
-                                        <h3>Menu 9</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
-                                      <div id="menu10" class="tab-pane fade">
-                                        <h3>Menu 10</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -346,7 +272,6 @@
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
 <!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
 
 <!--  Charts Plugin -->
 <!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->

@@ -263,14 +263,6 @@ hr {
     width: 260px;
     z-index: 4;
     box-shadow: inset -1px 0px 0px 0px #DDDDDD; }
-    .sidebar .sidebar-wrapper2 {
-      position: relative;
-      max-height: none;
-      min-height: 100%;
-      overflow: hidden;
-      width: 5px;
-      z-index: 4;
-      box-shadow: inset -1px 0px 0px 0px #DDDDDD; }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/conacelelena\/paper-dashboard\/assets\/sass\/paper\/_sidebar-and-main-panel\.scss}line{font-family:\0000318}}
   .sidebar .sidebar-background {
     position: absolute;
@@ -475,14 +467,6 @@ hr {
   float: right;
   width: calc(100% - 260px);
   min-height: 100%; }
-  .main-panel2 {
-    background-color: #f4f3ef;
-    background-image: linear-gradient(to bottom, transparent 0%, rgba(112, 112, 112, 0) 60%, rgba(186, 186, 186, 0.15) 100%);
-    position: relative;
-    z-index: 2;
-    float: right;
-    width: calc(100% - 5px);;
-    min-height: 100%; }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/conacelelena\/paper-dashboard\/assets\/sass\/paper\/_sidebar-and-main-panel\.scss}line{font-family:\00003169}}
   .main-panel > .content {
     padding: 30px 15px;

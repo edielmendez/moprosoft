@@ -1,7 +1,7 @@
 <?php
 //Controlador Proceso
 defined('BASEPATH') OR exit('No direct script access allowed');
-class student_Controller extends CI_Controller {
+class Student_Controller extends CI_Controller {
 
 	function __construct()
    {
@@ -153,6 +153,54 @@ class student_Controller extends CI_Controller {
 			return 10;
 		 }
 
+	 }
+
+	 public function get_post_string($index = '', $xss_clean = FALSE){
+		 if ( ! isset($_POST[$index]) )
+		 {
+				 return $this->get($index, $xss_clean);
+		 }
+		 else
+		 {
+				 return $this->post($index, $xss_clean);
+		 }
+	}
+
+	 public function save()
+	 {
+			$json = file_get_contents("php://input");
+			$objeto=json_encode($json, true);
+
+			$cad = str_replace(array('"','{','}','\\','A-Za-z'),array(''), $objeto);
+			$cad=preg_replace('/[A-Z-a-z]/', '', $cad);
+			$cad=preg_replace('/_[\d ]:/', '', $cad);
+			$datos =  preg_split("/[,]/",$cad);
+
+			$user=$this->session->userdata('logged_in')['id'];
+			//Se inserta la primer pregunta
+			$add=$this->Student->add(
+							$user,
+							$datos[0],
+							$datos[1],
+							$datos[2]
+						);
+			//Se inserta la segunda pregunta
+			$add=$this->Student->add(
+							$user,
+							$datos[0],
+							$datos[3],
+							$datos[4]
+						);
+
+			print_r($datos) ;
+			/*if($add==0){
+				$this->session->set_flashdata('correcto', 'El Cuestionario ha sido creado de forma satisfactoria');
+			}elseif ($add==1) {
+				$this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
+			}elseif ($add==2) {
+				$this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
+			}*/
+			//redirect('questionary_Controller/index', 'refresh');
 	 }
 
 }
