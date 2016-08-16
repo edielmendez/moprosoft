@@ -22,17 +22,32 @@ app.controller('student_Controller', function($scope, $http) {
   $scope.index = function(){
     $http.get(url+"Student_Controller/getQuestions/"+$("#cuestionario_id").val()).success(function(response){
       $scope.preguntas=response;
-      $scope.preguntasFiltradas=response.slice($scope.startt,$scope.end);
       $scope.longitud=response.length;
-      console.log("Numero:"+  $scope.longitud);
+      console.log("Preguntas:"+$scope.longitud);
+      console.log("PREGUNTAS:"+JSON.stringify(response));
+      var inicio=0;
+      for (var i=0; $scope.preguntas[i].res!=0; i++) {
+        inicio=i;
+      }
+
+      if (inicio!=0) {
+        $scope.startt=inicio-1;
+        $scope.end=inicio+1;
+        $scope.numPregunta1=inicio;
+        $scope.numPregunta2=inicio+1;
+
+      }
+      PosicionarSection();
+      $scope.preguntasFiltradas=response.slice($scope.startt,$scope.end);
+      RecuperarRespuestas();
       }
     );
   }
 
   $scope.atras = function(){
-    //f (validacion()) {
       console.log("Indices antes de ATRAS:star - "+$scope.startt+"  end -  "+$scope.end);
       CambiarSectionAtras();
+      $scope.terminar=0;
       if ($scope.bandera==1) {
         $scope.bandera=0;
         $("#ContenedorPregunta2").show();
@@ -58,9 +73,6 @@ app.controller('student_Controller', function($scope, $http) {
       }
 
       console.log("Indices despues de ATRAS:star - "+$scope.startt+"  end -  "+$scope.end);
-  //  }else {
-  //    console.log("Responda todas las preguntas");
-  //  }
   }
 
   $scope.siguiente = function(){
@@ -90,6 +102,7 @@ app.controller('student_Controller', function($scope, $http) {
             if ($scope.bandera==1) {
               $("#ContenedorPregunta2").hide();
               $scope.preguntasFiltradas[0]=$scope.preguntas[$scope.longitud-1];
+              $scope.preguntasFiltradas[1]=[];
               $scope.terminar=1;
             }else {
               $scope.preguntasFiltradas=$scope.preguntas.slice($scope.startt,$scope.end);
@@ -110,7 +123,7 @@ app.controller('student_Controller', function($scope, $http) {
   function calculoAvanze() {
     var sum=0;
     for (var i = 0; i < $scope.preguntas.length; i++) {
-      if ($scope.preguntas[i].res!=undefined) {
+      if ($scope.preguntas[i].res!=0) {
         sum++;
       }
     }
@@ -118,8 +131,40 @@ app.controller('student_Controller', function($scope, $http) {
   }
 
   $scope.terminarEncuesta =function () {
-    alert("Que onda, ya terminaste");
-    console.log("Que llavas:"+JSON.stringify($scope.preguntas));
+    if (validacion()) {
+        var avanze = calculoAvanze();
+        if ($scope.longitud % 2 == 0) {
+          avanze+=2;
+        }else {
+          avanze+=1;
+        }
+
+        if ( avanze==$scope.longitud) {
+          var asignacion = {'questionary_id1': $("#cuestionario_id").val()};
+
+          if ($scope.longitud % 2 ==0) {
+            asignacion['question_id1']=$scope.preguntas[$scope.startt].id;
+            asignacion['answer_id1']=$("input[name='respuesta1']:checked").val();
+            asignacion['question_id2']=$scope.preguntas[$scope.end-1].id;
+            asignacion['answer_id2']=$("input[name='respuesta2']:checked").val();
+          }else {
+            asignacion['question_id1']=$scope.preguntas[$scope.startt].id;
+            asignacion['answer_id1']=$("input[name='respuesta1']:checked").val();
+          }
+
+          $http.post(url+"Student_Controller/terminar", asignacion ).success(function(data){
+            console.log("Peticion realizada exitosamente:"+data);
+            window.location.href = url+'Student_Controller/index';
+          }).error(function(data){
+            console.log(data.error);
+          });
+        }else {
+
+        }
+    }else {
+      console.log("Responda todas las preguntas");
+    }
+
   }
 
   $scope.$watch('startt', function() {
@@ -127,6 +172,13 @@ app.controller('student_Controller', function($scope, $http) {
       $('#atras').attr("disabled", true);
     }else{
       $('#atras').attr("disabled", false);
+    }
+  });
+
+  $scope.$watch('end', function() {
+    if ($scope.end<$scope.longitud) {
+      $("#ContenedorPregunta2").show();
+      $scope.terminar=0;
     }
   });
 
@@ -161,17 +213,19 @@ app.controller('student_Controller', function($scope, $http) {
   }
 
   function RecuperarRespuestas() {
-    if ($scope.preguntasFiltradas[0].res!=undefined) {
-      $('input[name=respuesta1][value='+parseInt($scope.preguntasFiltradas[0].res)+']').prop( "checked", true );
-    }
+      if ($scope.preguntasFiltradas[0].res!=undefined) {
+        $('input[name=respuesta1][value='+parseInt($scope.preguntasFiltradas[0].res)+']').prop( "checked", true );
+      }
 
-    if ($scope.preguntasFiltradas[1].res!=undefined) {
-      $('input[name=respuesta2][value='+parseInt($scope.preguntasFiltradas[1].res)+']').prop( "checked", true );
-    }
+      if ($scope.preguntasFiltradas[1].res!=undefined) {
+        $('input[name=respuesta2][value='+parseInt($scope.preguntasFiltradas[1].res)+']').prop( "checked", true );
+      }
   }
 
   $scope.secciones = function(n) {
+      $scope.bandera=0;
       if (n!=undefined) {
+
         if (n==1) {
           $scope.numPregunta1=1;
           $scope.numPregunta2=2;
@@ -183,11 +237,21 @@ app.controller('student_Controller', function($scope, $http) {
           $scope.startt=((n-1)*10);
           $scope.end=((n-1)*10)+2;
         }
-        $scope.preguntasFiltradas=$scope.preguntas.slice($scope.startt,$scope.end);
-        LimpiarRadioButton();
-        $("#pre1").empty();
-        $("#pre2").empty();
-        RecuperarRespuestas();
+
+        if ($scope.end>$scope.longitud) {
+          $("#ContenedorPregunta2").hide();
+          $scope.preguntasFiltradas[0]=$scope.preguntas[$scope.longitud-1];
+          $scope.preguntasFiltradas[1]=[];
+          $scope.terminar=1;
+        }else {
+          $scope.terminar=0;
+          $scope.preguntasFiltradas=$scope.preguntas.slice($scope.startt,$scope.end);
+          LimpiarRadioButton();
+          $("#pre1").empty();
+          $("#pre2").empty();
+          RecuperarRespuestas();
+        }
+
       }
   }
 
@@ -217,7 +281,23 @@ app.controller('student_Controller', function($scope, $http) {
     }
   }
 
+  function PosicionarSection() {
+
+    var array=[10,20,30,40,50,60,70,80,90];
+    var posicion=0;
+
+    for (var i = 0; i < array.length; i++) {
+      if ($scope.end>array[i]) {
+          posicion=array[i];
+      }
+    }
+
+    $('#tabMostrar'+( (posicion/10)+1)).click();
+    console.log("startt:"+posicion);
+  }
+
   function CambiarSectionAtras() {
+
     var array=[10,20,30,40,50,60,70,80,90];
     var status=0;
 
@@ -229,6 +309,9 @@ app.controller('student_Controller', function($scope, $http) {
 
     if (status==1) {
       var seleccionar=$scope.startt/10;
+      $('#tabMostrar'+seleccionar).click();
+    }else if ($scope.bandera==1) {
+      var seleccionar=($scope.startt+2)/10;
       $('#tabMostrar'+seleccionar).click();
     }
   }

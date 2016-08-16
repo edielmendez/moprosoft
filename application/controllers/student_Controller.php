@@ -74,7 +74,8 @@ class Student_Controller extends CI_Controller {
 							 'id' => $row->id,
 							 'question' => $row->question,
 							 'answer_id' => $row->answer_id,
-							 'questionary_id' => $row->questionary_id
+							 'questionary_id' => $row->questionary_id,
+							 'res' => $row->answer_id
 						 );
 						 array_push($Question,$question);
 					 }
@@ -94,15 +95,26 @@ class Student_Controller extends CI_Controller {
 
 	 public function getQuestions($id)
 	 {
+
+		 $user=$this->session->userdata('logged_in')['id'];
 		 $result2 = $this->Student->getQuestions($id);
+		 $result3 = $this->Student->getQuestions_Answer($id,$user);
+
 		 $Question= array();
 		 if($result2){
 				foreach ($result2 as $row ) {
+					 $aux=0;
+					 if($result3){
+						 foreach ($result3 as $row2 ) {
+		 					 if($row->id==$row2->question_id){
+								 $aux=$row2->answer_id;
+							 }
+		 				 }
+					 }
 					 $question = array(
 						 'id' => $row->id,
 						 'question' => $row->question,
-						 'answer_id' => $row->answer_id,
-						 'questionary_id' => $row->questionary_id
+						 'res'=>$aux
 					 );
 					 array_push($Question,$question);
 				}
@@ -155,16 +167,6 @@ class Student_Controller extends CI_Controller {
 
 	 }
 
-	 public function get_post_string($index = '', $xss_clean = FALSE){
-		 if ( ! isset($_POST[$index]) )
-		 {
-				 return $this->get($index, $xss_clean);
-		 }
-		 else
-		 {
-				 return $this->post($index, $xss_clean);
-		 }
-	}
 
 	 public function save()
 	 {
@@ -178,29 +180,70 @@ class Student_Controller extends CI_Controller {
 
 			$user=$this->session->userdata('logged_in')['id'];
 			//Se inserta la primer pregunta
-			$add=$this->Student->add(
+			$add1=$this->Student->add(
 							$user,
 							$datos[0],
 							$datos[1],
 							$datos[2]
 						);
 			//Se inserta la segunda pregunta
-			$add=$this->Student->add(
+			$add2=$this->Student->add(
 							$user,
 							$datos[0],
 							$datos[3],
 							$datos[4]
 						);
 
-			print_r($datos) ;
-			/*if($add==0){
-				$this->session->set_flashdata('correcto', 'El Cuestionario ha sido creado de forma satisfactoria');
-			}elseif ($add==1) {
-				$this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
-			}elseif ($add==2) {
-				$this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
-			}*/
-			//redirect('questionary_Controller/index', 'refresh');
+			$NumRespuestas = $this->Student->getAvance($datos[0],$user);
+			$NumPreguntas =$this->Student->getQuestionsCount($datos[0]);
+			$avanze=($NumRespuestas*100)/$NumPreguntas;
+
+			$AvanzeActualizado = $this->Student->updateAvanze($datos[0],$user,$avanze);
+
+			if ($add1==0 && $add2==0 && $AvanzeActualizado==0) {
+				echo "Datos insertados con exito";
+			}else {
+				echo "Ocurrio un error al gurdar los datos";
+			}
+	 }
+
+	 public function terminar()
+	 {
+		 $json = file_get_contents("php://input");
+		 $objeto=json_encode($json, true);
+
+		 $cad = str_replace(array('"','{','}','\\','A-Za-z'),array(''), $objeto);
+		 $cad=preg_replace('/[A-Z-a-z]/', '', $cad);
+		 $cad=preg_replace('/_[\d ]:/', '', $cad);
+		 $datos =  preg_split("/[,]/",$cad);
+
+		 $longitud = sizeof($datos);
+		 $user=$this->session->userdata('logged_in')['id'];
+		 $equipo=$this->session->userdata('logged_in')['team_id'];
+
+		 $add1=$this->Student->add(
+						 $user,
+						 $datos[0],
+						 $datos[1],
+						 $datos[2]
+					 );
+
+		if ($longitud>3) {
+			$add2=$this->Student->add(
+							$user,
+							$datos[0],
+							$datos[3],
+							$datos[4]
+						);
+		}
+
+		$result = $this->Student->finalizarCuestionario($user,$datos[0],$equipo);
+		if ($result==0) {
+			echo "La consulta se realizo exitosamente";
+		}else {
+			echo "Ocurrio un problema al guardar los datos en la Base de Datos";
+		}
+
 	 }
 
 }

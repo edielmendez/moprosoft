@@ -19,6 +19,9 @@
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/student_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/jquery.modal.js"></script>
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -31,31 +34,24 @@
 </head>
 <body ng-Controller="student_Controller"  ng-init="index()">
 	<div class="wrapper">
-				<div id="myModal" class="modal fade">
-					<div class="modal-dialog">
-							<div class="modal-content">
-									<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title"></h4>
-									</div>
-									<div class="modal-body">
-                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Pregunta</label>
-                                    <input name="pregunta"  id="pregunta" required type="text" class="form-control border-input" placeholder="La pregunta sera sin signos de interrogación" >
-                                </div>
-                            </div>
-                        </div>
-												<div class="modal-footer">
-														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
-												</div>
-                    </form>
-									</div>
-							</div>
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Modal Header</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a small modal.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
 					</div>
+				</div>
 			</div>
 
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
@@ -146,6 +142,7 @@
 										if($this->session->flashdata('incorrecto'))
 											echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
 								?>
+
                   <div class="row">
                     <div class="col-md-12" >
                         <div class="card">
@@ -268,8 +265,7 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+
 
 <!--  Checkbox, Radio & Switch Plugins -->
 
@@ -294,9 +290,7 @@
 		//	demo.initChartist();
 
 				$("#myModal").on('show.bs.modal', function(event){
-        	var button = $(event.relatedTarget);  // Button that triggered the modal
-        	var titleData = button.data('title'); // Extract value from data-* attributes
-					$(this).find('.modal-title').text(titleData);
+
     		});
 	});
 </script>

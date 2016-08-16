@@ -14,6 +14,41 @@ class Student extends CI_Model
       return false;
     }
   }
+  public function finalizarCuestionario($user,$cuestionario,$equipo)
+  {
+    $consulta=$this->db->query("SELECT * FROM assignment WHERE (user_id=$user) AND (questionary_id=$cuestionario) AND (team_id=$equipo)  ");
+    $c= $consulta->row();
+    $consulta=$this->db->query("
+        UPDATE assignment SET status='100' WHERE id=$c->id;
+        ");
+    if($consulta==true){
+        return 0;
+    }else{
+        return 1;
+    }
+  }
+
+  public function getAvance($questionary,$user)
+  {
+    $consulta=$this->db->query("SELECT * FROM question_answer WHERE (questionary_id=$questionary) AND (user_id=$user)");
+    return $consulta->num_rows();
+  }
+
+  public function updateAvanze($questionary,$user,$avanze)
+  {
+    $consulta=$this->db->query("SELECT * FROM assignment WHERE (questionary_id=$questionary) AND (user_id=$user)");
+    $c= $consulta->row();
+    $consulta=$this->db->query("
+        UPDATE assignment SET status='$avanze' WHERE id=$c->id;
+        ");
+    if($consulta==true){
+        return 0;
+    }else{
+        return 1;
+    }
+
+  }
+
 
   public function Questionary($id)
   {
@@ -27,6 +62,12 @@ class Student extends CI_Model
     return $consulta->result();
   }
 
+  public function getQuestions_Answer($questionary,$user)
+  {
+    $consulta=$this->db->query("SELECT * FROM question_answer WHERE (questionary_id=$questionary) AND (user_id=$user)  ");
+    return $consulta->result();
+  }
+
   public function getQuestionsCount($id)
   {
     $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
@@ -35,17 +76,19 @@ class Student extends CI_Model
 
   public function add($user,$id_cuestionary,$question_id1,$answer_id1)
   {
-    $consulta=$this->db->query("SELECT question_answer.id FROM question_answer WHERE (questionary_id=$id_cuestionary) AND (question_id=$question_id1) AND (answer_id=$answer_id1) AND (user_id=$user)");
+    $consulta=$this->db->query("SELECT * FROM question_answer WHERE (questionary_id=$id_cuestionary) AND (question_id=$question_id1) AND (user_id=$user)");
+    //return $consulta->num_rows();
     if($consulta->num_rows() >= 1){
+      $c= $consulta->row();
       //Se actualiza
-      /*$consulta=$this->db->query("
-          UPDATE question_answer SET name='$nombre', version='$version',level='$nivel', phase_objetive='$trabajara' WHERE id=$id;
+      $consulta=$this->db->query("
+          UPDATE question_answer SET answer_id='$answer_id1' WHERE id=$c->id;
           ");
       if($consulta==true){
           return 0;
       }else{
           return 1;
-      }*/
+      }
     }else{
       //Se agrega
       $result=$this->db->query("INSERT INTO question_answer VALUES(NULL,'$id_cuestionary','$question_id1','$answer_id1','$user');");
@@ -55,6 +98,7 @@ class Student extends CI_Model
         return 1;
       }
     }
+
   }
 
 }

@@ -89,12 +89,12 @@
 													<p>Cuestionarios</p>
 											</a>
 									</li>
-                  <!--li>
+                  <li>
                       <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
                           <i class="ti-view-list-alt"></i>
                           <p>Historial</p>
                       </a>
-                  </li-->
+                  </li>
 	            </ul>
 	    	</div>
 	    </div>
@@ -142,13 +142,13 @@
 								?>
                 <div class="info-questionary">
                   <?php
-                    if ($nuevo>0) {
+                    /*if ($nuevo>0) {
                       echo "<h3>$nuevo Cuestionario(s) <b>nuevos</b> por contestar.</h3>";
                     }
 
                     if ($pendientes>0) {
-                      echo '<h3>$pendientes Cuestionario(s) <b>pendientes.</b></h3>';
-                    }
+                      echo "<h3>$pendientes Cuestionario(s) <b>pendientes.</b></h3>";
+                    }*/
                    ?>
                 </div>
                 <div class="row">
@@ -176,7 +176,7 @@
                                       if ($c['status']==0) {
                                         echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['questionary_id'].'">Contestar</a>';
                                       }else {
-                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
+                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
                                       }
                                     ?>
                                   </div>
