@@ -34,6 +34,15 @@ class Modelos extends CI_Controller {
    	}
    }
 
+	 public function actividad(){
+			if($this->session->userdata('logged_in')){
+				$this->load->view('questionnaires_jefe/index');
+			}else{
+				//si no hay session se redirecciona la vista de login
+					redirect('login', 'refresh');
+			}
+		}
+
 	 public function cargar_modelo($id){
    	if($this->session->userdata('logged_in')){
 			$modelSeleccionado=$this->modelo->getModel($id);
@@ -176,9 +185,9 @@ class Modelos extends CI_Controller {
         }
   	}
 
-  	
 
-  	
+
+
 
 
 

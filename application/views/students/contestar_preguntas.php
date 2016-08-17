@@ -35,25 +35,6 @@
 <body ng-Controller="student_Controller"  ng-init="index()">
 	<div class="wrapper">
 
-
-			<!-- Modal -->
-			<div class="modal fade" id="myModal" role="dialog">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Modal Header</h4>
-						</div>
-						<div class="modal-body">
-							<p>This is a small modal.</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
 			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
@@ -148,7 +129,8 @@
                         <div class="card">
                             <div class="content">
                                 <div class="row">
-
+																	<div id="aviso">
+																	</div>
                                   <div class="col-xs-12">
                                     <div class="progress progress-striped">
                                       <div class="progress-bar progress-bar-info" role="progressbar"
@@ -159,6 +141,7 @@
                                     </div>
                                   </div>
                                   <div class="col-xs-12">
+																		<span id="ultimavalidacion"></span>
                                     <ul class="nav nav-tabs">
                                       <li class="active"><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#menu1" data-seccion="1">Seccion 1</a></li>
 																			<?php
@@ -170,6 +153,7 @@
                                     </ul>
 
                                     <div class="tab-content">
+
                                       <div id="menu1" class="tab-pane fade in active">
 																					<br>
 																					<div class="col-xs-12">
@@ -177,7 +161,7 @@
 																									<div class="col-xs-9">
 																										<span id="pre1"></span>
 																										<div id="pregunta1">
-																											<p>{{numPregunta1}} ¿  {{preguntasFiltradas[0].question}}  ?</p>
+																											<p><span ng-bind='numPregunta1'></span> ¿ <span ng-bind='preguntasFiltradas[0].question'></span> ?</p>
 																										</div>
 																									</div>
 																									<div class="col-xs-3" id="respuestas1">
@@ -195,7 +179,7 @@
 																									<div class="col-xs-9">
 																										<span id="pre2"></span>
 																										<div id="pregunta1">
-																												<p>{{numPregunta2}} ¿  {{preguntasFiltradas[1].question}}  ?</p>
+																												<p><span ng-bind='numPregunta2'></span> ¿ <span ng-bind='preguntasFiltradas[1].question'></span> ?</p>
 																										</div>
 																									</div>
 																									<div class="col-xs-3" id="respuestas2">
@@ -214,9 +198,8 @@
 																								<div class="col-xs-12" id="botones">
 																									<button id="atras" ng-click="atras()" type="button"  class="btn btn-default btn-wd">Atrás</button>
 																									<span ng-if='terminar!=1'><button ng-click="siguiente()"  type="button"  class="btn btn-info btn-wd" >Siguiente</button></span>
-																									<span ng-if='terminar==1'><button ng-click="terminarEncuesta()" id="btnsiguiente" type="button"  class="btn btn-info btn-wd" >Terminar</button></span>
+																									<span ng-if='terminar==1'><button ng-click="terminarEncuesta()" type="button" class="btn btn-info btn-wd">Terminar</button></span>
 																								</div>
-
 																							</div>
 																						</div>
 																		  </div>
@@ -283,17 +266,6 @@
 
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script src="<?php echo base_url(); ?>public/js/demo.js"></script>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-
-		//	demo.initChartist();
-
-				$("#myModal").on('show.bs.modal', function(event){
-
-    		});
-	});
-</script>
 
 
 </html>

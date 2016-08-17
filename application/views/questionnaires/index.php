@@ -205,7 +205,7 @@
                                   <div class="col-xs-10">
                                     <p ng-bind="cuestionario.name" ></p>
                                   </div>
-                                  <div class="col-xs-12" style="text-align: right;">
+                                  <div ng-if='cuestionario.status==0' class="col-xs-12" style="text-align: right;">
                                     <br>
                                       <a href="<?php echo base_url() ?>index.php/questionary_Controller/edith/{{cuestionario.id}}">Editar</a>
                                   </div>

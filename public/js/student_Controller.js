@@ -18,6 +18,8 @@ app.controller('student_Controller', function($scope, $http) {
   $scope.porcentaje=0;
   $scope.bandera=0;
   $scope.terminar=0;
+  $scope.tiempo=5;
+
 
   $scope.index = function(){
     $http.get(url+"Student_Controller/getQuestions/"+$("#cuestionario_id").val()).success(function(response){
@@ -57,7 +59,7 @@ app.controller('student_Controller', function($scope, $http) {
         $scope.numPregunta2+=2;
       }
 
-      $scope.porcentaje=(calculoAvanze()*100)/$scope.longitud;
+      $scope.porcentaje=Math.round((calculoAvanze()*100)/$scope.longitud);
       if ($scope.startt-2>=0) {
         $scope.startt-=2;
         $scope.numPregunta1-=2;
@@ -96,7 +98,7 @@ app.controller('student_Controller', function($scope, $http) {
             $scope.numPregunta2+=2;
           }
 
-          $scope.porcentaje=(calculoAvanze()*100)/$scope.longitud;
+          $scope.porcentaje=Math.round((calculoAvanze()*100)/$scope.longitud);
 
           if ($scope.startt>=0 && $scope.end<=$scope.longitud) {
             if ($scope.bandera==1) {
@@ -129,6 +131,14 @@ app.controller('student_Controller', function($scope, $http) {
     }
     return sum;
   }
+  function tiempoContador() {
+    $scope.tiempo--;
+    $("#tiempoSpan").empty();
+    $("#tiempoSpan").append($scope.tiempo);
+    if ($scope.tiempo==0) {
+        window.location.href = url+'Student_Controller/index';
+    }
+  }
 
   $scope.terminarEncuesta =function () {
     if (validacion()) {
@@ -140,6 +150,7 @@ app.controller('student_Controller', function($scope, $http) {
         }
 
         if ( avanze==$scope.longitud) {
+          $scope.porcentaje=100;
           var asignacion = {'questionary_id1': $("#cuestionario_id").val()};
 
           if ($scope.longitud % 2 ==0) {
@@ -148,24 +159,35 @@ app.controller('student_Controller', function($scope, $http) {
             asignacion['question_id2']=$scope.preguntas[$scope.end-1].id;
             asignacion['answer_id2']=$("input[name='respuesta2']:checked").val();
           }else {
-            asignacion['question_id1']=$scope.preguntas[$scope.startt].id;
+            asignacion['question_id1']=$scope.preguntasFiltradas[0].id;
             asignacion['answer_id1']=$("input[name='respuesta1']:checked").val();
           }
-
+          console.log("Esto tenia inicio:"+$scope.startt);
           $http.post(url+"Student_Controller/terminar", asignacion ).success(function(data){
             console.log("Peticion realizada exitosamente:"+data);
-            window.location.href = url+'Student_Controller/index';
+            $('#aviso').append('<div class="alert alert-success"><strong>Bien!</strong> Encuesta Terminada.</div>');
+            $('#menu1').empty();
+            $('#menu1').append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Encuesta Terminada</h1><h3>Tus respuestas se han guardado.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
+            setInterval(tiempoContador, 1000);
           }).error(function(data){
             console.log(data.error);
           });
         }else {
-
+          $("#ultimavalidacion").empty();
+          $("#ultimavalidacion").append('<p style="color:red">Responda todas las preguntas</p>');
         }
     }else {
       console.log("Responda todas las preguntas");
+      console.log("bandera:"+$scope.bandera);
     }
 
   }
+
+  $scope.$watch('tiempo', function() {
+    if ($scope.tiempo==-1) {
+      window.location.href = url+'Student_Controller/index';
+    }
+  });
 
   $scope.$watch('startt', function() {
     if ($scope.startt==0) {
@@ -186,10 +208,21 @@ app.controller('student_Controller', function($scope, $http) {
     var p1=$('input:radio[name=respuesta1]:checked').val();
     var p2=$('input:radio[name=respuesta2]:checked').val();
 
+    if ($scope.preguntasFiltradas[1].question==undefined) {
+      if (p1!=undefined) {
+        return true;
+      }else {
+          $("#pre1").empty();
+          $("#pre1").append('<p style="color:red">Seleccione una respuesta</p>');
+          return false;
+      }
+    }
+
     if ($scope.bandera==1) {
       if (p1!=undefined) {
         return true;
       }else {
+          $("#pre1").empty();
           $("#pre1").append('<p style="color:red">Seleccione una respuesta</p>');
           return false;
       }
@@ -201,10 +234,12 @@ app.controller('student_Controller', function($scope, $http) {
         return true;
     }else {
       if (p1==undefined) {
+        $("#pre1").empty();
         $("#pre1").append('<p style="color:red">Seleccione una respuesta</p>');
       }
 
       if (p2==undefined) {
+        $("#pre2").empty();
         $("#pre2").append('<p style="color:red">Seleccione una respuesta</p>');
       }
       return false;
@@ -237,6 +272,7 @@ app.controller('student_Controller', function($scope, $http) {
           $scope.startt=((n-1)*10);
           $scope.end=((n-1)*10)+2;
         }
+        console.log("End:"+$scope.end);
 
         if ($scope.end>$scope.longitud) {
           $("#ContenedorPregunta2").hide();
@@ -244,8 +280,12 @@ app.controller('student_Controller', function($scope, $http) {
           $scope.preguntasFiltradas[1]=[];
           $scope.terminar=1;
         }else {
-          $scope.terminar=0;
           $scope.preguntasFiltradas=$scope.preguntas.slice($scope.startt,$scope.end);
+          if ($scope.end>=$scope.longitud) {
+              $scope.terminar=1;
+          }else {
+              $scope.terminar=0;
+          }
           LimpiarRadioButton();
           $("#pre1").empty();
           $("#pre2").empty();
@@ -279,6 +319,7 @@ app.controller('student_Controller', function($scope, $http) {
       var seleccionar=($scope.end/10)+1;
       $('#tabMostrar'+seleccionar).click();
     }
+
   }
 
   function PosicionarSection() {

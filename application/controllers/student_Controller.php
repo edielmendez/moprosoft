@@ -14,6 +14,24 @@ class Student_Controller extends CI_Controller {
 			$this->load->helper('url');
    }
 
+	 public function historial()
+	 {
+			 $data = $this->session->userdata('logged_in');
+			 $result = $this->Student->Questionary_Historial($data['id'],$data['team_id']);
+
+			 $Questionary = array();
+				if($result){
+					 foreach ($result as $row ) {
+							$questionary = array(
+								'name' => $row->name
+							);
+							array_push($Questionary,$questionary);
+					 }
+				}
+			   $datos_vista['cuestionarios'] = $Questionary;
+	 		 $this->load->view('students/historial',$datos_vista);
+	 }
+
    public function index()
    {
 
@@ -236,7 +254,7 @@ class Student_Controller extends CI_Controller {
 							$datos[4]
 						);
 		}
-
+		//print_r($datos);
 		$result = $this->Student->finalizarCuestionario($user,$datos[0],$equipo);
 		if ($result==0) {
 			echo "La consulta se realizo exitosamente";

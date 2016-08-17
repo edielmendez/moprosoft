@@ -90,7 +90,7 @@
 											</a>
 									</li>
                   <li>
-                      <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+                      <a href="<?php echo base_url() ?>index.php/Student_Controller/historial">
                           <i class="ti-view-list-alt"></i>
                           <p>Historial</p>
                       </a>

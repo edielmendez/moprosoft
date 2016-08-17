@@ -43,12 +43,15 @@
 	            </div>
 
 	            <ul class="nav">
-	                <!--li class="active">
-	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-star"></i>
-	                        <p>Modelos</p>
+	                <li>
+	                    <a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+	                        <i class="ti-world"></i>
+	                        <p>Actividad</p>
 	                    </a>
-	                </li-->
+	                </li>
+									<li>
+											<p><hr/></p>
+	                </li>
 	                <li >
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -110,7 +113,7 @@
 	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
 	                <div class="row">
                     <!--a href="<?php echo base_url() ?>index.php/Home/index" class="btn btn-default  btn-wd">Inicio</a-->
-										<div class="col-md-8">
+										<div class="col-md-12">
                         <div class="card">
                             <div class="content">
 															<div class="text-center">

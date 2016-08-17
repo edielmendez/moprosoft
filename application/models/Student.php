@@ -49,6 +49,11 @@ class Student extends CI_Model
 
   }
 
+  public function Questionary_Historial($id,$team)
+  {
+    $consulta=$this->db->query("SELECT questionary.name FROM questionary,assignment WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team)");
+    return $consulta->result();
+  }
 
   public function Questionary($id)
   {
