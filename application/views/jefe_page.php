@@ -195,21 +195,6 @@
 										<?php
 											}
 										?>
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
 	                </div>
 	            </div>
 	        </div>

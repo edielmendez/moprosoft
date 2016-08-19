@@ -225,6 +225,104 @@ class Student_Controller extends CI_Controller {
 			}
 	 }
 
+
+	 public function calificar($user,$equipo,$cuestionario)
+	 {
+	 		 $NumCuestionarios = $this->Student->NumCuestionarioEquipo($cuestionario,$user);
+			 $Contestados=$this->Student->NumCuestionarioEquipoContestados($cuestionario,$user);
+
+			 if ($NumCuestionarios==$Contestados) {
+			 	//se obtienen los usuarios de ese equipo
+					$result=$this->Student->getUsersPorTeam($equipo);
+					$Usuarios=array();
+					foreach ($result as $row ) {
+						$user = array(
+							'id' => $row->id
+						);
+						array_push($Usuarios,$user);
+					}
+					//se obtienen las preguntas
+					$result2=$this->Student->getPreguntas($cuestionario);
+					$Preguntas=array();
+					foreach ($result2 as $row ) {
+						$pregunta = array(
+							'id' => $row->id,
+							'siempre'	=> 0,
+							'usualmente'	=> 0,
+							'aveces'	=> 0,
+							'rara'	=> 0,
+							'nunca'	=> 0
+						);
+						array_push($Preguntas,$pregunta);
+					}
+					//Obtener respuestas y guardarlas
+
+					$indice=0;
+					foreach ($Preguntas as $row ) {
+						//obtencion de las respuestas segun la pregunta
+						$res=$this->Student->getRespuestas($cuestionario,$row['id']);
+
+						foreach ($res as $row2) {
+							switch ($row2->answer_id) {
+							    case 1:
+							        $Preguntas[$indice]['siempre']=$Preguntas[$indice]['siempre']+1;
+							        break;
+							    case 2:
+											$Preguntas[$indice]['usualmente']=$Preguntas[$indice]['usualmente']+1;
+							        break;
+							    case 3:
+											$Preguntas[$indice]['aveces']=$Preguntas[$indice]['aveces']+1;
+							        break;
+									case 4:
+									  	$Preguntas[$indice]['rara']=$Preguntas[$indice]['rara']+1;
+											break;
+									case 5:
+									  	$Preguntas[$indice]['nunca']=$Preguntas[$indice]['nunca']+1;
+											break;
+							}
+						}
+						$indice++;
+					}
+					//Se calculan su calificacion
+					echo "usuarios";
+					print_r( $Usuarios);
+					foreach ($Preguntas as $row) {
+						$calificar = $this->calificarPregunta(sizeof($Usuarios),$equipo,$cuestionario,$row['id'],$row['siempre'],$row['usualmente'],$row['aveces'],$row['rara'],$row['nunca']);
+					}
+			 }
+	 }
+
+
+	 public function calificarPregunta($tpe,$equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca)
+	 {
+		 $cobertura=( ($siempre*1)+($usualmente*0.75)+($aveces*0.5)+($rara*0.25)+($nunca*0) )/$tpe;
+		 $media=( ($siempre*4)+($usualmente*3)+($aveces*2)+($rara*1)+($nunca*0) )/$tpe;
+		 $desviacion=sqrt(  ($tpe*( (pow(4,2)*$siempre)+(pow(3,2)*$usualmente)+(pow(2,2)*$aveces)+(pow(1,2)*$rara)  )-pow($tpe,2)*pow($media,2) )/ pow($tpe,2) );
+
+		 //Se redondean para que solo tengan un decimal. ejemplo 2.8 no 2.8354
+		 $cobertura=$cobertura*100;
+		 $cobertura=intval($cobertura);
+		 $media=$this->truncateFloat($media,1);
+		 $desviacion=$this->truncateFloat($desviacion,1);
+
+		 $add=$this->Student->addCalificacion($equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$cobertura,$media,$desviacion);
+		 if ($add==0) {
+		 	echo "Se inserto; numPersonas:$tpe equipo:$equipo S:$siempre U:$usualmente A:$aveces R:$rara N:$nunca cobertura:$cobertura  media:$media desviacion:$desviacion";
+		}else {
+			echo "No se inserto la calificacion";
+		}
+	 }
+
+
+	 public function truncateFloat($number, $digitos)
+	 {
+    $raiz = 10;
+    $multiplicador = pow ($raiz,$digitos);
+    $resultado = ((int)($number * $multiplicador)) / $multiplicador;
+    return number_format($resultado, $digitos);
+	}
+
+
 	 public function terminar()
 	 {
 		 $json = file_get_contents("php://input");
@@ -254,7 +352,9 @@ class Student_Controller extends CI_Controller {
 							$datos[4]
 						);
 		}
-		//print_r($datos);
+		//Calificar
+		$calificar = $this->calificar($user,$equipo,$datos[0]);
+
 		$result = $this->Student->finalizarCuestionario($user,$datos[0],$equipo);
 		if ($result==0) {
 			echo "La consulta se realizo exitosamente";
@@ -263,6 +363,7 @@ class Student_Controller extends CI_Controller {
 		}
 
 	 }
+
 
 }
 ?>

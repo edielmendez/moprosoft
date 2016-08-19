@@ -50,6 +50,12 @@
 	                    </a>
 	                </li>
 									<li>
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+													<i class="ti-check"></i>
+													<p>Resultados</p>
+											</a>
+									</li>
+									<li>
 											<p><hr/></p>
 	                </li>
 	                <li >
@@ -108,37 +114,79 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="card">
-                        <div class="header">
-                            <h4 class="title">Cuestionarios Resueltos</h4>
+                <div class="row">
+                  <?php
+                    foreach($cuestionarios as $c){
+                  ?>
+                    <div class="col-lg-3 col-sm-6" >
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                  <div class="col-xs-3">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<img src="'.base_url().'public/img/cuestionariovacio2.jpg" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }else {
+                                        echo '<img src="'.base_url().'public/img/cuestionarioincompleto.png" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-9">
+                                    <p><?php echo $c['name']?></p>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: right;">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['questionary_id'].'">Contestar</a>';
+                                      }else {
+                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: left;">
+                                  </div>
+                                </div>
+                                <div class="footer">
+                                    <hr/>
+                                    <div class="stats">
+                                        <i class="ti-info-alt"></i><?php
+                                          if ($c['status']==0) {
+                                            echo 'Conteste el Cuestionario';
+                                          }else {
+                                            echo 'Cuestionario Pendiente';
+                                          }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="content table-responsive table-full-width"  >
-                          <table class="table table-striped">
-                            <tbody>
-                              <?php
-                                foreach($cuestionarios as $c){
-                              ?>
-                              <tr>
-                                <td><?php echo $c['name']; ?></td>
-                              </tr>
-                              <?php } ?>
-                            </tbody>
-                          </table>
-                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+							
+                <!--Historial de cuestionarios-->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="header">
+                          <h4 class="title">Cuestionarios Resueltos</h4>
+                      </div>
+                      <div class="content table-responsive table-full-width"  >
+                        <table class="table table-striped">
+                          <tbody>
+                            <?php
+                              foreach($historial as $c){
+                            ?>
+                            <tr>
+                              <td><?php echo $c['name']; ?></td>
+                            </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
-
-	                <div class="row">
-										<div class="col-md-12">
-                        <div class="card">
-
-                        </div>
-                    </div>
-	                </div>
+                </div>
 	            </div>
 	        </div>
 

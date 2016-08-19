@@ -50,6 +50,12 @@
 	                    </a>
 	                </li>
 									<li>
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+													<i class="ti-check"></i>
+													<p>Resultados</p>
+											</a>
+									</li>
+									<li>
 											<p><hr/></p>
 	                </li>
 	                <li >

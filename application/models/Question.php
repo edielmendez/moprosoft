@@ -23,7 +23,7 @@ class Question extends CI_Model
   public function add($nombre,$comentario){
     $Questionary=$_SESSION['Questionary_id'];
     if ($this->validate($nombre)) {
-      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre',$comentario,'',$Questionary);");
+      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre','$comentario',0,'$Questionary');");
       if($consulta==true){
         return 0;
       }else{

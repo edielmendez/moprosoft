@@ -19,6 +19,7 @@
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -150,9 +151,10 @@
 								?>
 								<?php
 									if ($_SESSION['Questionary_status']==0) {
-										echo "<button  type=button class=btn btn-info btn-fill btn-wd data-toggle=modal data-target=#myModal data-title=Nueva Pregunta>Nuevo</button>";
+										echo "<button  type=\"button\" class=\"btn btn-info btn-fill btn-wd\" data-toggle=\"modal\" data-target=\"#myModal\" data-title=\"Nueva Pregunta\">Nuevo</button>";
 									}
 								?>
+
 								<?php
 									if ($cuestionario['status']==0) {
 										if ($numPreguntas>4) {
@@ -189,7 +191,7 @@
 																			 	<?php
 																					if ($numPreguntas>=0) {
 																				?>
-																					<tr ng-repeat="pregunta in questions | filter:buscar">
+																					<tr ng-repeat="pregunta in filteredTodos | filter:buscar">
 																							<td ng-if='bandera'>¿<span ng-bind='pregunta.question'></span>?</td>
 																						<?php
 																							if ($_SESSION['Questionary_status']==0) {
@@ -197,13 +199,18 @@
 																							<td ng-if='bandera'><a href="<?php echo base_url() ?>index.php/question_Controller/edit/{{pregunta.id}}" class="btn btn-info">Editar</a></td>
 																						<?php	}
 																						?>
-
 																					</tr>
 																				<?php
 																					}
 																				?>
                                      </tbody>
                                  </table>
+																 <pagination
+														      ng-model="currentPage"
+														      total-items="questions.lengt"
+														      max-size="maxSize"
+														      boundary-links="true">
+														    </pagination>
                              </div>
                          </div>
 												 <?php
@@ -214,9 +221,19 @@
 
                      </div>
 	                </div>
+									<h1>Todos</h1>
+							    <h4>{{questions.length}} total</h4>
+							    <ul>
+							      <li ng-repeat="todo in filteredTodos">{{todo.question}}</li>
+							    </ul>
+							    <pagination
+							      ng-model="currentPage"
+							      total-items="questions.length"
+							      max-size="maxSize"
+							      boundary-links="true">
+							    </pagination>
 	            </div>
 	        </div>
-
 
 	        <footer class="footer">
 	            <div class="container-fluid">

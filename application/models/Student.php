@@ -34,6 +34,17 @@ class Student extends CI_Model
     return $consulta->num_rows();
   }
 
+  public function addCalificacion($team_id,$questionary_id,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$nivel,$media,$desviacion)
+  {
+    $result=$this->db->query("INSERT INTO calificacion_questionary VALUES(NULL,'$team_id','$questionary_id','$question_id','$siempre','$usualmente','$aveces','$rara','$nunca','$nivel','$media','$desviacion');");
+    if($result==true){
+      return 0;
+    }else{
+      return 1;
+    }
+  }
+
+
   public function updateAvanze($questionary,$user,$avanze)
   {
     $consulta=$this->db->query("SELECT * FROM assignment WHERE (questionary_id=$questionary) AND (user_id=$user)");
@@ -51,7 +62,7 @@ class Student extends CI_Model
 
   public function Questionary_Historial($id,$team)
   {
-    $consulta=$this->db->query("SELECT questionary.name FROM questionary,assignment WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team)");
+    $consulta=$this->db->query("SELECT questionary.name FROM questionary,assignment WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.questionary_id=questionary.id)");
     return $consulta->result();
   }
 
@@ -77,6 +88,36 @@ class Student extends CI_Model
   {
     $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
     return $consulta->num_rows();
+  }
+
+  public function NumCuestionarioEquipo($questionary,$team)
+  {
+    $consulta=$this->db->query("SELECT * FROM assignment WHERE (questionary_id=$questionary) AND (team_id=$team) ");
+    return $consulta->num_rows();
+  }
+
+  public function NumCuestionarioEquipoContestados($questionary,$team)
+  {
+    $consulta=$this->db->query("SELECT * FROM assignment WHERE (questionary_id=$questionary) AND (team_id=$team) AND (status=100) ");
+    return $consulta->num_rows();
+  }
+
+  public function getUsersPorTeam($team)
+  {
+    $consulta=$this->db->query("SELECT * FROM user WHERE (team_id=$team) AND (rol_id!=1) ");
+    return $consulta->result();
+  }
+
+  public function getPreguntas($cuestionario)
+  {
+    $consulta=$this->db->query("SELECT * FROM question WHERE (questionary_id=$cuestionario)  ");
+    return $consulta->result();
+  }
+
+  public function getRespuestas($cuestionario,$pregunta)
+  {
+    $consulta=$this->db->query("SELECT question_answer.answer_id FROM question_answer WHERE (questionary_id=$cuestionario) AND (question_id=$pregunta) ");
+    return $consulta->result();
   }
 
   public function add($user,$id_cuestionary,$question_id1,$answer_id1)

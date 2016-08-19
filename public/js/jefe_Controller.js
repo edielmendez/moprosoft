@@ -1,6 +1,6 @@
-var app = angular.module('student', []);
+var app = angular.module('jefe', []);
 var url="http://localhost/moprosoft/index.php/";
-app.controller('student_Controller', function($scope, $http) {
+app.controller('jefe_Controller', function($scope, $http) {
 
   $scope.preguntas;
   $scope.respuestas;
@@ -37,7 +37,6 @@ app.controller('student_Controller', function($scope, $http) {
         $scope.end=inicio+1;
         $scope.numPregunta1=inicio;
         $scope.numPregunta2=inicio+1;
-
       }
       PosicionarSection();
       $scope.preguntasFiltradas=response.slice($scope.startt,$scope.end);
@@ -137,7 +136,7 @@ app.controller('student_Controller', function($scope, $http) {
     $("#tiempoSpan").empty();
     $("#tiempoSpan").append($scope.tiempo);
     if ($scope.tiempo==0) {
-        window.location.href = url+'Student_Controller/index';
+        window.location.href = url+'Modelos/actividad';
     }
   }
 
@@ -171,7 +170,7 @@ app.controller('student_Controller', function($scope, $http) {
             $('#menu1').append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Encuesta Terminada</h1><h3>Tus respuestas se han guardado.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
             setInterval(tiempoContador, 1000);
           }).error(function(data){
-            console.log(data.error);
+            console.log(data);
           });
         }else {
           $("#ultimavalidacion").empty();
@@ -184,11 +183,11 @@ app.controller('student_Controller', function($scope, $http) {
 
   }
 
-  $scope.$watch('tiempo', function() {
+  /*$scope.$watch('tiempo', function() {
     if ($scope.tiempo==-1) {
       window.location.href = url+'Student_Controller/index';
     }
-  });
+  });*/
 
   $scope.$watch('startt', function() {
     if ($scope.startt==0) {
