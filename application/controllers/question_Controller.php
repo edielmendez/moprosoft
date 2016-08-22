@@ -67,7 +67,7 @@ class question_Controller extends CI_Controller {
 			 $this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
 		 }
 
-		 	redirect('question_Controller/back', 'refresh');
+		 	redirect('questionary_Controller/index', 'refresh');
 
 	 }
 

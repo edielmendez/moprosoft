@@ -32,6 +32,14 @@ class Student_Controller extends CI_Controller {
 	 		 $this->load->view('students/historial',$datos_vista);
 	 }
 
+	 public function perfil(){
+      if($this->session->userdata('logged_in')){
+         $this->load->view('students/perfil');
+      }else{
+         redirect('login', 'refresh');
+      }
+   }
+
    public function index()
    {
 
@@ -92,6 +100,7 @@ class Student_Controller extends CI_Controller {
 							 'id' => $row->id,
 							 'question' => $row->question,
 							 'answer_id' => $row->answer_id,
+							 'commentary' => $row->commentary,
 							 'questionary_id' => $row->questionary_id,
 							 'res' => $row->answer_id
 						 );
@@ -132,6 +141,7 @@ class Student_Controller extends CI_Controller {
 					 $question = array(
 						 'id' => $row->id,
 						 'question' => $row->question,
+						 'commentary' => $row->commentary,
 						 'res'=>$aux
 					 );
 					 array_push($Question,$question);
@@ -225,13 +235,16 @@ class Student_Controller extends CI_Controller {
 			}
 	 }
 
-
 	 public function calificar($user,$equipo,$cuestionario)
 	 {
-	 		 $NumCuestionarios = $this->Student->NumCuestionarioEquipo($cuestionario,$user);
-			 $Contestados=$this->Student->NumCuestionarioEquipoContestados($cuestionario,$user);
+	 		 $NumCuestionarios = $this->Student->NumCuestionarioEquipo($cuestionario,$equipo);
+			 $Contestados=$this->Student->NumCuestionarioEquipoContestados($cuestionario,$equipo);
+
+			 echo "Numero de cuestionarios:".$NumCuestionarios;
+			 echo "Numero de cuestionarios resueltos:".$Contestados;
 
 			 if ($NumCuestionarios==$Contestados) {
+				 echo "entro";
 			 	//se obtienen los usuarios de ese equipo
 					$result=$this->Student->getUsersPorTeam($equipo);
 					$Usuarios=array();
@@ -352,11 +365,10 @@ class Student_Controller extends CI_Controller {
 							$datos[4]
 						);
 		}
-		//Calificar
-		$calificar = $this->calificar($user,$equipo,$datos[0]);
 
 		$result = $this->Student->finalizarCuestionario($user,$datos[0],$equipo);
 		if ($result==0) {
+			$calificar = $this->calificar($user,$equipo,$datos[0]);
 			echo "La consulta se realizo exitosamente";
 		}else {
 			echo "Ocurrio un problema al guardar los datos en la Base de Datos";

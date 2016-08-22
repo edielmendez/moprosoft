@@ -66,6 +66,12 @@
 													<p>Cuestionarios</p>
 											</a>
 									</li>
+									<li>
+											<a href="<?php echo base_url() ?>index.php/Student_Controller/historial">
+													<i class="ti-view-list-alt"></i>
+													<p>Historial</p>
+											</a>
+									</li>
                   <!--li>
                       <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
                           <i class="ti-view-list-alt"></i>
@@ -103,7 +109,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <!--li><a href="#">Perfil</a></li-->
+																	<li><a href="<?php echo base_url(); ?>index.php/Student_Controller/perfil">Perfil</a></li>
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
@@ -161,7 +167,8 @@
 																									<div class="col-xs-9">
 																										<span id="pre1"></span>
 																										<div id="pregunta1">
-																											<p><span ng-bind='numPregunta1'></span> ¿ <span ng-bind='preguntasFiltradas[0].question'></span> ?</p>
+																											<p style="text-align: justify;"><span ng-bind='numPregunta2'></span> ¿ <span ng-bind='preguntasFiltradas[0].question'></span> ?</p>
+																											<br><p style="color:gray;text-align: justify;"><span style="font-style: italic;" ng-bind='preguntasFiltradas[0].commentary'></span></p>
 																										</div>
 																									</div>
 																									<div class="col-xs-3" id="respuestas1">
@@ -177,7 +184,8 @@
 																									<div class="col-xs-9">
 																										<span id="pre2"></span>
 																										<div id="pregunta1">
-																												<p><span ng-bind='numPregunta2'></span> ¿ <span ng-bind='preguntasFiltradas[1].question'></span> ?</p>
+																											<p style="text-align: justify;"><span ng-bind='numPregunta2'></span> ¿ <span ng-bind='preguntasFiltradas[1].question'></span> ?</p>
+																											<br><p style="color:gray;text-align: justify;"><span style="font-style: italic;" ng-bind='preguntasFiltradas[1].commentary'></span></p>
 																										</div>
 																									</div>
 																									<div class="col-xs-3" id="respuestas2">

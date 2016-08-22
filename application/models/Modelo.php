@@ -50,6 +50,11 @@ class Modelo extends CI_Model
 	    return $consulta->result();
     }
 
+		public function getResultado($equipo){
+ 	    $consulta=$this->db->query("SELECT * FROM calificacion_questionary,questionary WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.questionary_id=questionary.id)   ");
+ 	    return $consulta->result();
+     }
+
 	public function update($id,$nombre,$version,$nivel,$trabajara){
 
 		if ( $this->validate($nombre,$version,$nivel,$trabajara) ) {

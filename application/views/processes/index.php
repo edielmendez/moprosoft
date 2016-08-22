@@ -76,6 +76,21 @@
 	                        <p>Modelos</p>
 	                    </a>
 	                </li-->
+									<li >
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+													<i class="ti-world"></i>
+													<p>Actividad</p>
+											</a>
+									</li>
+									<li>
+											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
+													<i class="ti-check"></i>
+													<p>Resultados</p>
+											</a>
+									</li>
+									<li>
+											<p><hr/></p>
+									</li>
 	                <li class="active">
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -120,7 +135,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <!--li><a href="#">Perfil</a></li-->
+																	<li><a href="<?php echo base_url(); ?>index.php/Modelos/perfil2">Perfil</a></li>
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
