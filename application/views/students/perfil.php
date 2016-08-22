@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html ng-app="phase" lang="en">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -18,7 +18,7 @@
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
-	<script src="<?php echo base_url(); ?>public/js/phase_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -29,39 +29,28 @@
 	<!-- -->
 
 </head>
-<body ng-controller="phase_Controller" ng-init="index()">
+<body>
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
 							<div class="modal-content">
 									<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Nuevo Fase</h4>
+											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form action="<?php echo base_url() ?>index.php/phase_Controller/save" method="post">
+                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" >
-                                </div>
-                            </div>
-														<div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Proceso</label>
-																		<select class="form-control" id="procesomodal" name="procesomodal">
-																			<?php foreach($procesos as $proceso){
-																				echo '<option value='.$proceso['id'].'>'.$proceso['name'].'</option>';
-																				}
-																			?>
-																		</select>
+                                    <label>Pregunta</label>
+                                    <input name="pregunta"  id="pregunta" required type="text" class="form-control border-input" placeholder="La pregunta sera sin signos de interrogación" >
                                 </div>
                             </div>
                         </div>
 												<div class="modal-footer">
 														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-															<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
 												</div>
                     </form>
 									</div>
@@ -83,44 +72,29 @@
 
 	            <ul class="nav">
 	                <!--li>
-	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
-	                        <i class="ti-star"></i>
-	                        <p>Modelos</p>
-	                    </a>
-	                </li-->
-									<li >
-											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
-													<i class="ti-world"></i>
-													<p>Actividad</p>
-											</a>
-									</li>
-									<li>
-											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
-													<i class="ti-check"></i>
-													<p>Resultados</p>
-											</a>
-									</li>
-									<li>
-											<p><hr/></p>
-									</li>
-	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
-	                        <p>Procesos</p>
+	                        <p>Cuestionarios</p>
 	                    </a>
 	                </li>
-	                <li  class="active">
+	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
-	                </li>
-									<li>
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+	                </li-->
+									<li   class="active">
+											<a href="<?php echo base_url() ?>index.php/Student_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
 									</li>
+                  <li>
+                      <a href="<?php echo base_url() ?>index.php/Student_Controller/historial">
+                          <i class="ti-view-list-alt"></i>
+                          <p>Historial</p>
+                      </a>
+                  </li>
 	            </ul>
 	    	</div>
 	    </div>
@@ -135,7 +109,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
+                      <a class="navbar-brand" href="#">Mi Perfil</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -147,7 +121,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-																	<li><a href="<?php echo base_url(); ?>index.php/Modelos/perfil2">Perfil</a></li>
+	                                <!--li><a href="#">Perfil</a></li-->
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
@@ -159,88 +133,52 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<?php
-				        //Si existen las sesiones flasdata que se muestren
-				            if($this->session->flashdata('correcto'))
-											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
-
-				            if($this->session->flashdata('incorrecto'))
-				              echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
-				        ?>
                 <div class="row">
-                  <div class="col-md-12">
-                      <div class="card">
-                          <div class="header">
-                              <h4 class="title">Buscar</h4>
-                          </div>
-                          <div class="content">
-                              <form>
-                                  <div class="row">
-                                      <div class="col-md-8">
-                                          <div class="form-group">
-                                              <label>Nombre</label>
-                                              <input type="text" ng-model="buscar" name="buscar" id="buscar" class="form-control border-input" placeholder="Nombre" >
-                                          </div>
-                                      </div>
-                                      <div class="col-md-4">
-                                          <div class="form-group">
-                                              <label>Proceso</label>
+                  <div class="col-md-12 col-xl-12">
+                    <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Editar mi perfil</h4>
+                                </div>
+                                <div class="content">
+                                    <?php echo form_open('Home/update_perfil'); ?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>username</label>
+                                                    <input type="hidden" name="id" value="<?php echo $this->session->userdata('logged_in')['id'] ?>">
+                                                    <input type="text" class="form-control border-input" name="username"  placeholder="username" required="" value="<?php echo $this->session->userdata('logged_in')['username'] ?>"/>
+                                                </div>
+                                            </div>
 
-																								<select class="form-control" id="proceso" name="proceso" ng-model="proceso"  ng-change="cargarProcess()">
-																									<option value="Todos" selected>Todos</option>
-																									<option ng-repeat="proceso in process" value="{{proceso.id}}">{{proceso.name}}</option>
-	                                              </select>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>password</label>
+                                                    <input type="password" name="password" class="form-control border-input"  placeholder="password" value="">
+                                                    <span>Para cambiar la contraseña, introduzca la nueva contraseña en este campo. Si desea mantener la actual, deje vacío el campo.</span>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>email</label>
+                                                    <input type="email" name="email" class="form-control border-input"  placeholder="email" value="<?php echo $this->session->userdata('logged_in')['email'] ?>">
+                                                </div>
+                                            </div>
 
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <!--div class="text-center">
-                                      <button type="submit" class="btn btn-info btn-fill btn-wd">Update Profile</button>
-                                  </div>
-                                  <div class="clearfix"></div-->
-                                  <br>
-																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br>
-
-                              </form>
-                          </div>
-                      </div>
-											<?php
-												if ($fases==false) {
-													echo "<br><br>";
-													echo '<h2>Por el momento no existe ningún Fase/Objetivo<h2>';
-												}
-											?>
+                                        </div>
+                                        <br>
+                                        <br>
+																				<a href="<?php echo base_url() ?>index.php/Home" class="btn btn-danger btn-fill btn-wd">Cancelar</a>
+                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Actualizar Perfil</button><br><br>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </div>
                   </div>
-
-                </div>
-                <div class="row" id="contenido" >
-                     <div class="col-lg-3 col-sm-6" ng-repeat="fase in phases | filter:buscar">
-                         <div class="card">
-                             <div class="content">
-                                 <div class="row">
-                                   <div class="col-xs-2">
-                                     <img src="<?php echo base_url() ?>public/img/fase.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
-                                   </div>
-                                   <div class="col-xs-10">
- 																		<br>
-                                     <p ng-bind="fase.name"></p>
-                                   </div>
-                                   <div class="col-xs-12" style="text-align: right;">
-                                     <br>
- 																			  <a href="<?php echo base_url(); ?>index.php/phase_Controller/edit/{{fase.id}}" >Editar</a>
-                                       <br>
-                                   </div>
-                                 </div>
-                                 <div class="footer">
-                                     <hr/>
-                                     <div class="stats">
-                                         <i class="ti-eye"></i><a href="#">Cuestionarios</a>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
                 </div>
 	            </div>
 	        </div>
@@ -282,11 +220,8 @@
 <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
-
 <!--  Charts Plugin -->
-<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
+<!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
@@ -303,16 +238,11 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-			//demo.initChartist();
-
 				$("#myModal").on('show.bs.modal', function(event){
         	var button = $(event.relatedTarget);  // Button that triggered the modal
         	var titleData = button.data('title'); // Extract value from data-* attributes
-        	$(this).find('.modal-title').text(titleData);
+					$(this).find('.modal-title').text(titleData);
     		});
-
-				//$('#proceso option[value="13"]').attr("selected", "selected");
-
 	});
 </script>
 

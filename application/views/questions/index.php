@@ -84,6 +84,21 @@
 	                        <p>Modelos</p>
 	                    </a>
 	                </li-->
+									<li >
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+													<i class="ti-world"></i>
+													<p>Actividad</p>
+											</a>
+									</li>
+									<li>
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+													<i class="ti-check"></i>
+													<p>Resultados</p>
+											</a>
+									</li>
+									<li>
+											<p><hr/></p>
+									</li>
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -129,7 +144,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <!--li><a href="#">Perfil</a></li-->
+	                                <li><a href="<?php echo base_url(); ?>index.php/Modelos/perfil2">Perfil</a></li>
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>
@@ -191,7 +206,8 @@
 																			 	<?php
 																					if ($numPreguntas>=0) {
 																				?>
-																					<tr ng-repeat="pregunta in filteredTodos | filter:buscar">
+
+																					<tr ng-repeat="pregunta in questions | filter:buscar">
 																							<td ng-if='bandera'>¿<span ng-bind='pregunta.question'></span>?</td>
 																						<?php
 																							if ($_SESSION['Questionary_status']==0) {
@@ -205,11 +221,11 @@
 																				?>
                                      </tbody>
                                  </table>
-																 <pagination
+																 <!--pagination
 														      ng-model="currentPage"
-														      total-items="questions.lengt"
+														      total-items="todos.length"
 														      max-size="maxSize"
-														      boundary-links="true">
+														      boundary-links="true"-->
 														    </pagination>
                              </div>
                          </div>
@@ -221,17 +237,17 @@
 
                      </div>
 	                </div>
-									<h1>Todos</h1>
-							    <h4>{{questions.length}} total</h4>
-							    <ul>
-							      <li ng-repeat="todo in filteredTodos">{{todo.question}}</li>
-							    </ul>
-							    <pagination
-							      ng-model="currentPage"
-							      total-items="questions.length"
-							      max-size="maxSize"
-							      boundary-links="true">
-							    </pagination>
+									<!--h1>Todos</h1>
+									<h4>{{todos.length}} total</h4>
+									<ul>
+										<li ng-repeat="todo in filteredTodos">{{todo.text}}</li>
+									</ul>
+									<pagination
+										ng-model="currentPage"
+										total-items="todos.length"
+										max-size="maxSize"
+										boundary-links="true">
+									</pagination-->
 	            </div>
 	        </div>
 
@@ -270,9 +286,6 @@
 <!--   Core JS Files   -->
 <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
 
 <!--  Charts Plugin -->
 <!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->

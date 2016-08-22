@@ -187,10 +187,6 @@ class Home extends CI_Controller {
          }else{
             $result = $this->user->actualizarPerfil($username,$password,$email,$id);
          }
-
-
-
-
          if($result){
             /*
             $mensaje.="<div class='alert alert-info'>";
@@ -204,14 +200,11 @@ class Home extends CI_Controller {
          }else{
 
             $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se actualizo el perfil</b></span>";
+            $mensaje.="<span><b>No se actualizo el perfil</b></span>";
             $mensaje.="</div>";
-
             $this->session->set_flashdata('message', $mensaje);
             redirect('Home/');
          }
-
-
       }else{
          redirect('login', 'refresh');
       }

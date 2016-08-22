@@ -35,9 +35,55 @@ class Modelos extends CI_Controller {
    	}
    }
 
+	 public function resultado(){
+   	if($this->session->userdata('logged_in')){
+
+			/*$data = $this->session->userdata('logged_in');
+			$result = $this->modelo->getResultado($data['team_id']);
+
+			$Resultado = array();
+
+			$suma
+			 if($result){
+					foreach ($result as $row ) {
+						 $resultado = array(
+							 'name' => $row->name,
+							 'nivel_cobertura' => $row->nivel_cobertura,
+							 'media' => $row->media,
+							 'desviacion' => $row->desviacion
+						 );
+						 array_push($Resultado,$resultado);
+					}
+			 }
+
+			 $numPreguntas=sizeof($Resultado);*/
+
+
+   		$this->load->view('questionnaires_jefe/resultado');
+   	}else{
+   		//si no hay session se redirecciona la vista de login
+         redirect('login', 'refresh');
+   	}
+   }
+
+	 public function perfil(){
+      if($this->session->userdata('logged_in')){
+         $this->load->view('questionnaires_jefe/perfil');
+      }else{
+         redirect('login', 'refresh');
+      }
+   }
+
+	 public function perfil2(){
+      if($this->session->userdata('logged_in')){
+         $this->load->view('questionnaires_jefe/perfil2');
+      }else{
+         redirect('login', 'refresh');
+      }
+   }
+
 	 public function actividad(){
 			if($this->session->userdata('logged_in')){
-
 				$data = $this->session->userdata('logged_in');
 				$result = $this->Student->getQuestionary($data['id'],$data['team_id']);
 
@@ -64,7 +110,7 @@ class Modelos extends CI_Controller {
 				 }
 
 				 //historial
-				 
+
 	 			 $result2 = $this->Student->Questionary_Historial($data['id'],$data['team_id']);
 
 	 			 $Questionary2 = array();
@@ -117,6 +163,7 @@ class Modelos extends CI_Controller {
 							$question = array(
 								'id' => $row->id,
 								'question' => $row->question,
+								'commentary' => $row->commentary,
 								'answer_id' => $row->answer_id,
 								'questionary_id' => $row->questionary_id,
 								'res' => $row->answer_id
