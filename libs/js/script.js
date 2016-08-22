@@ -587,7 +587,8 @@ var showResults = function (data){
 			}
 		}
 		//var html = "<tr>";
-			html += "<td>"+resultados.resultados[i].question_id+"</td><td>"+resultados.resultados[i].S+"</td>";
+			//html += "<td>"+resultados.resultados[i].question_id+"</td><td>"+resultados.resultados[i].S+"</td>";
+			html += "<td>P"+(resultados.resultados.length-i)+"</td><td>"+resultados.resultados[i].S+"</td>";
 			html += "<td>"+resultados.resultados[i].U+"</td><td>"+resultados.resultados[i].A+"</td>";
 			html += "<td>"+resultados.resultados[i].R+"</td><td>"+resultados.resultados[i].N+"</td>";
 			html += "<td>"+resultados.resultados[i].nivel_cobertura+"  % </td><td>"+resultados.resultados[i].media+"</td><td>"+resultados.resultados[i].desviacion+"</td>";
