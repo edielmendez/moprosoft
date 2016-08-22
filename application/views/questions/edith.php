@@ -161,10 +161,16 @@
 																			<div class="col-md-12">
 																					<div class="form-group">
 																							<label>Pregunta</label>
-																							<input name="pregunta" id="pregunta" required type="text" class="form-control border-input" placeholder="Pregunta" value="<?php echo $q->question ?>">
+																							<textarea name="pregunta" id="pregunta" required rows="3" class="form-control border-input" placeholder="Pregunta" ><?php echo $q->question ?></textarea>
 																							<input type="hidden" name="id_question" id="id_question" value="<?php echo $q->id ?>">
 																					</div>
 																			</div>
+																			<div class="col-md-12">
+																				<div class="form-group">
+																				  <label for="comment">Comentario:</label>
+																				  <textarea name="comentarioayuda"  id="comentarioayuda" class="form-control border-input" placeholder="Comentario de ayuda" rows="6" id="comment"><?php echo $q->commentary ?></textarea>
+																				</div>
+					                            </div>
 																	</div>
 																	<br><br>
 																	<a href="<?php echo base_url() ?>index.php/question_Controller/back" class="btn btn-default btn-wd">Cancelar</a>

@@ -20,10 +20,10 @@ class Question extends CI_Model
     return $consulta->num_rows();
   }
 
-  public function add($nombre){
+  public function add($nombre,$comentario){
     $Questionary=$_SESSION['Questionary_id'];
     if ($this->validate($nombre)) {
-      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre','',$Questionary);");
+      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre','$comentario',0,'$Questionary');");
       if($consulta==true){
         return 0;
       }else{
@@ -39,10 +39,10 @@ class Question extends CI_Model
     return $consulta->result();
   }
 
- public function update($id,$nombre){
+ public function update($id,$nombre,$comentario){
   if ( $this->validate($nombre) ) {
     $consulta=$this->db->query("
-        UPDATE question SET question='$nombre' WHERE id=$id;
+        UPDATE question SET question='$nombre',commentary='$comentario' WHERE id=$id;
         ");
     if($consulta==true){
         return 0;

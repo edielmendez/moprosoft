@@ -137,7 +137,7 @@ class Home extends CI_Controller {
 
                $datos_vista['modelos'] = $modelos;
                $this->load->view('students/index',$datos_vista);*/
-              redirect('student_Controller', 'refresh');
+              redirect('Student_Controller', 'refresh');
             }
          }
 

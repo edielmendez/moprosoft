@@ -69,7 +69,6 @@
 	                    <?php  print_r($_SESSION['modelsessioname']) ?>
 	                </a>
 	            </div>
-
 	            <ul class="nav">
 	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">

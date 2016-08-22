@@ -43,7 +43,7 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <li class="active">
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
 	                        <i class="ti-world"></i>
 	                        <p>Actividad</p>
@@ -114,60 +114,79 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<!--button  type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-title="Nuevo Modelo">Nuevo</button><br><br-->
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-	                <div class="row">
-                    <!--a href="<?php echo base_url() ?>index.php/Home/index" class="btn btn-default  btn-wd">Inicio</a-->
-										<div class="col-md-12">
+                <div class="row">
+                  <?php
+                    foreach($cuestionarios as $c){
+                  ?>
+                    <div class="col-lg-3 col-sm-6" >
                         <div class="card">
                             <div class="content">
-															<div class="text-center">
-																	<h1><?php print_r($_SESSION['modelsessioname']) ?></h1>
-															</div>
                                 <div class="row">
-                                  <div class="col-md-12">
-                                    <div class="text-center">
-                                      <p><b>Versión:</b> <?php print_r($_SESSION['modelsessionversion']) ?></p>
-                                      <p><b>Nivel:</b> <?php print_r($_SESSION['modelsessionivel']) ?></p>
-                                      <a href="<?php echo base_url() ?>index.php/Home/index" class="btn btn-info btn-fill btn-wd">Ver Todos los Modelos</a>
-                                    </div>
-
+                                  <div class="col-xs-3">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<img src="'.base_url().'public/img/cuestionariovacio2.jpg" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }else {
+                                        echo '<img src="'.base_url().'public/img/cuestionarioincompleto.png" style="width:65px; height:70px" alt="Procesos" /><br><br>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-9">
+                                    <p><?php echo $c['name']?></p>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: right;">
+                                    <?php
+                                      if ($c['status']==0) {
+                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['questionary_id'].'">Contestar</a>';
+                                      }else {
+                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
+                                      }
+                                    ?>
+                                  </div>
+                                  <div class="col-xs-12" style="text-align: left;">
                                   </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="text-center">
-                                <div class="row">
-                                    <div class="col-md-3 col-md-offset-1">
-                                        <h5><?php echo $NumProcess ?><br /><small>Procesos</small></h5>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h5>0<br /><small><?php print_r($_SESSION['modelsessiontrabajar']) ?></small></h5>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <h5>0<br /><small>Cuestionarios</small></h5>
+                                <div class="footer">
+                                    <hr/>
+                                    <div class="stats">
+                                        <i class="ti-info-alt"></i><?php
+                                          if ($c['status']==0) {
+                                            echo 'Conteste el Cuestionario';
+                                          }else {
+                                            echo 'Cuestionario Pendiente';
+                                          }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
-	                </div>
+                    <?php } ?>
+                </div>
+							
+                <!--Historial de cuestionarios-->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="header">
+                          <h4 class="title">Cuestionarios Resueltos</h4>
+                      </div>
+                      <div class="content table-responsive table-full-width"  >
+                        <table class="table table-striped">
+                          <tbody>
+                            <?php
+                              foreach($historial as $c){
+                            ?>
+                            <tr>
+                              <td><?php echo $c['name']; ?></td>
+                            </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 	            </div>
 	        </div>
 
@@ -225,19 +244,5 @@
 
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script src="<?php echo base_url(); ?>public/js/demo.js"></script>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-
-			//demo.initChartist();
-
-				$("#myModal").on('show.bs.modal', function(event){
-        	var button = $(event.relatedTarget);  // Button that triggered the modal
-        	var titleData = button.data('title'); // Extract value from data-* attributes
-        	$(this).find('.modal-title').text(titleData);
-    		});
-	});
-</script>
-
 
 </html>
