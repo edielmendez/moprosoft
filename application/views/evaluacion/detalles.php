@@ -8,10 +8,6 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
 
-
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="<?php echo base_url(); ?>libs/css/materialize.min.css" rel="stylesheet" />
-
 	<!-- Se importo los estilos adecuados-->
 	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
@@ -28,12 +24,12 @@
 	<link href="<?php echo base_url(); ?>libs/css/demo.css" rel="stylesheet" />-->
 	<link href="<?php echo base_url(); ?>libs/css/tabs.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>libs/css/tabstyles.css" rel="stylesheet" />
-
+	
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 
 
-
+	
 
 	<style type="text/css">
 	table,
@@ -56,115 +52,13 @@
     .indeterminado{
 		background: #80cbc4 ;
     }
+	
 
 	</style>
 
 </head>
 <body>
-
-	<div>
-	    <h6 class="center-align">DETALLES DE LA EVALUACIÓN DEL EQUIPO <?php echo $equipo['name'] ?></h6>
-	</div>
-	<?php //print_r($cuestionarios); ?>
-	<div class="container">
-		<div class="row">
-          <div class="col s12 m10">
-            <h4 class="light"><?php echo $equipo['name'] ?></h4>
-            <div class="card mediun">
-              <div class="card-image">
-                <img src="<?php echo base_url(); ?>libs/images/team.jpg" style="height:100px; width: 200px;">
-
-              </div>
-              <div class="card-content">
-                <!--<p>Es el equipo del 301</p>-->
-              </div>
-              <div class="card-action">
-
-                <ul class="tabs">
-			        <li class="tab col s3"><a class="active" href="#test1" >Cuestionarios asignados</a></li>
-			        <li class="tab col s3"><a href="#test2">Cuestionarios terminados</a></li>
-
-			    </ul>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-	</div>
-
-	<div class="container">
-
-			<div class="row" id="test1">
-				<?php foreach ($cuestionarios as $cuestionario): ?>
-		      <div class="col s12 m12">
-		        <div class="card-panel " >
-		          	<ul class="collapsible" data-collapsible="accordion">
-
-					    <li>
-					      <div class="collapsible-header"><i class="material-icons">assignment</i><h5><?php echo $cuestionario["name"]; ?></h5></div>
-					      <div class="collapsible-body">
-
-					      		<p>Avance del cuestionario por eqipo :</p>
-								<progress max="100" value="<?php echo $cuestionario['avance_por_equipo'];?>" ></progress>
-								<label><?php echo $cuestionario['avance_por_equipo']; ?>  %</label>
-								<p>Integrantes  :</p>
-								<div class="container">
-								<table>
-							        <thead>
-							          <tr>
-							              <th data-field="id">Nombre</th>
-							              <th data-field="name">Preguntas contestadas</th>
-							              <th data-field="price">Avance</th>
-							          </tr>
-							        </thead>
-
-							        <tbody>
-							        	<?php foreach ($cuestionario['integrantes'] as $integrante): ?>
-							        		<tr>
-									            <td><?php echo $integrante['name'] ?></td>
-									            <td><?php echo $integrante['preguntas_contestadas'] ?> / <?php echo $cuestionario['total_preguntas'] ?> </td>
-									            <td><progress max="100" value="<?php echo $integrante['porcentaje'] ?>" ></progress><label><?php echo $integrante['porcentaje'] ?> %</label></td>
-									          </tr>
-							        	<?php endforeach ?>
-
-
-							        </tbody>
-							    </table>
-							    </div>
-					      </div>
-					    </li>
-
-					</ul>
-		        </div>
-		      </div>
-		      <?php endforeach ?>
-	    	</div>
-
-
-
-    	<div class="row" id="test2">
-	      <div class="col s12 m12">
-	        <div class="card-panel " >
-	          	<ul class="collapsible" data-collapsible="accordion">
-				    <li>
-				        <div class="collapsible-header"><i class="material-icons">assignment</i><h5>Cuestionario x</h5></div>
-				        <div class="collapsible-body">
-
-
-				        </div>
-				    </li>
-				    <li>
-				      <div class="collapsible-header"><i class="material-icons">assignment</i><h5>Cuestionario y</h5></div>
-				      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-				    </li>
-				    <li>
-				      <div class="collapsible-header"><i class="material-icons">assignment</i><h5>Cuestionario z</h5></div>
-				      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-				    </li>
-				</ul>
-
-
+	
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
@@ -198,14 +92,14 @@
 	                		<p>Detalles de evaluación</p>
 	                	</a>
 	                </li>
-
+	                
 	            </ul>
 	    	</div>
 	    </div>
 
 	    <div class="main-panel" >
-
-
+	    	
+	    	
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 
@@ -240,12 +134,12 @@
 
 	        <div class="row">
 	    		<div class="col-md-6 col-md-offset-3">
-	    			<?php
-
+	    			<?php 
+	    			
 	    			echo $this->session->flashdata('message');
 	    			 ?>
-
-
+	    			
+	                
 	    		</div>
 	    	</div>
 	    	<?php// print_r($cuestionarios); ?>
@@ -256,16 +150,16 @@
 					<div class="col-lg-12 col-md-12">
                         <div class="card card-user">
                             <div class="image">
-
+                                
                             </div>
                             <div class="content">
                                 <div class="author">
                                   <img class="avatar border-white" src="<?php echo base_url(); ?>libs/images/team.jpg"  alt="..."/>
                                   <h4 class="title"><?php echo $equipo['name'] ?><br />
-
+                                     
                                   </h4>
                                 </div>
-
+                                
                             </div>
                             <hr>
                             <div class="text-center">
@@ -273,25 +167,25 @@
 									<ul class="nav nav-pills nav-justified">
 									    <li class="active"><a data-toggle="pill" href="#cuestionarios_asig">CUESTIONARIOS ASIGNADOS</a></li>
 									    <li><a data-toggle="pill" href="#cuestionarios_term">CUESTIONARIOS TERMINADOS</a></li>
-
+									    
 									</ul>
                                 </div>
-
+                                
                             </div>
                         </div>
                     </div>
 				</div><!--aaa-->
-
+				
 				<div class="row">
 					<div class="panel panel-success" >
 					    <div class="panel-body">
 					     	<div class="tab-content">
 							    <div id="cuestionarios_asig" class="tab-pane fade in active">
-
+							      
 							        <!---->
 							        <div class="container">
 									  <div class="panel-group" id="accordion">
-
+									    
 									    <?php foreach ($cuestionarios as $cuestionario): ?>
 									    <div class="panel panel-default">
 									      <div class="panel-heading">
@@ -300,7 +194,7 @@
 									        </h4>
 									      </div>
 									      <div id="collapse<?php echo $cuestionario['id'];?>" class="panel-collapse collapse">
-									      	<p>Avance del cuestionario por equipo :</p>
+									      	<p>Avance del cuestionario por equipo :</p>	
 											<progress max="100" value="<?php echo $cuestionario['avance_por_equipo'];?>" ></progress>
 											<label><?php echo $cuestionario['avance_por_equipo']; ?>  %</label>
 											<p>Integrantes  :</p>
@@ -340,7 +234,7 @@
 							      <h3>CUESTIONARIOS TERMINADOS</h3>
 									<div class="container">
 									  <div class="panel-group" id="accordion">
-
+									    
 									    <?php foreach ($cuestionarios_terminados as $cuestionario): ?>
 									    <div class="panel panel-default">
 									      <div class="panel-heading">
@@ -350,23 +244,23 @@
 									      </div>
 									      <div id="collapse<?php echo $cuestionario['id'];?>" class="panel-collapse collapse">
 									      		<a href="#" class="btnVerResultados" id="<?php echo $cuestionario['id'];?>-<?php echo $equipo['id'] ?>"> <i class="ti-stats-up"></i>   Ver Resultados</a>
-
+						
 									        <!--<div class="panel-body">
 									        	<h3>TOTAL DE PREGUNTAS DEL CUESTIONARIO : <b><?php echo  $cuestionario['total_preguntas']; ?></b></h3>
-
-									        	<p>Siempre</p>
+									        	
+									        	<p>Siempre</p>	
 												<progress max="<?php echo  $cuestionario['total_preguntas']; ?>" value="<?php echo $cuestionario['preguntas_opc_1'];?>" ></progress>
 												<label><?php echo $cuestionario['preguntas_opc_1']; ?> / <?php echo  $cuestionario['total_preguntas']; ?> </label>
 
-												<p>Usualmente</p>
+												<p>Usualmente</p>	
 												<progress max="<?php echo  $cuestionario['total_preguntas']; ?>" value="<?php echo $cuestionario['preguntas_opc_2'];?>" ></progress>
 												<label><?php echo $cuestionario['preguntas_opc_2']; ?> / <?php echo  $cuestionario['total_preguntas']; ?> </label>
 
-												<p>Algunas veces</p>
+												<p>Algunas veces</p>	
 												<progress max="<?php echo  $cuestionario['total_preguntas']; ?>" value="<?php echo $cuestionario['preguntas_opc_3'];?>" ></progress>
 												<label><?php echo $cuestionario['preguntas_opc_3']; ?> / <?php echo  $cuestionario['total_preguntas']; ?> </label>
 
-
+									        	
 									        </div>-->
 									      </div>
 									    </div>
@@ -374,36 +268,35 @@
 
 									  </div>
 									</div>
-
+							      
 							    </div>
 						    </div>
 					    </div>
 					</div>
 				</div>
 
-
-
-
+				
+	            
 	        </div>
 
 	        <div class="container" style="display: none;" id="contenedor_secundario"><!--Inicio del segundo container-->
-
+	        	
 	        	<div class="row">
 	        		<div class="col-md-9">
-	        			<h2 id="titulo_tabla"></h2>
+	        			<h2 id="titulo_tabla"></h2>		
 	        		</div>
 	        		<div class="col-md-3">
-
+	        			
 	        			<a href="#" class="btn btn-default btn-block btn-lg" id="btn_ver_graficas">
 	        				<i class="ti-bar-chart"></i> Graficas
-
-					    </a>
+					      	
+					    </a>	
 	        		</div>
-
+	        		
 	        	</div>
 				<p>Análisis de respuestas</p>
 				<table class="table table-bordered table-centered table-responsive">
-				    <thead>
+				    <thead> 
 				      <tr>
 				        <th>Pregunta</th>
 				        <th>S</th>
@@ -428,7 +321,7 @@
 				        <td></td>
 				        <td></td>
 				      </tr>
-
+				      
 				    </tbody>
 				</table>
 	        </div><!--fin del segundo container-->
@@ -436,44 +329,34 @@
 	        <div class="container" style="display: none;" id="tercer_contenedor"><!--inicio de el tercer container-->
 	        	<div class="row">
 	        		<div class="col-md-9">
-	        			<h2 id="titulo_tabla"></h2>
+	        			<h2 id="titulo_tabla"></h2>		
 	        		</div>
 	        		<div class="col-md-3">
-
+	        			
 	        			<a href="#" class="btn btn-default btn-block btn-lg" id="btn_ver_resultados">
 	        				<i class="ti-stats-up"></i> Tabla de resultados
-
-					    </a>
+					      	
+					    </a>	
 	        		</div>
-
+	        		
 	        	</div>
 	        	<br>
 	        	<br>
 	        	<div class="row" style="overflow: scroll;" style="max-width: 700px">
 	        		<div class="col-md-12" id="grafica">
-
+	        			
 	        		</div>
-
+	        		
 				</div>
 	        	<button id="export2pdf">Exportar a PDF</button>
 	        </div><!-- fin del tercer container-->
 
-
-
-
-	<div class="fixed-action-btn" style="top: 45px; right: 100px;">
-		<a href="<?php echo base_url() ?>index.php/Equipos/" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>Regresar</a>
-
-
-  	</div>
-
-
-
+	       
 
 	    </div>
 	</div>
 
-
+	
 </body>
 
 <!--   Core JS Files   -->
