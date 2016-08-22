@@ -41,6 +41,7 @@ class question_Controller extends CI_Controller {
 						$question = array(
 							'id' => $row->id,
 							'question' => $row->question,
+							'commentary' => $row->commentary,
 							'answer_id' => $row->answer_id,
 							'questionary_id' => $row->questionary_id
 						);
@@ -67,7 +68,7 @@ class question_Controller extends CI_Controller {
 		 }
 
 		 	redirect('question_Controller/back', 'refresh');
-			
+
 	 }
 
 	 public function Preguntas($id){
@@ -80,7 +81,8 @@ class question_Controller extends CI_Controller {
 				 $sess_array = array(
 					 'id' => $row->id,
 					 'name' => $row->name,
-					 'phase_objetive_id' => $row->phase_objetive_id
+					 'phase_objetive_id' => $row->phase_objetive_id,
+					 'status' => $row->status,
 				 );
 			 }
 
@@ -88,6 +90,12 @@ class question_Controller extends CI_Controller {
 				 $_SESSION['Questionary_id'] = $sess_array['id'];
 			 } else {
 				 $_SESSION['Questionary_id'] = $sess_array['id'];
+			 }
+
+			 if (!isset($_SESSION['Questionary_status'])) {
+				 $_SESSION['Questionary_status'] = $sess_array['status'];
+			 } else {
+				 $_SESSION['Questionary_status'] = $sess_array['status'];
 			 }
 
 			 if (!isset($_SESSION['Questionary_name'])) {
@@ -110,7 +118,8 @@ class question_Controller extends CI_Controller {
 		 if($this->input->post("submit")){
 			 //llamo al metodo add
 			 $add=$this->Question->add(
-							 $this->input->post("pregunta")
+							 $this->input->post("pregunta"),
+							 $this->input->post("comentarioayuda")
 							 );
 			 }
 
@@ -133,7 +142,8 @@ class question_Controller extends CI_Controller {
 				if($this->input->post("submit")){
 					 $mod=$this->Question->update(
 						 $id,
-						 $this->input->post("pregunta")
+						 $this->input->post("pregunta"),
+						 $this->input->post("comentarioayuda")
 						 );
 
 						 if($mod==0){

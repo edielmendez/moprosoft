@@ -44,7 +44,7 @@ class Questionary extends CI_Model
 
   public function add($nombre,$phase_objetive_id){
     if ($this->validate($nombre,$phase_objetive_id)) {
-      $consulta=$this->db->query("INSERT INTO questionary VALUES(NULL,'$nombre','$phase_objetive_id');");
+      $consulta=$this->db->query("INSERT INTO questionary VALUES(NULL,'$nombre','$phase_objetive_id','0');");
       if($consulta==true){
         return 0;
       }else{

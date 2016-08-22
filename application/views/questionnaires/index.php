@@ -200,12 +200,13 @@
                             <div class="content">
                                 <div class="row">
                                   <div class="col-xs-2">
-                                    <img src="<?php echo base_url() ?>public/img/cuestionario.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
+                                    <img src="<?php echo base_url() ?>public/img/cuestionario.png" style="width:50px; height:60px" alt="Procesos" /><br>
+																		<span ng-if='cuestionario.status==1'><br><br></span>
                                   </div>
                                   <div class="col-xs-10">
                                     <p ng-bind="cuestionario.name" ></p>
                                   </div>
-                                  <div class="col-xs-12" style="text-align: right;">
+                                  <div ng-if='cuestionario.status==0' class="col-xs-12" style="text-align: right;">
                                     <br>
                                       <a href="<?php echo base_url() ?>index.php/questionary_Controller/edith/{{cuestionario.id}}">Editar</a>
                                   </div>
@@ -214,7 +215,7 @@
 																			<img src="<?php echo base_url() ?>public/img/liberado.png" style="width:15px; height:20px" alt="Liberado" />
 																		</div>
 																		<div ng-if='cuestionario.status==0'>
-																			<img src="<?php echo base_url() ?>public/img/sinliberar.png" style="width:20px; height:20px" alt="Liberado" />
+																			<img src="<?php echo base_url() ?>public/img/sinliberar.png" style="width:20px; height:20px" alt="Sin Liberar" />
 																		</div>
 
                                   </div>
