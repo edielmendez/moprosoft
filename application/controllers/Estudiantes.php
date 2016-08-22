@@ -13,6 +13,7 @@ class Estudiantes extends CI_Controller {
       $this->load->model('user','',TRUE);
       $this->load->model('equipo','',TRUE);
       $this->load->model('modelo','',TRUE);
+      $this->load->model('CuestionarioAdmin','',TRUE);
 			
    }
 
@@ -281,8 +282,18 @@ class Estudiantes extends CI_Controller {
       if($this->session->userdata('logged_in')){
          $id_usuario = $this->input->post('id_usuario');
          $id_equipo = $this->input->post('id_equipo');
+         /*echo "id_usuario : ".$id_usuario."<br>";
+         echo "id_equipo : ".$id_equipo."<br>";
+         return;*/
          
          $result = $this->user->actualizarEquipo($id_equipo,$id_usuario);
+         /*codigo para cambiar de equipo a un integrante y asignarle los cuationarios de su nuevo equipo*/
+         //$cuestionarios_asignados = $this->CuestionarioAdmin->getCuestionariosInAssignment($id_equipo);
+         //print_r($cuestionarios_asignados);
+         //return;
+         //foreach ($cuestionarios_asignados as $row) {
+           //$this->CuestionarioAdmin->setAssignment($id_usuario,$row->questionary_id,$id_equipo);
+         //}
       
          if($result){
             

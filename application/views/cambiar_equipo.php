@@ -27,7 +27,10 @@
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
 	<style type="text/css">
-
+	input[type="radio"]{
+		width: 20px;
+		height: 20px;
+	}
 	</style>
 
 
@@ -171,16 +174,20 @@
 						    <h3 class="panel-title"><?php echo $equipo['name']?></h3>
 						  </div>
 						  <div class="panel-body">
-						    <div class="radio">
+						  	
+							  
+							
+						    
 						    	<input  type='hidden' name='id_equipo'  value="<?php echo $equipo['id']?>" />
 						    	<input  type='hidden' name='id_usuario'  value="<?php echo $estudiante['id']?>" />
-							  <label><input type="radio" required="" name="optradio">elegir</label>
-							</div>
+							  <label><input type="radio" required="" name="optradio" class='radio_btn' >elegir</label>
+							
 						  </div>
 						  <div class="panel-footer"><input type='submit' value='Cambiar' class='btn btn-primary'></div>
 						</div>
+						</form>
 					</div>
-					</form>
+					
 				
 				<?php 
 					}
@@ -201,8 +208,7 @@
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
 
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
+
 
 <!--  Charts Plugin -->
 <script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
@@ -216,8 +222,7 @@
 <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 <script src="<?php echo base_url(); ?>public/js/paper-dashboard.js"></script>
 
-<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-<script src="<?php echo base_url(); ?>public/js/demo.js"></script>
+
 
 <script src="<?php echo base_url("libs/js/datatables.min.js"); ?>"></script>
 <script src="<?php echo base_url("libs/js/toastr.min.js"); ?>"></script>
@@ -227,7 +232,6 @@
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
 			$('.collapse').collapse()
-			
 	});
 </script>
 

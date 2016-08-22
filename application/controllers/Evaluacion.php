@@ -201,15 +201,17 @@ class Evaluacion extends CI_Controller {
       if($result){
 
          foreach ($result as $row) {
-            $data = $this->CuestionarioAdmin->getTeamsAssignment($row->id,$id_cuestionario);
-            if(!$data){
-               $equipo = array(
-                  'id' => $row->id,
-                  'name' => $row->name,
-               );
-               array_push($equipos,$equipo);
+            $val = $this->CuestionarioAdmin->getUsersByIdTeam($row->id);
+            if($val){
+               $data = $this->CuestionarioAdmin->getTeamsAssignment($row->id,$id_cuestionario);
+               if(!$data){
+                  $equipo = array(
+                     'id' => $row->id,
+                     'name' => $row->name,
+                  );
+                  array_push($equipos,$equipo);
+               }
             }
-
          }
       }
 
@@ -287,10 +289,72 @@ class Evaluacion extends CI_Controller {
                }
 
 
+               /*obtenemos los cuestionarios asignados y terminados de este equipo*/
+
+
+               $records = $this->CuestionarioAdmin->getCuestionariosInAssignmentComplete($id);
+               $cuestionarios_terminados = array();
+               foreach ($records as $row) {
+                  $data_cuestionario = $this->Questionary->getQ($row->questionary_id);
+                  $cuestionario;
+                  foreach ($data_cuestionario as $row2) {
+
+
+                     $cuestionario= array(
+                        'id' => $row2->id,
+                        'name' => $row2->name,
+                        'phase_objetive_id' => $row2->phase_objetive_id,
+                     );
 
 
 
-               /*obtenemos los cuestionarios a los que esta asignado este equipo*/
+                  }
+
+                  /*
+                  $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->questionary_id);
+
+
+                  foreach ($num_preguntas as $x) {
+                     $num_preguntas = $x->total;
+                  }
+
+                  $total_preguntas_contestadas_con_op1 = $this->CuestionarioAdmin->getTotalPreguntasContestadasOpc1($row->questionary_id);
+                  foreach ($total_preguntas_contestadas_con_op1 as $x) {
+                     $total_preguntas_contestadas_con_op1 = $x->total;
+                  }
+
+                  $total_preguntas_contestadas_con_op2 = $this->CuestionarioAdmin->getTotalPreguntasContestadasOpc2($row->questionary_id);
+                  foreach ($total_preguntas_contestadas_con_op2 as $x) {
+                     $total_preguntas_contestadas_con_op2 = $x->total;
+                  }
+
+                  $total_preguntas_contestadas_con_op3 = $this->CuestionarioAdmin->getTotalPreguntasContestadasOpc3($row->questionary_id);
+                  foreach ($total_preguntas_contestadas_con_op3 as $x) {
+                     $total_preguntas_contestadas_con_op3 = $x->total;
+                  }
+
+                  $cuestionario['total_preguntas'] = $num_preguntas;
+                  $cuestionario['preguntas_opc_1'] = $total_preguntas_contestadas_con_op1;
+                  $cuestionario['preguntas_opc_2'] = $total_preguntas_contestadas_con_op2;
+                  $cuestionario['preguntas_opc_3'] = $total_preguntas_contestadas_con_op3;*/
+
+                  array_push($cuestionarios_terminados,$cuestionario);
+
+
+
+
+               }
+
+
+
+               ////fin del código para obtener datos de los cuestionarios completos
+
+
+
+
+
+
+               /*obtenemos los cuestionarios a los que esta asignado este equipo pero que no estan terminados*/
                $result = $this->CuestionarioAdmin->getCuestionariosInAssignment($id);
                $cuestionarios = array();
                foreach ($result as $row) {
@@ -309,7 +373,7 @@ class Evaluacion extends CI_Controller {
                   }
 
 
-
+                  /*obtenemos el total de preguntas que tiene este cuestionario**/
                   $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->questionary_id);
 
 
@@ -371,10 +435,13 @@ class Evaluacion extends CI_Controller {
 
                $datos['equipo'] = $equipo;
                $datos['cuestionarios'] = $cuestionarios;
+
                //print_r($cuestionarios);
                //return;
+               $datos['cuestionarios_terminados'] = $cuestionarios_terminados;
                //$datos['estudiantes'] = $estudiantes;
                $this->load->view('evaluacion/detalles',$datos);
+
             }else{
                redirect('Equipos/', 'refresh');
             }
@@ -382,20 +449,14 @@ class Evaluacion extends CI_Controller {
             redirect('Home/', 'refresh');
          }
       }else{
-         redirect('Home', 'refresh');
+         redirect('Home/', 'refresh');
       }
    }
 
 
-
-
-   /**
-    * ************************************************************************************************************************
-    */
-
-
-   function getEquipoById(){
+   public function getResultadosEvaluation(){
       if($this->session->userdata('logged_in')){
+
          $id = $this->input->post('id');
          $result = $this->equipo->getEquipoById($id);
 
@@ -411,10 +472,25 @@ class Evaluacion extends CI_Controller {
             }
          }
 
-         echo json_encode($equipo);
+         $id_cuestionario = $this->input->post('id_cuestionario');
+         $id_equipo = $this->input->post('id_equipo');
+         ///obtenenos los datos del cuestionario
+         $data_cuestionario = $this->Questionary->getQ($id_cuestionario);
 
-      }
-   }
+         $cuestionario;
+         foreach ($data_cuestionario as $row) {
+            $cuestionario= array(
+               'id' => $row->id,
+               'name' => $row->name,
+               'phase_objetive_id' => $row->phase_objetive_id,
+            );
+
+
+         }
+
+         //obtenenos la fase u objetivo de este cuestionario
+         $aux = $this->CuestionarioAdmin->getFaseById($cuestionario['phase_objetive_id']);
+
 
    public function actualizar(){
       if($this->session->userdata('logged_in')){
@@ -432,11 +508,17 @@ class Evaluacion extends CI_Controller {
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
+         if($aux){
+            $fase;
+            foreach ($aux as $row2) {
+               $fase = array(
+                  'id' => $row2->id,
+                  'name' => $row2->name,
+                  'process_id' => $row2->process_id
+               );
 
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo actualizar la información</b></span>";
-            $mensaje.="</div>";
-
+            }
+            $cuestionario['fase'] = $fase;
             $this->session->set_flashdata('message', $mensaje);
 
          }
@@ -447,29 +529,46 @@ class Evaluacion extends CI_Controller {
          redirect('login', 'refresh');
       }
    }
+            //obtenenos el proceso de este cuestionario
 
-   public function nuevo(){
-      if($this->session->userdata('logged_in')){
-         /*$result = $this->equipo->getEquipos();
-         $equipos = array();
-         if($result){
-            foreach ($result as $row ) {
-               $equipo = array(
-                 'id' => $row->id,
-                 'name' => $row->name
-               );
-               array_push($equipos,$equipo);
-            }
-         }
-         $datos['equipos'] = $equipos;*/
-         $this->load->view('nuevo_equipo');
+            $aux2 = $this->CuestionarioAdmin->getProcesoById($fase['process_id']);
+            if($aux2){
+               $proceso;
+               foreach ($aux2 as $row3) {
+                  $proceso = array(
+                     'id' => $row3->id,
+                     'name' => $row3->name,
+                     'model_id' => $row3->model_id
+                  );
 
-      }else{
-         //si no hay session se redirecciona la vista de login
-         redirect('login', 'refresh');
-      }
-   }
+               }
+               $cuestionario['proceso'] = $proceso;
+               //obtenenos el modelo de este cuestionario
+               $aux3 = $this->CuestionarioAdmin->getModeloById($proceso['model_id']);
+               if($aux3){
+                  $modelo;
+                  foreach ($aux3 as $row4) {
+                     $modelo = array(
+                        'id' => $row4->id,
+                        'name' => $row4->name,
+                        'version' => $row4->version,
+                        'phase_objetive' => $row4->phase_objetive,
+                        'team_id' => $row4->team_id
+                     );
 
+                  }
+                  $cuestionario['modelo'] = $modelo;
+
+                  /*$aux4 = $this->CuestionarioAdmin->getEquipoById($modelo['team_id']);
+                  if($aux4){
+                     $equipo;
+                     foreach ($aux4 as $row5) {
+                        $equipo = array(
+                          'id' => $row5->id,
+                          'name' => $row5->name,
+                        );
+
+<<<<<<< HEAD
    public function crear_equipo(){
       if($this->session->userdata('logged_in')){
          $nombre = $this->input->post('nombre');
@@ -574,11 +673,37 @@ class Evaluacion extends CI_Controller {
             $this->session->set_flashdata('message', $mensaje);
          }else{
 
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo cambiar de jefe de equipo</b></span>";
-            $mensaje.="</div>";
+                     $cuestionario['equipo'] = $equipo;
+               }
 
-            $this->session->set_flashdata('message', $mensaje);
+            }
+
+         }
+
+         //obtenemos los resultado de la tabla calificacion_questionary de este cuestionario
+         $records = $this->CuestionarioAdmin->getResultadosEvaluation($id_cuestionario,$id_equipo);
+         $resultados = array();
+
+         foreach ($records as $row) {
+            $result= array(
+               'id' => $row->id,
+               'questionary_id' => $row->questionary_id,
+               'question_id' => $row->question_id,
+               'team_id' => $row->team_id,
+               'S' => $row->S,
+               'U' => $row->U,
+               'A' => $row->A,
+               'R' => $row->R,
+               'N' => $row->N,
+               'nivel_cobertura' => $row->nivel_cobertura,
+               'media' => $row->media,
+               'desviacion' => $row->desviacion
+            );
+            array_push($resultados,$result);
+         }
+
+         $cuestionario['resultados'] = $resultados;
+         $this->session->set_flashdata('message', $mensaje);
 
          }
          redirect('Equipos/');
@@ -600,24 +725,18 @@ class Evaluacion extends CI_Controller {
             $mensaje.="<div class='alert alert-info'>";
                $mensaje.="<span><b>Se agrego jefe de equipo</b></span>";
             $mensaje.="</div>";
+         //retornamos los datos en formato json
 
-            $this->session->set_flashdata('message', $mensaje);
-         }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo agregar jefe de equipo</b></span>";
-            $mensaje.="</div>";
-
-            $this->session->set_flashdata('message', $mensaje);
+         echo json_encode($cuestionario);
+        $this->session->set_flashdata('message', $mensaje);
 
          }
          redirect('Equipos/');
-
       }else{
-         //si no hay session se redirecciona la vista de login
-         redirect('login', 'refresh');
+         redirect('Home/', 'refresh');
       }
    }
+
 
    public function eliminar($id){
       if($this->session->userdata('logged_in')){
