@@ -26,7 +26,7 @@ class Evaluacion extends CI_Controller {
 
          $data = $this->session->userdata('logged_in');
          if(strcmp($data['rol'],"ADMINISTRADOR")==0){
-            
+
 
             /*se obtienen todos los equipos creados hasta el momento
             */
@@ -53,7 +53,7 @@ class Evaluacion extends CI_Controller {
                             'id' => $row3->id,
                             'type' => $row3->type
                           );
-                          
+
                         }
                         $usuario = array(
 
@@ -78,7 +78,7 @@ class Evaluacion extends CI_Controller {
             /**
              * Se obtienen todos los cuestionarios disponibles
              */
-            
+
             $result = $this->CuestionarioAdmin->get();
             $cuestionarios = array();
             if($result){
@@ -130,7 +130,7 @@ class Evaluacion extends CI_Controller {
                               $modelo = array(
                                  'id' => $row4->id,
                                  'name' => $row4->name,
-                                 'version' => $row4->version, 
+                                 'version' => $row4->version,
                                  'phase_objetive' => $row4->phase_objetive,
                                  'team_id' => $row4->team_id
                               );
@@ -150,35 +150,35 @@ class Evaluacion extends CI_Controller {
                               }
                               $cuestionario['equipo'] = $equipo;
 
-                              
-                     
+
+
                            }
-                     
+
                         }
-                     
+
                      }
-                        
+
                   }
-                   
+
                   if($total_preguntas != 0){
                      array_push($cuestionarios,$cuestionario);
-                  } 
-                   
-                  
-                  
+                  }
+
+
+
                }
             }
 
             /*se renderizan los datos a la vista*/
 
-            
+
             $datos_vista['equipos'] = $equipos;
             $datos_vista['cuestionarios'] = $cuestionarios;
 
             $this->load->view('evaluacion/index',$datos_vista);
 
          }else{//
-            redirect('Home', 'refresh');   
+            redirect('Home', 'refresh');
          }
 
 
@@ -212,8 +212,8 @@ class Evaluacion extends CI_Controller {
                   array_push($equipos,$equipo);
                }
             }
-            
-            
+
+
          }
       }
 
@@ -254,7 +254,7 @@ class Evaluacion extends CI_Controller {
                      $this->session->set_flashdata('message', $mensaje);
                      redirect('Evaluacion/');
                   }
-                  
+
                }
 
                $mensaje.="<div class='alert alert-info'>";
@@ -266,12 +266,12 @@ class Evaluacion extends CI_Controller {
          }else{
             //si no hay session se redirecciona la vista de login
             redirect('Home', 'refresh');
-         }  
+         }
       }else{
          //si no hay session se redirecciona la vista de login
          redirect('Home', 'refresh');
-      }  
-      
+      }
+
    }
 
    public function detalles($id){
@@ -289,33 +289,33 @@ class Evaluacion extends CI_Controller {
                     'name' => $row->name
                   );
                }
-               
-               
+
+
                /*obtenemos los cuestionarios asignados y terminados de este equipo*/
 
-               
+
                $records = $this->CuestionarioAdmin->getCuestionariosInAssignmentComplete($id);
                $cuestionarios_terminados = array();
                foreach ($records as $row) {
                   $data_cuestionario = $this->Questionary->getQ($row->questionary_id);
                   $cuestionario;
                   foreach ($data_cuestionario as $row2) {
-                     
-                     
+
+
                      $cuestionario= array(
                         'id' => $row2->id,
                         'name' => $row2->name,
                         'phase_objetive_id' => $row2->phase_objetive_id,
                      );
 
-                     
+
 
                   }
 
                   /*
                   $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->questionary_id);
-                  
-                 
+
+
                   foreach ($num_preguntas as $x) {
                      $num_preguntas = $x->total;
                   }
@@ -346,97 +346,101 @@ class Evaluacion extends CI_Controller {
 
 
                }
-               
+
 
                ////fin del código para obtener datos de los cuestionarios completos
-                            
-                  
-                
-               
+
+
+
+
 
 
                /*obtenemos los cuestionarios a los que esta asignado este equipo pero que no estan terminados*/
                $result = $this->CuestionarioAdmin->getCuestionariosInAssignment($id);
                $cuestionarios = array();
-               foreach ($result as $row) {
-                  $data_cuestionario = $this->Questionary->getQ($row->questionary_id);
-                  $cuestionario;
-                  foreach ($data_cuestionario as $row2) {
-                     
-                     
-                     $cuestionario= array(
-                        'id' => $row2->id,
-                        'name' => $row2->name,
-                        'phase_objetive_id' => $row2->phase_objetive_id,
-                     );
+               if($result){
 
-                  }
-
-                  
-                  /*obtenemos el total de preguntas que tiene este cuestionario**/
-                  $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->questionary_id);
-                  
-                 
-                  foreach ($num_preguntas as $x) {
-                     $num_preguntas = $x->total;
-                  }
+                 foreach ($result as $row) {
+                    $data_cuestionario = $this->Questionary->getQ($row->questionary_id);
+                    $cuestionario;
+                    foreach ($data_cuestionario as $row2) {
 
 
-                  
-                  
-                 
-                  /*obtenemos los integrantes de este equipo*/
-                  $data_est = $this->user->getByEquipo($id);
-                  $total_integrantes = count($data_est);
-                  $estudiantes = array();
-                  $cont=0;
-                  foreach ($data_est as $rowx) {
-                     $num_preguntas_contestadas = $this->CuestionarioAdmin->getTotalPreguntasContestadas($row->questionary_id,$rowx->id);
-                     foreach ($num_preguntas_contestadas as $x) {
-                        $num_preguntas_contestadas = $x->total;
-                     }
-                     if($num_preguntas == 0){
-                        $porcentaje = 0;
-                     }else{
-                        
-                        $porcentaje = ( (intval($num_preguntas_contestadas) * 100) / intval($num_preguntas));
-                        $porcentaje = round($porcentaje, 2);
-                     }
+                       $cuestionario= array(
+                          'id' => $row2->id,
+                          'name' => $row2->name,
+                          'phase_objetive_id' => $row2->phase_objetive_id,
+                       );
 
-                     
-                     $usuario = array(
-                       'id' => $rowx->id,
-                       'username' => $rowx->username,
-                       'password' => $rowx->password,
-                       'email' => $rowx->email,
-                       'name' => $rowx->name,
-                       'rol_id' => $rowx->rol_id,
-                       'grupo' => $rowx->grupo,
-                       'team_id' => $rowx->team_id,
-                       'preguntas_contestadas' => intval($num_preguntas_contestadas),
-                       'porcentaje' => $porcentaje
-                     );
-                     if( (intval($num_preguntas) == intval($num_preguntas_contestadas)) && ($num_preguntas!=0) ){ 
-                        $cont++;
-                     }
-                     array_push($estudiantes,$usuario);
-                  }
-                  $cuestionario["integrantes"] = $estudiantes;
-                  $cuestionario["total_preguntas"] = $num_preguntas;
-                  $cuestionario["avance_por_equipo"] = round((($cont*100)/$total_integrantes));
-                  
-                  
+                    }
 
-                  array_push($cuestionarios,$cuestionario);
-                  
-                  
+
+                    /*obtenemos el total de preguntas que tiene este cuestionario**/
+                    $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->questionary_id);
+
+
+                    foreach ($num_preguntas as $x) {
+                       $num_preguntas = $x->total;
+                    }
+
+
+
+
+
+                    /*obtenemos los integrantes de este equipo*/
+                    $data_est = $this->user->getByEquipo($id);
+                    $total_integrantes = count($data_est);
+                    $estudiantes = array();
+                    $cont=0;
+                    foreach ($data_est as $rowx) {
+                       $num_preguntas_contestadas = $this->CuestionarioAdmin->getTotalPreguntasContestadas($row->questionary_id,$rowx->id);
+                       foreach ($num_preguntas_contestadas as $x) {
+                          $num_preguntas_contestadas = $x->total;
+                       }
+                       if($num_preguntas == 0){
+                          $porcentaje = 0;
+                       }else{
+
+                          $porcentaje = ( (intval($num_preguntas_contestadas) * 100) / intval($num_preguntas));
+                          $porcentaje = round($porcentaje, 2);
+                       }
+
+
+                       $usuario = array(
+                         'id' => $rowx->id,
+                         'username' => $rowx->username,
+                         'password' => $rowx->password,
+                         'email' => $rowx->email,
+                         'name' => $rowx->name,
+                         'rol_id' => $rowx->rol_id,
+                         'grupo' => $rowx->grupo,
+                         'team_id' => $rowx->team_id,
+                         'preguntas_contestadas' => intval($num_preguntas_contestadas),
+                         'porcentaje' => $porcentaje
+                       );
+                       if( (intval($num_preguntas) == intval($num_preguntas_contestadas)) && ($num_preguntas!=0) ){
+                          $cont++;
+                       }
+                       array_push($estudiantes,$usuario);
+                    }
+                    $cuestionario["integrantes"] = $estudiantes;
+                    $cuestionario["total_preguntas"] = $num_preguntas;
+                    $cuestionario["avance_por_equipo"] = round((($cont*100)/$total_integrantes));
+
+
+
+                    array_push($cuestionarios,$cuestionario);
+
+
+                 }
                }
+
                $datos['equipo'] = $equipo;
                $datos['cuestionarios'] = $cuestionarios;
                $datos['cuestionarios_terminados'] = $cuestionarios_terminados;
                //$datos['estudiantes'] = $estudiantes;
                $this->load->view('evaluacion/detalles',$datos);
-              
+
             }else{
                redirect('Equipos/', 'refresh');
             }
@@ -482,7 +486,7 @@ class Evaluacion extends CI_Controller {
             $cuestionario['fase'] = $fase;
 
             //obtenenos el proceso de este cuestionario
-            
+
             $aux2 = $this->CuestionarioAdmin->getProcesoById($fase['process_id']);
             if($aux2){
                $proceso;
@@ -503,7 +507,7 @@ class Evaluacion extends CI_Controller {
                      $modelo = array(
                         'id' => $row4->id,
                         'name' => $row4->name,
-                        'version' => $row4->version, 
+                        'version' => $row4->version,
                         'phase_objetive' => $row4->phase_objetive,
                         'team_id' => $row4->team_id
                      );
@@ -523,14 +527,14 @@ class Evaluacion extends CI_Controller {
                      }
                      $cuestionario['equipo'] = $equipo;
 
-                     
-            
+
+
                   }*/
-            
+
                }
-            
+
             }
-               
+
          }
 
          //obtenemos los resultado de la tabla calificacion_questionary de este cuestionario
@@ -558,17 +562,17 @@ class Evaluacion extends CI_Controller {
          $cuestionario['resultados'] = $resultados;
 
          //retornamos los datos en formato json
-         
+
          echo json_encode($cuestionario);
-         
-         
-
-            
 
 
 
 
-         
+
+
+
+
+
 
       }else{
          redirect('Home/', 'refresh');
@@ -576,8 +580,8 @@ class Evaluacion extends CI_Controller {
    }
 
 
-   
-   
+
+
 
 }
  ?>
