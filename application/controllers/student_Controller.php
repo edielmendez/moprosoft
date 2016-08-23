@@ -269,7 +269,6 @@ class Student_Controller extends CI_Controller {
 						array_push($Preguntas,$pregunta);
 					}
 					//Obtener respuestas y guardarlas
-
 					$indice=0;
 					foreach ($Preguntas as $row ) {
 						//obtencion de las respuestas segun la pregunta
@@ -297,16 +296,15 @@ class Student_Controller extends CI_Controller {
 						$indice++;
 					}
 					//Se calculan su calificacion
-					echo "usuarios";
-					print_r( $Usuarios);
+					$cp=$res=$this->Student->getCP($user,$equipo,$cuestionario);
+					echo "Esto es el CP:$cp";
 					foreach ($Preguntas as $row) {
-						$calificar = $this->calificarPregunta(sizeof($Usuarios),$equipo,$cuestionario,$row['id'],$row['siempre'],$row['usualmente'],$row['aveces'],$row['rara'],$row['nunca']);
+						$calificar = $this->calificarPregunta(sizeof($Usuarios),$equipo,$cuestionario,$row['id'],$row['siempre'],$row['usualmente'],$row['aveces'],$row['rara'],$row['nunca'],$cp);
 					}
 			 }
 	 }
 
-
-	 public function calificarPregunta($tpe,$equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca)
+	 public function calificarPregunta($tpe,$equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$cp)
 	 {
 		 $cobertura=( ($siempre*1)+($usualmente*0.75)+($aveces*0.5)+($rara*0.25)+($nunca*0) )/$tpe;
 		 $media=( ($siempre*4)+($usualmente*3)+($aveces*2)+($rara*1)+($nunca*0) )/$tpe;
@@ -317,8 +315,21 @@ class Student_Controller extends CI_Controller {
 		 $cobertura=intval($cobertura);
 		 $media=$this->truncateFloat($media,1);
 		 $desviacion=$this->truncateFloat($desviacion,1);
+		 $PuntoDebilFuerte="ninguno";
 
-		 $add=$this->Student->addCalificacion($equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$cobertura,$media,$desviacion);
+		 if ($cobertura<$cp) {
+		 	$PuntoDebilFuerte='debil';
+		 }
+
+		 if ($cobertura>50) {
+				if ($desviacion<0.8) {
+					$PuntoDebilFuerte='fuerte';
+				}elseif ($desviacion>=0.8) {
+					$PuntoDebilFuerte='indeterminada';
+				}
+		 }
+		 echo "Punto es : $PuntoDebilFuerte";
+		 $add=$this->Student->addCalificacion($equipo,$cuestionario,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$cobertura,$media,$desviacion,$PuntoDebilFuerte);
 		 if ($add==0) {
 		 	echo "Se inserto; numPersonas:$tpe equipo:$equipo S:$siempre U:$usualmente A:$aveces R:$rara N:$nunca cobertura:$cobertura  media:$media desviacion:$desviacion";
 		}else {

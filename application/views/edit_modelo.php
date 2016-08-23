@@ -194,6 +194,16 @@
 																				</div>
 																		</div>
 																</div>
+
+																<div class="row">
+																		<div class="col-md-12">
+																				<div class="form-group">
+																						<label>Ingrese la <b>Cobertura de Proceso</b></label>
+																						<input type="number" min="60" max="100" required="true" name="cp" id="cp" class="form-control border-input" placeholder="75/85/etc" value="<?php echo $modelo->cp ?>" >
+																				</div>
+																		</div>
+																</div>
+
 																<?php } ?>
 																<br><br><br>
                                 <div>

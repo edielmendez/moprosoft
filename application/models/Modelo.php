@@ -28,12 +28,12 @@ class Modelo extends CI_Model
 	  return $consulta->num_rows() ;
   }
 
-	public function add($nombre,$version,$nivel,$trabajara){
+	public function add($nombre,$version,$nivel,$cp,$trabajara){
 
 		$equipo=$this->session->userdata('logged_in')['team_id'];
 
 		if ($this->validate($nombre,$version,$nivel,$trabajara)) {
-			$consulta=$this->db->query("INSERT INTO model VALUES(NULL,'$nombre','$version','$nivel','$trabajara','$equipo');");
+			$consulta=$this->db->query("INSERT INTO model VALUES(NULL,'$nombre','$version','$nivel','$cp','$trabajara','$equipo');");
 			if($consulta==true){
 				return 0;
 			}else{
@@ -55,11 +55,11 @@ class Modelo extends CI_Model
  	    return $consulta->result();
      }
 
-	public function update($id,$nombre,$version,$nivel,$trabajara){
+	public function update($id,$nombre,$version,$nivel,$cp,$trabajara){
 
 		if ( $this->validate($nombre,$version,$nivel,$trabajara) ) {
 			$consulta=$this->db->query("
-					UPDATE model SET name='$nombre', version='$version',level='$nivel', phase_objetive='$trabajara' WHERE id=$id;
+					UPDATE model SET name='$nombre', version='$version',level='$nivel', cp='$cp' ,phase_objetive='$trabajara' WHERE id=$id;
 					");
 			if($consulta==true){
 					return 0;
