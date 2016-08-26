@@ -204,12 +204,15 @@
                                  <table class="table table-striped">
                                      <tbody>
 																			 	<?php
+
 																					if ($numPreguntas>=0) {
 																				?>
 
 																					<tr ng-repeat="pregunta in questions | filter:buscar">
+																							<td ng-if='bandera'><span ng-bind='pregunta.n'></span></td>
 																							<td ng-if='bandera'>¿<span ng-bind='pregunta.question'></span>?</td>
 																						<?php
+
 																							if ($_SESSION['Questionary_status']==0) {
 																						?>
 																							<td ng-if='bandera'><a href="<?php echo base_url() ?>index.php/question_Controller/edit/{{pregunta.id}}" class="btn btn-info">Editar</a></td>

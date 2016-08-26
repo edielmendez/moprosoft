@@ -79,6 +79,16 @@
 																</div>
 														</div>
 												</div>
+
+												<div class="row">
+														<div class="col-md-12">
+																<div class="form-group">
+																		<label>Ingrese la <b>Cobertura de Proceso</b></label>
+																		<input type="number" min="60" max="100" required="true" name="cp" id="cp" class="form-control border-input" placeholder="75/85/etc" >
+																</div>
+														</div>
+												</div>
+
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
 												<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />

@@ -129,12 +129,16 @@
 											      </tr>
 											    </thead>
 											    <tbody>
-
+														<?php
+															foreach($cuestionarios as $q){
+														?>
 											      <tr>
-											        <td>John</td>
-											        <td>Doe</td>
+											        <td><?php echo $q[0]; ?></td>
+											        <td><?php echo $q[2]; ?>%</td>
 											      </tr>
-
+														<?php
+															}
+														?>
 											    </tbody>
 											  </table>
 

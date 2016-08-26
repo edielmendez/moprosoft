@@ -35,31 +35,52 @@ class Modelos extends CI_Controller {
    	}
    }
 
+	 public function truncateFloat($number, $digitos)
+	{
+		$raiz = 10;
+		$multiplicador = pow ($raiz,$digitos);
+		$resultado = ((int)($number * $multiplicador)) / $multiplicador;
+		return number_format($resultado, $digitos);
+ }
+
 	 public function resultado(){
    	if($this->session->userdata('logged_in')){
 
-			/*$data = $this->session->userdata('logged_in');
+			$data = $this->session->userdata('logged_in');
 			$result = $this->modelo->getResultado($data['team_id']);
 
 			$Resultado = array();
 
-			$suma
+			$suma=0;
+			$contador=0;
+			$questionary=-1;
+			$name="Sin nombre";
+
 			 if($result){
 					foreach ($result as $row ) {
-						 $resultado = array(
-							 'name' => $row->name,
-							 'nivel_cobertura' => $row->nivel_cobertura,
-							 'media' => $row->media,
-							 'desviacion' => $row->desviacion
-						 );
-						 array_push($Resultado,$resultado);
+
+						if ($questionary!=$row->questionary_id) {
+							$questionary=$row->questionary_id;
+							if ($contador!=0) {
+								array_push($Resultado,array($name,$questionary,round($suma/$contador,0)));
+								$name=$row->name;
+								$suma=$row->nivel_cobertura;
+								$contador=1;
+							}elseif ($contador==0) {
+								$suma=$suma+$row->nivel_cobertura;
+								$contador++;
+							}
+						}else {
+							$name=$row->name;
+							$suma=$suma+$row->nivel_cobertura;
+							$contador++;
+						}
 					}
+					array_push($Resultado,array($name,$questionary,round($suma/$contador,0) ) );
 			 }
 
-			 $numPreguntas=sizeof($Resultado);*/
-
-
-   		$this->load->view('questionnaires_jefe/resultado');
+			$datos['cuestionarios']=$Resultado;
+   		$this->load->view('questionnaires_jefe/resultado',$datos);
    	}else{
    		//si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
@@ -311,6 +332,7 @@ class Modelos extends CI_Controller {
 							 $this->input->post("nombre"),
 							 $this->input->post("version"),
 							 $this->input->post("nivel"),
+							 $this->input->post("cp"),
 							 $this->input->post("trabajara")
 							 );
 			 }
@@ -339,6 +361,7 @@ class Modelos extends CI_Controller {
 	        $this->input->post("nombre"),
 	        $this->input->post("version"),
 	        $this->input->post("nivel"),
+					$this->input->post("cp"),
 	        $this->input->post("trabajara")
 	        );
 
@@ -372,12 +395,6 @@ class Modelos extends CI_Controller {
           redirect('Home', 'refresh');
         }
   	}
-
-
-
-
-
-
 
 }
 ?>

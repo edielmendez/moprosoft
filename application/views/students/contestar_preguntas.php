@@ -167,7 +167,7 @@
 																									<div class="col-xs-9">
 																										<span id="pre1"></span>
 																										<div id="pregunta1">
-																											<p style="text-align: justify;"><span ng-bind='numPregunta2'></span> ¿ <span ng-bind='preguntasFiltradas[0].question'></span> ?</p>
+																											<p style="text-align: justify;"><span ng-bind='numPregunta1'></span> ¿ <span ng-bind='preguntasFiltradas[0].question'></span> ?</p>
 																											<br><p style="color:gray;text-align: justify;"><span style="font-style: italic;" ng-bind='preguntasFiltradas[0].commentary'></span></p>
 																										</div>
 																									</div>

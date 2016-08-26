@@ -29,7 +29,7 @@ class Evaluacion extends CI_Controller {
 
          $data = $this->session->userdata('logged_in');
          if(strcmp($data['rol'],"ADMINISTRADOR")==0){
-            
+
 
             /*se obtienen todos los equipos creados hasta el momento
             */
@@ -56,7 +56,7 @@ class Evaluacion extends CI_Controller {
                             'id' => $row3->id,
                             'type' => $row3->type
                           );
-                          
+
                         }
                         $usuario = array(
 
@@ -81,10 +81,12 @@ class Evaluacion extends CI_Controller {
             /**
              * Se obtienen todos los procesos disponibles para ser aplicados
              */
+
             
             $result = $this->CuestionarioAdmin->getProcesosDisponibles();
             $procesos = array();
             $proceso = array();
+
             if($result){
                foreach ($result as $row ) {
 
@@ -125,6 +127,7 @@ class Evaluacion extends CI_Controller {
                              'id' => $row3->id,
                              'name' => $row3->name,
                            );
+
                         }
                         $proceso['equipo'] = $equipo;
 
@@ -135,19 +138,20 @@ class Evaluacion extends CI_Controller {
                    
                   array_push($procesos,$proceso);
                   
+
                }
             }
 
             /*se renderizan los datos a la vista*/
 
-            
+
             $datos_vista['equipos'] = $equipos;
             $datos_vista['procesos'] = $procesos;
 
             $this->load->view('evaluacion/index',$datos_vista);
 
          }else{//
-            redirect('Home', 'refresh');   
+            redirect('Home', 'refresh');
          }
 
 
@@ -199,8 +203,8 @@ class Evaluacion extends CI_Controller {
                   array_push($equipos,$equipo);
                }
             }
-            
-            
+
+
          }
       }
 
@@ -247,7 +251,7 @@ class Evaluacion extends CI_Controller {
                      $this->session->set_flashdata('message', $mensaje);
                      redirect('Evaluacion/');
                   }
-                  
+
                }
 
                $mensaje.="<div class='alert alert-info'>";
@@ -259,12 +263,12 @@ class Evaluacion extends CI_Controller {
          }else{
             //si no hay session se redirecciona la vista de login
             redirect('Home', 'refresh');
-         }  
+         }
       }else{
          //si no hay session se redirecciona la vista de login
          redirect('Home', 'refresh');
-      }  
-      
+      }
+
    }
 
    public function detalles($id){
@@ -282,6 +286,7 @@ class Evaluacion extends CI_Controller {
                     'name' => $row->name
                   );
                }
+
                
                
                ///obtenemos las fases asignados y terminados de este equipo
@@ -295,10 +300,9 @@ class Evaluacion extends CI_Controller {
                   $data_fase_completa_por_integrante = $this->CuestionarioAdmin->getPorcentajeDeAvanceDeFasePorUsuario($rowx->id);
                }*/
 
+
                $fases_terminadas = array();
                foreach ($records as $row) {
-
-
                   $data_fase= $this->Phase->getPhase($row->phase_objetive_id);
                   $fase;
                   foreach ($data_fase as $row2) {
@@ -334,7 +338,7 @@ class Evaluacion extends CI_Controller {
 
 
                }
-               
+
 
                ////fin del código para obtener datos de los cuestionarios completos
                ///
@@ -402,6 +406,13 @@ class Evaluacion extends CI_Controller {
                      }
 
 
+                       $cuestionario= array(
+                          'id' => $row2->id,
+                          'name' => $row2->name,
+                          'phase_objetive_id' => $row2->phase_objetive_id,
+                       );
+
+
                      /*obtenemos el total de preguntas que tiene este cuestionario**/
                      $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->phase_objetive_id);
                      
@@ -462,12 +473,13 @@ class Evaluacion extends CI_Controller {
                   }
                }
                
+
                $datos['equipo'] = $equipo;
                $datos['fases'] = $fases;
                $datos['fases_terminadas'] = $fases_terminadas;
                //$datos['estudiantes'] = $estudiantes;
                $this->load->view('evaluacion/detalles',$datos);
-              
+
             }else{
                redirect('Equipos/', 'refresh');
             }
@@ -512,9 +524,11 @@ class Evaluacion extends CI_Controller {
             }
             $fase['proceso'] = $proceso;
 
+
             //obtenenos el modelo de este cuestionario
             
             $aux2 = $this->CuestionarioAdmin->getModeloById($proceso['model_id']);
+
             if($aux2){
                $modelo;
                foreach ($aux2 as $row3) {
@@ -534,8 +548,9 @@ class Evaluacion extends CI_Controller {
             
                
             
+
             }
-               
+
          }
 
          //obtenemos los resultado de la tabla calificacion_questionary de este cuestionario
@@ -564,17 +579,21 @@ class Evaluacion extends CI_Controller {
          $fase['resultados'] = $resultados;
 
          //retornamos los datos en formato json
+
          
          echo json_encode($fase);
          
          
 
-            
 
 
 
 
-         
+
+
+
+
+
 
       }else{
          redirect('Home/', 'refresh');
@@ -717,8 +736,8 @@ class Evaluacion extends CI_Controller {
    }
 
 
-   
-   
+
+
 
 }
  ?>

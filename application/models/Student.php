@@ -34,9 +34,9 @@ class Student extends CI_Model
     return $consulta->num_rows();
   }
 
-  public function addCalificacion($team_id,$questionary_id,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$nivel,$media,$desviacion)
+  public function addCalificacion($team_id,$questionary_id,$question_id,$siempre,$usualmente,$aveces,$rara,$nunca,$nivel,$media,$desviacion,$valor)
   {
-    $result=$this->db->query("INSERT INTO calificacion_questionary VALUES(NULL,'$team_id','$questionary_id','$question_id','$siempre','$usualmente','$aveces','$rara','$nunca','$nivel','$media','$desviacion');");
+    $result=$this->db->query("INSERT INTO calificacion_questionary VALUES(NULL,'$team_id','$questionary_id','$question_id','$siempre','$usualmente','$aveces','$rara','$nunca','$nivel','$media','$desviacion','$valor');");
     if($result==true){
       return 0;
     }else{
@@ -44,6 +44,12 @@ class Student extends CI_Model
     }
   }
 
+  public function getCP($user,$equipo,$cuestionario)
+  {
+    $consulta=$this->db->query("SELECT model.cp FROM model,process,phase_objetive,questionary WHERE (questionary.id=$cuestionario) AND (questionary.phase_objetive_id=phase_objetive.id) AND (phase_objetive.process_id=process.id) AND (process.model_id=model.id) ");
+    $c= $consulta->row();
+    return $c->cp;
+  }
 
   public function updateAvanze($questionary,$user,$avanze)
   {

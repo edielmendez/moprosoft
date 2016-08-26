@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
-* 
+*
 */
 class CuestionarioAdmin extends CI_Model
 {
-	
+
 	function __construct()
 	{
 		# code...
@@ -17,7 +17,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -31,7 +31,7 @@ class CuestionarioAdmin extends CI_Model
 	public function getById($id){
 	   $consulta=$this->db->query("SELECT * FROM questionary WHERE id=$id");
 	   if($query -> num_rows() == 1){
-         
+
          return $query->result();
       }
       else{
@@ -46,7 +46,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() == 1){
-         
+
          return $query->result();
       }
       else{
@@ -61,7 +61,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() == 1){
-         
+
          return $query->result();
       }
       else{
@@ -76,7 +76,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() == 1){
-         
+
          return $query->result();
       }
       else{
@@ -91,7 +91,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() == 1){
-         
+
          return $query->result();
       }
       else{
@@ -106,7 +106,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -122,7 +122,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -137,13 +137,14 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
          return false;
       }
    }
+
 
    public function setAssignment($id_user,$id_fase,$id_equipo){
       $data = array(
@@ -158,6 +159,7 @@ class CuestionarioAdmin extends CI_Model
       $id_nuevo_asignacion = $this->db->insert('assignment', $data);
 
       return $id_nuevo_asignacion;
+
    }
 
 
@@ -169,7 +171,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -183,7 +185,7 @@ class CuestionarioAdmin extends CI_Model
       $this->db->where('team_id =',$id);
       $query = $this->db->get();
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -197,11 +199,11 @@ class CuestionarioAdmin extends CI_Model
       $this->db->where('phase_objetive_id',$id);
       $query = $this->db->get();
       //print_r($query);
-      
+
       //$this->output->enable_profiler(TRUE);
       //return;
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -217,7 +219,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -233,7 +235,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -249,7 +251,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -265,7 +267,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -281,7 +283,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -289,8 +291,10 @@ class CuestionarioAdmin extends CI_Model
       }
    }*/
 
+
    
    public function getResultadosEvaluation($id_fase,$id_equipo){
+
       $this->db->select('*');
       $this->db->from('calificacion_questionary');
       $this->db->where('team_id',$id_equipo);
@@ -413,7 +417,7 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
-         
+
          return $query->result();
       }
       else{
@@ -423,7 +427,7 @@ class CuestionarioAdmin extends CI_Model
    }
 
 
-   
+
 }
 
 ?>

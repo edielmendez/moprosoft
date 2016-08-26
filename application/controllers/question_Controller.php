@@ -36,16 +36,20 @@ class question_Controller extends CI_Controller {
    	if($this->session->userdata('logged_in')){
 			$result=$this->Question->getQuestions();
 			$questions = array();
+			$contador=1;
 			if($result){
 				 foreach ($result as $row ) {
+
 						$question = array(
 							'id' => $row->id,
+							'n' => $contador,
 							'question' => $row->question,
 							'commentary' => $row->commentary,
 							'answer_id' => $row->answer_id,
 							'questionary_id' => $row->questionary_id
 						);
 						array_push($questions,$question);
+						$contador++;
 				 }
 			}
 			echo json_encode($questions);
