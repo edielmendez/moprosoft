@@ -9,6 +9,7 @@ $(document).ready(function(){
     }).click(function(e) {
         e.preventDefault();
     });
+
     [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
 					new CBPFWTabs( el );
 				});
@@ -469,7 +470,7 @@ $( "#form_start_cuestionario" ).submit(function( event ) {
 
 /**
  ****************************************************************************
- * FUNCION PARA ESCOJER LOS EQUIPOS A LOS CUALES SE VAN EVALUAR             *
+ * FUNCION PARA ESCOJER LOS EQUIPOS A LOS CUALES SE VAN EVALUAR LOS PROCESOS*
  * **************************************************************************
  */
 
@@ -477,14 +478,17 @@ $( "#form_start_cuestionario" ).submit(function( event ) {
 $(document).on('click','.btn_apli_eva',function(){
 	var id = $(this).attr('id');
 	var ids = id.split('-')
-	id_cuestionario = ids[0];
+	id_proceso = ids[0];
 	id_equipo = ids[1];
-	$("#id_cuestionario").val(id_cuestionario);
+
+	//console.log("proceso : ",id_proceso,"equipo : ",id_equipo)
+	//return;
+	$("#id_proceso").val(id_proceso);
 
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getTeamsOnlyApplyForThisQuuestionary",
-	  	data: { id_cuestionario:id_cuestionario,id_equipo:id_equipo},
+	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getTeamsOnlyApplyForThisQuestionary",
+	  	data: { id_proceso:id_proceso,id_equipo:id_equipo},
 	  	success : showModalChooseTeamsApplyEvaluation
 	})
 	
@@ -495,8 +499,7 @@ $(document).on('click','.btn_apli_eva',function(){
 
 var showModalChooseTeamsApplyEvaluation = function(data){
 	var equipos = JSON.parse(data)
-	console.log(equipos);
-
+	
 	$("#form_equipos_apl_cuest").empty();
 	if (equipos.length == 0 ){
 		$("#form_equipos_apl_cuest").append("<h3><b>No hay equipos disponibles</b></h3>");
@@ -551,11 +554,11 @@ $(document).on('click','.radio_btn',function(){
  * *************************************************************************************************
  */
 
-$(document).on('click','.btnVerResultados',function(){
+$(document).one('click','.btnVerResultados',function(){
 	var id = $(this).attr('id');
 
 	var ids = id.split('-')
-	id_cuestionario = ids[0];
+	id_fase = ids[0];
 	id_equipo = ids[1];
 	$("#contenedor_principal").hide("slow");
 	
@@ -563,28 +566,30 @@ $(document).on('click','.btnVerResultados',function(){
 	$.ajax({
 	 	method: "POST",
 	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getResultadosEvaluation",
-	  	data: { id_cuestionario:id_cuestionario,id_equipo:id_equipo},
-	  	success : showResults,createChart
+	  	data: { id_fase:id_fase,id_equipo:id_equipo},
+	  	success : showResults
 	})
 });
 
 var showResults = function (data){
 	createChart(data);
 	var resultados = JSON.parse(data);
+	console.log(resultados)
 	var suma=0;
 	for (var i = 0; i < resultados.resultados.length; i++) {
 		suma+= parseInt(resultados.resultados[i].nivel_cobertura)
-		if (parseFloat(resultados.resultados[i].nivel_cobertura)> 85) {
+		if (resultados.resultados[i].valor === "fuerte") {
 			var html = "<tr class='punto_fuerte'>";
-			console.log("1-> :",resultados.resultados[i].nivel_cobertura )
+			//console.log("1-> :",resultados.resultados[i].nivel_cobertura )
 		}else{
-			if ((parseFloat(resultados.resultados[i].nivel_cobertura) <= 85) && (parseFloat(resultados.resultados[i].nivel_cobertura) > 50)) {
+			var html = "<tr class='punto_debil'>";
+			/*if ((parseFloat(resultados.resultados[i].nivel_cobertura) <= resultados.modelo.cp) && (parseFloat(resultados.resultados[i].nivel_cobertura) > 50)) {
 				var html = "<tr class='success'>";
-				console.log("2-> :",resultados.resultados[i].nivel_cobertura )
+				//console.log("2-> :",resultados.resultados[i].nivel_cobertura )
 			}else{
 				var html = "<tr class='punto_debil'>";
-				console.log("3-> :",resultados.resultados[i].nivel_cobertura )
-			}
+				//console.log("3-> :",resultados.resultados[i].nivel_cobertura )
+			}*/
 		}
 		//var html = "<tr>";
 			//html += "<td>"+resultados.resultados[i].question_id+"</td><td>"+resultados.resultados[i].S+"</td>";
@@ -598,7 +603,7 @@ var showResults = function (data){
 	}
 	console.log(suma);
 	$("#total_cobertura").append("<b>"+Math.round((suma/resultados.resultados.length)) + " % </b>");
-	$("#titulo_tabla").append(resultados.name)
+	$("#titulo_tabla").append("<strong>Fase :</strong>"+resultados.name + "<br><strong>Proceso : </strong>" + resultados.proceso.name)
 	$("#contenedor_secundario").show("slow");
 
 	console.log(resultados);
@@ -611,18 +616,19 @@ var createChart = function(data){
 	media_desviacion = [];
 	var color;
 	for (var i = 0; i < cuestionario.resultados.length; i++) {
-		if (cuestionario.resultados[i].nivel_cobertura <= 50) {
-			color = "#ef5350";
+		if (cuestionario.resultados[i].valor === "fuerte") {
+			color = "#42a5f5";
 		}else{
+			/*
 			if((cuestionario.resultados[i].nivel_cobertura > 50) && (cuestionario.resultados[i].nivel_cobertura < 86)){
 				color = "#26a69a";
 			}else{
 				color = "#42a5f5";
-			}
+			}*/
+			color = "#ef5350";
 		}
 		var pre = {
 			name:"P"+(i+1),
-
 			color:color,
 			y: parseFloat(cuestionario.resultados[i].nivel_cobertura),
 			drilldown:"media_desviacion"+i
@@ -672,7 +678,7 @@ var createChart = function(data){
 	        }
         },
         title: {
-            text: 'Porcentaje del nivel de cobertura alcanzado por pregunta del cuestionario '+cuestionario.name 
+            text: 'Porcentaje del nivel de cobertura de la Fase : '+cuestionario.name 
         },
         subtitle: {
             text: 'Click par ver su media y desviacion'
@@ -734,18 +740,110 @@ $(document).on('click','#btn_ver_graficas',function(){
 
 $(document).on('click','#btn_ver_resultados',function(){
 	$("#tercer_contenedor").slideUp("slow");
+	$("#cuarto_contenedor").hide("slow");
 	$("#contenedor_secundario").show("slow");
 });
 
+$("#btn_ver_grafica_kiviat").click(function(){
+	$("#tercer_contenedor").hide("slow");
+	id_equipo = $(this).attr('type');
+	console.log(id_equipo)
+	
+	$.ajax({
 
+		method: "POST",
+	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getPorcentajePorProceso",
+	  	data: { id_equipo:id_equipo},
+	    beforeSend: function(){
+	     	console.log("Enviando......")
+	    },
+	    success:drawChartKiviat
+	   // ......
+	});
+	
+	
+})
+
+
+/**
+ *************************************************
+ *FUNCION QUE DIBUJA LA GRAFICA KIVIAT           *
+ * ***********************************************
+ */
+
+var drawChartKiviat = function(data){
+	console.log(JSON.parse(data));
+	var procesos = JSON.parse(data);
+	var categorias = [];
+	var datos = [];
+	for (var i = 0; i < procesos.length; i++) {
+		categorias.push(procesos[i].name);
+		datos.push(parseFloat(procesos[i].nivel_cobertura));
+	}
+	$('#grafica_kiviat').highcharts({
+
+        chart: {
+            polar: true,
+            type: 'line'
+        },
+
+        title: {
+            text: 'Nivel de cobertura alcanzado por proceso'
+        },
+
+        pane: {
+            size: '80%'
+        },
+
+        xAxis: {
+            categories: categorias,
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        },
+        exporting: {
+            enabled: true
+        },
+
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f} %</b><br/>'
+        },
+
+        legend: {
+            align: 'right',
+            verticalAlign: 'top',
+            y: 70,
+            layout: 'vertical'
+        },
+
+        series: [{
+            name: 'Nivel de cobertura alcanzado',
+            data: datos,
+            pointPlacement: 'on'
+        }]
+
+    });
+	
+
+	
+
+
+    $("#cuarto_contenedor").show("slow");
+}
 
 
 $("#export2pdf").click(function(){
-		var chart = $('#grafica').highcharts();
-		chart.exportChart({
-		    type: 'application/pdf',
-		    filename: 'my-pdf'
-		});
+	var chart = $('#grafica').highcharts();
+	chart.exportChart({
+	    type: 'application/pdf',
+	    filename: 'grafia'
+	});
 });
 
 /**

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>EVALUACIÓN</title>
+	<title>EDITAR PREGUNTAS INDETERMINADAS</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
@@ -33,7 +33,14 @@
 
 	<style type="text/css">
 	
-	
+	input[type=radio]{
+		width: 20px;
+		height: 20px;
+	}
+
+	input[type='radio']:checked{
+		background-color: #d9534f;
+	}
 
 	</style>
 
@@ -91,7 +98,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="#">EVALUACIÓN</a>
+	                    <a class="navbar-brand" href="#">PREGUNTAS INDETERMINADAS</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -119,103 +126,68 @@
 	    			
 	    			echo $this->session->flashdata('message');
 	    			 ?>
+
+	    			 
 	    			
 	                
 	    		</div>
 	    	</div>
 
 	        <div class="content container">
+	        	<?php if (count($questions) == 0): ?>
+	        		<div class="row">
+	        			<div class="col-md-6">
+	        				<div class="well">
+	        					<h2>Todas las preguntas han sido corregidas</h2>
+	        					<a href="">Click aqui para volver</a>
+	        				</div>
+	        			</div>
+	        		</div>
+	        	<?php else: ?>
+	        		<?php foreach ($questions as $question): ?>
+	        		<div class="row">
+	        			<?php echo form_open('Evaluacion/change_valor_question'); ?>
+	        			
+	        			<div class="col-md-10">
+	        				<div class="card">
+	        					<div class="content">
+	        						<div class="panel panel-info">
+									    <div class="panel-heading">
+									    	<h3 class="panel-title"><?php echo $question['question']; ?></h3>
+									    </div>
+									  	<div class="panel-body">
+									  		<input type="hidden" name="id_fase" value="<?php echo $question['phase_objetive_id']; ?>">
+									  		<input type="hidden" name="id_equipo" value="<?php echo $id_equipo ?>">
+									  		<input type="hidden" name="id_pregunta" value="<?php echo $question['id'] ?>">
+									  		<div class="row">
+									  			<div class="col-md-3">
+									  				<input type="radio" name="pregunta" value="fuerte" class="radio-success" required="">
+									  				<label>Fortaleza</label>
+									  			</div>
+									  			<div class="col-md-3">
+									  				<input type="radio" name="pregunta" value="debil" class="radio-success" required="">
+									  				<label>Debilidad</label>
+									  			</div>
+									  		</div>
+									  	</div>
+									  	<div class="panel-footer">
+									  		<button class="btn" type="submit">Corregir</button>
+									  	</div>
+									</div>
+	        					</div>
+	        				</div>
+	        			</div>
+	        			</form>
+	        		</div>
+	        		<?php endforeach ?>
+	        	<?php endif ?>
 	        	
 	        	
-	        	<section>
-					<div class="tabs tabs-style-underline">
-						<nav>
-							<ul>
-								<li><a href="#section-bar-1" class="icon icon-home"><span>PROCESOS COMPLETOS LISTOS PARA SER APLICADOS</span></a></li>
-								<!--<li><a href="#section-bar-2" class="icon icon-tools"><span>ESTADISTICAS</span></a></li>-->
-							</ul>
-						</nav>
-						<div class="content-wrap">
-							<section id="section-bar-1">
-								
-								<div class="row">
-					        		<?php foreach ($procesos as $proceso): ?>
-				        			<div class="col-md-4">
-					        			<div class="panel panel-info">
-										    <div class="panel-heading">
-
-										        <h1 class="panel-title"><?php echo $proceso['datos']['name'] ?></h1>
-										    </div>
-											<div class="panel-body">
-											    <img src="<?php echo base_url() ?>/public/img/proceso.png">
-
-											</div>
-										    <div class="panel-footer"> 
-										  		<button type="button" class="btn btn-default btn_apli_eva" aria-label="Left Align" id="<?php echo $proceso['datos']['id'] ?>-<?php echo $proceso['equipo']['id'] ?>">
-												 	Aplicar
-												</button>
-												
-												<a href="#" rel="popover" data-popover-content="#myPopover<?php echo $proceso['datos']['id']  ?>" >Detalles</a>
-												<div id="myPopover<?php echo $proceso['datos']['id']  ?>" class="hide">
-													
-													
-													<h6>Modelo</h6><?php echo $proceso['modelo']['name'] ?>
-
-													<h6>Equipo que lo dio de alta</h6><?php echo $proceso['equipo']['name'] ?>
-													
-												</div>
-										  </div>
-										</div>
-					        		</div>
-					        		<?php endforeach ?>
-					        	</div>
-							</section>
-							<!--Seccion de seguimiento de los cuestionarios-->
-							<!--<section id="section-bar-2">
-								
-							</section>-->
-							
-						</div><!-- /content -->
-					</div><!-- /tabs -->
-				</section>
-	        	<?php //print_r($procesos) ?>
-	        	
-
-	        	
-	        	
-
-			    
 	            
 	        </div>
 
 
-	        <footer class="footer">
-	            <!--<div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>-->
-	        </footer>
+	       
 
 	    </div>
 	</div>
@@ -236,7 +208,7 @@
 	        	
 	        </div>
 	        
-	        <input type="hidden" name="id_proceso" value="" id="id_proceso">
+	        <input type="hidden" name="id_cuestionario" value="" id="id_cuestionario">
 	  
 	      </div>
 	      <div class="modal-footer">
