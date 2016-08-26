@@ -132,7 +132,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Cuestionarios</a><p class="navbar-brand" >/</p>
-										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index"><?php echo $_SESSION['Questionary_name'] ?></a>
+										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index"><?php echo $_SESSION['phase_objetive_name'] ?></a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -165,7 +165,7 @@
 											echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
 								?>
 								<?php
-									if ($_SESSION['Questionary_status']==0) {
+									if ($_SESSION['phase_objetive_status']==0) {
 										echo "<button  type=\"button\" class=\"btn btn-info btn-fill btn-wd\" data-toggle=\"modal\" data-target=\"#myModal\" data-title=\"Nueva Pregunta\">Nuevo</button>";
 									}
 								?>
@@ -190,7 +190,7 @@
                          <div class="card">
                              <div class="header">
                                  <h4 class="title">Preguntas</h4>
-                                 <p class="category">Cuestionario <?php echo $_SESSION['Questionary_name'] ?></p>
+                                 <p class="category">Cuestionario <?php echo $_SESSION['phase_objetive_name'] ?></p>
 																 <p class="category">Status:
 																	 <?php
 																		 if ($cuestionario['status']==0) {
@@ -213,7 +213,7 @@
 																							<td ng-if='bandera'>¿<span ng-bind='pregunta.question'></span>?</td>
 																						<?php
 
-																							if ($_SESSION['Questionary_status']==0) {
+																							if ($_SESSION['phase_objetive_status']==0) {
 																						?>
 																							<td ng-if='bandera'><a href="<?php echo base_url() ?>index.php/question_Controller/edit/{{pregunta.id}}" class="btn btn-info">Editar</a></td>
 																						<?php	}

@@ -174,9 +174,9 @@
                                   <div class="col-xs-12" style="text-align: right;">
                                     <?php
                                       if ($c['status']==0) {
-                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['questionary_id'].'">Contestar</a>';
+                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['phase_objetive_id'].'">Contestar</a>';
                                       }else {
-                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['questionary_id'].'">Reanudar</a>';
+                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Student_Controller/Contestar/'.$c['phase_objetive_id'].'">Reanudar</a>';
                                       }
                                     ?>
                                   </div>

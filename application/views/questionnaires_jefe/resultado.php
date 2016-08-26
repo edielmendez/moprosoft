@@ -50,7 +50,7 @@
 	                    </a>
 	                </li>
 									<li class="active">
-											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
 													<i class="ti-check"></i>
 													<p>Resultados</p>
 											</a>
@@ -114,38 +114,67 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
+
+								<?php
+									foreach($cuestionarios as $q){
+								?>
 								<div class="row">
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
 											<div class="header">
-													<h4 class="title">Resultados</h4>
+													<h4 class="title">Nivel de Cobertura:<?php echo $q[2]; ?>   <img src="<?php echo base_url() ?>public/img/bien.png" style="width:15px; height:25px" alt="Bien" /></h4>
 											</div>
 											<div class="content">
-												<table class="table">
-											    <thead>
-											      <tr>
-											        <th>Cuestionario</th>
-											        <th>CP</th>
-											      </tr>
-											    </thead>
-											    <tbody>
-														<?php
-															foreach($cuestionarios as $q){
-														?>
-											      <tr>
-											        <td><?php echo $q[0]; ?></td>
-											        <td><?php echo $q[2]; ?>%</td>
-											      </tr>
-														<?php
-															}
-														?>
-											    </tbody>
-											  </table>
-
+												<div class="row">
+													<div class="col-md-5">
+														<p>Modelo:<?php  echo $q[3]; ?></p>
+														<p>Proceso:<?php echo $q[4]; ?></p>
+														<p>Fase/Objetivo:<?php echo $q[0]; ?></p>
+														<p>Integrantes:</p>
+	                        </div>
+													<div class="col-md-5">
+														<p>Nivel de Cobertura Requirida:<?php echo $q[5]; ?>%</p>
+														<br><br><br>
+														<a class="btn btn-info btn-fill btn-wd" href="<?php echo base_url() ?>index.php/Modelos/Seguimiento/<?php echo $q[1]; ?>">Ver Seguimiento</a>
+														<a class="btn btn-primary btn-fill btn-wd" href="<?php echo base_url() ?>index.php/Modelos/Seguimiento/<?php echo $q[1]; ?>">Dar Seguimiento</a>
+	                        </div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<?php
+									}
+								?>
+
+
+
+								<div class="row">
+									<div class="col-md-12 col-xl-12">
+										<div class="card">
+											<div class="header">
+													<h4 class="title">Nivel de Cobertura:86%   <img src="<?php echo base_url() ?>public/img/mal.png" style="width:15px; height:25px" alt="Mal" /></h4>
+											</div>
+											<div class="content">
+												<div class="row">
+													<div class="col-md-5">
+														<p>Modelo:</p>
+														<p>Proceso:</p>
+														<p>Fase/Objetivo:</p>
+														<p>Integrantes:</p>
+													</div>
+													<div class="col-md-5">
+														<p>Nivel de Cobertura Requirida:86%</p>
+														<br><br>
+														<h3>Bien !!</h3>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
 								</div>
 							</div>
 

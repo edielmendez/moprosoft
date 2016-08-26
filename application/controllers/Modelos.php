@@ -11,6 +11,7 @@ class Modelos extends CI_Controller {
 
       $this->load->model('modelo','',TRUE);
 			$this->load->model('Student','',TRUE);
+			$this->load->model('User','',TRUE);
 			$this->load->helper('url');
    }
 
@@ -47,8 +48,25 @@ class Modelos extends CI_Controller {
    	if($this->session->userdata('logged_in')){
 
 			$data = $this->session->userdata('logged_in');
-			$result = $this->modelo->getResultado($data['team_id']);
+			$equipos = $this->User->getByEquipo($data['team_id']);
+			$Equipos = array();
 
+			if($equipos){
+				 foreach ($equipos as $row ) {
+					 if ($row->id!=2) {
+						 $eq = array(
+  						 'id' => $row->id,
+  						 'username' => $row->username,
+  						 'name' => $row->name,
+  						 'grupo' => $row->grupo,
+  						 'team_id' => $row->team_id
+  					 );
+  					 array_push($Equipos,$eq);
+					 }
+				 }
+			}
+
+			$result = $this->modelo->getResultado($data['team_id']);
 			$Resultado = array();
 
 			$suma=0;
@@ -59,10 +77,13 @@ class Modelos extends CI_Controller {
 			 if($result){
 					foreach ($result as $row ) {
 
-						if ($questionary!=$row->questionary_id) {
-							$questionary=$row->questionary_id;
+						if ($questionary!=$row->phase_objetive_id) {
+							$questionary=$row->phase_objetive_id;
 							if ($contador!=0) {
-								array_push($Resultado,array($name,$questionary,round($suma/$contador,0)));
+								$nameModel = $this->modelo->getNameModel($questionary);
+								$nameProcess = $this->modelo->getNameProcess($questionary);
+								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
+								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp ) );
 								$name=$row->name;
 								$suma=$row->nivel_cobertura;
 								$contador=1;
@@ -76,16 +97,76 @@ class Modelos extends CI_Controller {
 							$contador++;
 						}
 					}
-					array_push($Resultado,array($name,$questionary,round($suma/$contador,0) ) );
+					$nameModel = $this->modelo->getNameModel($questionary);
+					$nameProcess = $this->modelo->getNameProcess($questionary);
+					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
+					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp) );
 			 }
 
 			$datos['cuestionarios']=$Resultado;
+			$datos['equipos']=$Equipos;
    		$this->load->view('questionnaires_jefe/resultado',$datos);
    	}else{
    		//si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
    	}
    }
+
+	 public function Seguimiento($id)
+	 {
+		 if($this->session->userdata('logged_in')){
+			 $data = $this->session->userdata('logged_in');
+
+			 $result=$this->modelo->Calificacion($id,$data['team_id']);
+			 $Calificacion = array();
+			 $Phase=0;
+	 		 if($result){
+	 				foreach ($result as $row ) {
+						 $Phase=$row->phase_objetive_id;
+	 					 $cal = array(
+							 'id' => $row->id,
+	 						 'team_id' => $row->team_id,
+	 						 'phase_objetive_id' => $row->phase_objetive_id,
+							 'question' => $row->question,
+	 						 'question_id' => $row->question_id,
+							 'valor' => $row->valor
+	 					 );
+	 					 array_push($Calificacion,$cal);
+	 				}
+	 		 }
+			 $datos['actividades']=$Calificacion;
+			 $datos['Equipo']=$data['team_id'];
+			 $datos['Phase']=$Phase;
+			 $this->load->view('questionnaires_jefe/seguimiento',$datos);
+		 }else{
+			 redirect('login', 'refresh');
+		 }
+	 }
+
+	 public function terminarSeguimiento()
+	 {
+		 if($this->session->userdata('logged_in')){
+			 $data = $this->session->userdata('logged_in');
+
+			 $objDatos = json_decode(file_get_contents("php://input"));
+			 $result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff);
+			 echo $result;
+
+		 }else{
+			 redirect('login', 'refresh');
+		 }
+	 }
+
+	 public function SeguimientoPreguntasPriorizadas()
+	 {
+		 if($this->session->userdata('logged_in')){
+			 $data = $this->session->userdata('logged_in');
+
+		 }else{
+			 redirect('login', 'refresh');
+		 }
+	 }
+
 
 	 public function perfil(){
       if($this->session->userdata('logged_in')){
@@ -106,7 +187,7 @@ class Modelos extends CI_Controller {
 	 public function actividad(){
 			if($this->session->userdata('logged_in')){
 				$data = $this->session->userdata('logged_in');
-				$result = $this->Student->getQuestionary($data['id'],$data['team_id']);
+				$result = $this->Student->getPhases($data['id'],$data['team_id']);
 
 				$Questionary = array();
 				$nuevos=0;
@@ -122,7 +203,7 @@ class Modelos extends CI_Controller {
 								 'id' => $row->id,
 								 'name' => $row->name,
 								 'user_id' => $row->user_id,
-								 'questionary_id' => $row->questionary_id,
+								 'phase_objetive_id' => $row->phase_objetive_id,
 								 'status' => $row->status,
 								 'team_id' => $row->status
 							 );
@@ -132,7 +213,7 @@ class Modelos extends CI_Controller {
 
 				 //historial
 
-	 			 $result2 = $this->Student->Questionary_Historial($data['id'],$data['team_id']);
+	 			 $result2 = $this->Student->Phase_Historial($data['id'],$data['team_id']);
 
 	 			 $Questionary2 = array();
 	 				if($result2){
@@ -160,7 +241,7 @@ class Modelos extends CI_Controller {
 	 public function Contestar($id)
 	 {
 		 if($this->session->userdata('logged_in')){
-			 $result = $this->Student->Questionary($id);
+			 $result = $this->Student->Phase($id);
 			 $Questionary= array();
 			 if($result){
 					foreach ($result as $row ) {
@@ -168,8 +249,8 @@ class Modelos extends CI_Controller {
 						 $questionary = array(
 							 'id' => $row->id,
 							 'name' => $row->name,
-							 'phase_objetive_id' => $row->phase_objetive_id,
-							 'status' => $row->status
+							 'status' => $row->status,
+							 'process_id' => $row->process_id
 						 );
 						 array_push($Questionary,$questionary);
 					}
@@ -186,7 +267,7 @@ class Modelos extends CI_Controller {
 								'question' => $row->question,
 								'commentary' => $row->commentary,
 								'answer_id' => $row->answer_id,
-								'questionary_id' => $row->questionary_id,
+								'phase_objetive_id' => $row->phase_objetive_id,
 								'res' => $row->answer_id
 							);
 							array_push($Question,$question);

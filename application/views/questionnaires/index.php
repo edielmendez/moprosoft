@@ -200,7 +200,8 @@
                                           </div>
                                       </div>
                                   </div>
-																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Cuestionario">Nuevo</button><br><br>
+																	<br><br>
+																	<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Cuestionario">Nuevo</button><br><br-->
                           </div>
                       </div>
                   </div>
@@ -222,8 +223,7 @@
                                     <p ng-bind="cuestionario.name" ></p>
                                   </div>
                                   <div ng-if='cuestionario.status==0' class="col-xs-12" style="text-align: right;">
-                                    <br>
-                                      <a href="<?php echo base_url() ?>index.php/questionary_Controller/edith/{{cuestionario.id}}">Editar</a>
+                                    <br><br>
                                   </div>
 																	<div class="col-xs-12" style="text-align: left;">
 																		<div ng-if='cuestionario.status==1'>

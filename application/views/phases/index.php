@@ -185,13 +185,10 @@
                                       <div class="col-md-4">
                                           <div class="form-group">
                                               <label>Proceso</label>
-
 																								<select class="form-control" id="proceso" name="proceso" ng-model="proceso"  ng-change="cargarProcess()">
 																									<option value="Todos" selected>Todos</option>
 																									<option ng-repeat="proceso in process" value="{{proceso.id}}">{{proceso.name}}</option>
 	                                              </select>
-
-
                                           </div>
                                       </div>
                                   </div>
@@ -200,7 +197,7 @@
                                   </div>
                                   <div class="clearfix"></div-->
                                   <br>
-																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br>
+																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br-->
 
                               </form>
                           </div>
@@ -235,7 +232,7 @@
                                  <div class="footer">
                                      <hr/>
                                      <div class="stats">
-                                         <i class="ti-eye"></i><a href="#">Cuestionarios</a>
+                                         <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/question_Controller/Preguntas/{{fase.id}}">Cuestionario</a>
                                      </div>
                                  </div>
                              </div>
@@ -282,9 +279,6 @@
 <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
-
 <!--  Charts Plugin -->
 <script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
 
@@ -311,7 +305,7 @@
         	$(this).find('.modal-title').text(titleData);
     		});
 
-				//$('#proceso option[value="13"]').attr("selected", "selected");
+				$('#proceso option[value="Todos"]').attr("selected", "selected");
 
 	});
 </script>

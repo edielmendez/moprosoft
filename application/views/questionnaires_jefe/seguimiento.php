@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="seguimiento">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -17,6 +17,16 @@
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+  <link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
+  <!--link href="<?php echo base_url(); ?>public/css/bootstrap-datetimepicker.css" rel="stylesheet" /-->
+  <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
+  <script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
+  <!--script src="<?php echo base_url(); ?>public/js/moment-with-locales.js"></script>
+  <script src="<?php echo base_url(); ?>public/js/bootstrap-datetimepicker.js"></script-->
+
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -24,10 +34,39 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
+  <script>
+  $(document).ready(function() {
+    $(function() {
+      $("#from").datepicker({
+        onClose: function (selectedDate) {
+          if (selectedDate=="") {
+              var f= new Date();
+              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+            }else {
+              f = new Date(selectedDate);
+              f.setDate(f.getDate()+1);
+              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+            }
+          $("#to").datepicker("option", "minDate", selectedDate);
+        }, minDate: "0",changeMonth: true
+      });
 
+      $("#to").datepicker({
+        onClose: function (selectedDate) {
+          if (selectedDate!="") {
+            f = new Date(selectedDate);
+            f.setDate(f.getDate()-1);
+            selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+          }
+        $("#from").datepicker("option", "maxDate",selectedDate);
+        }, minDate: "0" , changeMonth: true
+      });
+    });
+  });
+  </script>
 
 </head>
-<body>
+<body ng-controller="seguimiento_Controller" >
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
@@ -43,14 +82,14 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li class="active">
+	                <li >
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
 	                        <i class="ti-world"></i>
 	                        <p>Actividad</p>
 	                    </a>
 	                </li>
-									<li>
-											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
+									<li class="active">
+											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
 													<i class="ti-check"></i>
 													<p>Resultados</p>
 											</a>
@@ -107,89 +146,108 @@
 	                              </ul>
 	                        </li>
 	                    </ul>
-
 	                </div>
 	            </div>
 	        </nav>
 
+
 	        <div class="content">
 	            <div class="container-fluid">
-                <div class="row">
-                  <?php
-                    foreach($cuestionarios as $c){
-                  ?>
-                    <div class="col-lg-3 col-sm-6" >
-                        <div class="card">
-                            <div class="content">
-                                <div class="row">
-                                  <div class="col-xs-3">
-                                    <?php
-                                      if ($c['status']==0) {
-                                        echo '<img src="'.base_url().'public/img/cuestionariovacio2.jpg" style="width:65px; height:70px" alt="Procesos" /><br><br>';
-                                      }else {
-                                        echo '<img src="'.base_url().'public/img/cuestionarioincompleto.png" style="width:65px; height:70px" alt="Procesos" /><br><br>';
-                                      }
-                                    ?>
-                                  </div>
-                                  <div class="col-xs-9">
-                                    <p><?php echo $c['name']?></p>
-                                  </div>
-                                  <div class="col-xs-12" style="text-align: right;">
-                                    <?php
-                                      if ($c['status']==0) {
-                                        echo '<a class="btn btn-info btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['phase_objetive_id'].'">Contestar</a>';
-                                      }else {
-                                        echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Modelos/Contestar/'.$c['phase_objetive_id'].'">Reanudar</a>';
-                                      }
-                                    ?>
-                                  </div>
-                                  <div class="col-xs-12" style="text-align: left;">
-                                  </div>
-                                </div>
-                                <div class="footer">
-                                    <hr/>
-                                    <div class="stats">
-                                        <i class="ti-info-alt"></i><?php
-                                          if ($c['status']==0) {
-                                            echo 'Conteste el Cuestionario';
-                                          }else {
-                                            echo 'Cuestionario Pendiente';
-                                          }
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Variables que se van a necesitar-->
+                <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+
+								<div class="row">
+									<div class="col-md-12 col-xl-12" >
+                    <h1>Plan de Acción</h1>
+										<div class="card">
+											<div class="header" id="cabezera">
+													<h4 class="title">Actividades</h4>
+											</div>
+											<div class="content" id="contenido">
+                        <div id="validacion">
+
                         </div>
-                    </div>
-                    <?php } ?>
-                </div>
-
-                <!--Historial de cuestionarios-->
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="card">
-                      <div class="header">
-                          <h4 class="title">Cuestionarios Resueltos</h4>
-                      </div>
-                      <div class="content table-responsive table-full-width"  >
-                        <table class="table table-striped">
-                          <tbody>
+												<table class="table">
+											    <thead>
+											      <tr>
+											        <th>Actividad</th>
+											        <th class="pnl_terminar">Priorizar</th>
+											      </tr>
+											    </thead>
+											    <tbody>
                             <?php
-                              foreach($historial as $c){
-                            ?>
-                            <tr>
-                              <td><?php echo $c['name']; ?></td>
-                            </tr>
+															foreach($actividades as $act){
+														?>
+											      <tr>
+											        <td><?php echo $act['question'] ?></td>
+											        <td class="pnl_terminar">
+                                <input  type="hidden" id="<?php echo $act['id'] ?>" value="<?php echo $act['question'] ?>"/>
+                                <!--id="<?php echo $act['id'] ?>"-->
+                                <input  type="checkbox" name="checkPriorizada" value="<?php echo $act['id'] ?>"/>
+                              </td>
+											      </tr>
                             <?php } ?>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-	            </div>
-	        </div>
+											    </tbody>
+											  </table>
 
+                          <div id="valFechas">
+
+                          </div>
+
+                          <div class="row" ng-if='btn_terminar'>
+                            <script>
+
+                              $(function() {
+                                $("#from").datepicker({
+                                  onClose: function (selectedDate) {
+                                    if (selectedDate=="") {
+                                        var f= new Date();
+                                        selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+                                      }else {
+                                        f = new Date(selectedDate);
+                                        f.setDate(f.getDate()+1);
+                                        selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+                                      }
+                                    $("#to").datepicker("option", "minDate", selectedDate);
+                                  }, minDate: "0",changeMonth: true
+                                });
+
+                                $("#to").datepicker({
+                                  onClose: function (selectedDate) {
+                                    if (selectedDate!="") {
+                                      f = new Date(selectedDate);
+                                      f.setDate(f.getDate()-1);
+                                      selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+                                    }
+                                  $("#from").datepicker("option", "maxDate",selectedDate);
+                                  }, minDate: "0" , changeMonth: true
+                                });
+                              });
+
+                            </script>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Fecha Inicial:</label>
+                                      <input type="text" id="from" name="from" class="form-control border-input" placeholder="Fecha Inicial">
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Fecha Final:</label>
+                                      <input type="text" id="to" name="to" class="form-control border-input" placeholder="Fecha Final">
+                                  </div>
+                              </div>
+                          </div>
+												<a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+                        <span ng-if='btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="terminar()" >Terminar</button><br><br></span>
+                        <span ng-if='!btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br></span>
+                        </div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
 
 	        <footer class="footer">
 	            <div class="container-fluid">
@@ -224,11 +282,9 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
+
+
 
 <!--  Charts Plugin -->
 <script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
