@@ -55,6 +55,19 @@ class Modelo extends CI_Model
 	    return $consulta->num_rows();
 		}
 
+		public function getSeguimiento($phase)
+		{
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
+			$c=$consulta->row();
+			return array($c->date_start,$c->date_end);
+		}
+
+		public function getPreguntasPriorizadas($phase)
+		{
+			$consulta=$this->db->query("SELECT * FROM tracing,calification_questionary_tracing,calificacion_questionary,question WHERE (tracing.phase_objetive_id=$phase) AND (tracing.id=calification_questionary_tracing.tracing_id) AND (calificacion_questionary.id=calification_questionary_tracing.calificacion_questionary_id) AND (question.id=calificacion_questionary.question_id) ");
+			return $consulta->result();
+		}
+
 		public function terminarSeguimiento($fase,$fi,$ff){
 			$data = array(
 	         'phase_objetive_id' => $fase,
@@ -85,6 +98,17 @@ class Modelo extends CI_Model
 		{
 			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
  	    return $consulta->result();
+		}
+
+		public function GuardarPriorizadas($tracing,$id,$activity)
+		{
+			$data = array(
+					 'calificacion_questionary_id' => $id,
+					 'tracing_id' => $tracing,
+					 'activity' => $activity
+				);
+			$id = $this->db->insert('calification_questionary_tracing', $data);
+			return $id;
 		}
 
 		public function getNameProcessPorcentaje($n)

@@ -114,57 +114,51 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<?php
-									foreach($cuestionarios as $q){
-								?>
 								<div class="row">
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
 											<div class="header">
-													<h4 class="title">Nivel de Cobertura Obtenida:
-													<?php
-														echo $q[2];
-														if ($q[2]>$q[5]) {
-															echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:15px; height:25px\" alt=\"Bien\" />";
-														}else {
-															echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:15px; height:25px\" alt=\"Mal\" />";
-														}
-													?>
-												  </h4>
+													<h4 class="title">Actividades</h4>
+                          <!--p class="category">En n dias termina el Plan de acción.</p-->
 											</div>
 											<div class="content">
 												<div class="row">
-													<div class="col-md-5">
-														<p>Modelo:<?php  echo $q[3]; ?></p>
-														<p>Proceso:<?php echo $q[4]; ?></p>
-														<p>Fase/Objetivo:<?php echo $q[0]; ?></p>
-														<p>Integrantes:
-															<?php
-															foreach ($equipos as $value) {
-																echo $value['username']." ";
-															}
-															?>
-														</p>
-	                        </div>
-													<div class="col-md-5">
-														<p>Nivel de Cobertura Requirida:<?php echo $q[5]; ?>%</p>
-														<br><br><br>
-														<?php
-														 if ($q[6]>0) {
-														 		echo "<a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a>";
-														 }else {
-														 		echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
-														 }
-														?>
-	                        </div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>N</th>
+                                <th>Actividad</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php
+                                $contador=1;
+                                foreach($preguntas as $p){
+                              ?>
+                              <tr>
+                                <td><?php echo $contador; $contador++;?></td>
+                                <td><?php echo $p['question'] ?></td>
+                              </tr>
+                              <?php } ?>
+                            </tbody>
+                          </table>
+                          <div class="col-md-6">
+                            <h3>Fecha Inicial:</h3>
+                            <h5><?php echo $fi ?></h5>
+                          </div>
+                          <div class="col-md-6">
+                            <h3>Fecha Final:</h3>
+                            <h5><?php echo $ff ?></h5>
+                          </div>
 												</div>
+                        <br><br>
+                        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+                        <br><br>
 											</div>
 										</div>
 									</div>
 								</div>
-								<?php
-									}
-								?>
+
 
 								</div>
 							</div>

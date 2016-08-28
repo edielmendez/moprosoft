@@ -44,6 +44,32 @@ class Modelos extends CI_Controller {
 		return number_format($resultado, $digitos);
  }
 
+	public function VerSeguimiento($phase)
+	{
+		if($this->session->userdata('logged_in')){
+
+			$fechas = $this->modelo->getSeguimiento($phase);
+			$result = $this->modelo->getPreguntasPriorizadas($phase);
+			$Preguntas=array();
+			if ($result) {
+				foreach ($result as $row) {
+					$pre = array(
+						'question' => $row->question
+					);
+					array_push($Preguntas,$pre);
+				}
+			}
+
+			$datos['fi']=$fechas[0];
+			$datos['ff']=$fechas[1];
+			$datos['preguntas']=$Preguntas;
+			$this->load->view('questionnaires_jefe/verSeguimiento',$datos);
+		}else{
+			//si no hay session se redirecciona la vista de login
+				redirect('login', 'refresh');
+		}
+	}
+
 	 public function resultado(){
    	if($this->session->userdata('logged_in')){
 
@@ -80,10 +106,11 @@ class Modelos extends CI_Controller {
 						if ($questionary!=$row->phase_objetive_id) {
 							$questionary=$row->phase_objetive_id;
 							if ($contador!=0) {
+								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
 								$nameModel = $this->modelo->getNameModel($questionary);
 								$nameProcess = $this->modelo->getNameProcess($questionary);
 								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp ) );
+								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento) );
 								$name=$row->name;
 								$suma=$row->nivel_cobertura;
 								$contador=1;
@@ -97,10 +124,11 @@ class Modelos extends CI_Controller {
 							$contador++;
 						}
 					}
+					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
 					$nameModel = $this->modelo->getNameModel($questionary);
 					$nameProcess = $this->modelo->getNameProcess($questionary);
 					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp) );
+					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento) );
 			 }
 
 			$datos['cuestionarios']=$Resultado;
@@ -120,23 +148,30 @@ class Modelos extends CI_Controller {
 			 $result=$this->modelo->Calificacion($id,$data['team_id']);
 			 $Calificacion = array();
 			 $Phase=0;
+			 $terminado_proceso=0;
 	 		 if($result){
 	 				foreach ($result as $row ) {
 						 $Phase=$row->phase_objetive_id;
-	 					 $cal = array(
-							 'id' => $row->id,
-	 						 'team_id' => $row->team_id,
-	 						 'phase_objetive_id' => $row->phase_objetive_id,
-							 'question' => $row->question,
-	 						 'question_id' => $row->question_id,
-							 'valor' => $row->valor
-	 					 );
-	 					 array_push($Calificacion,$cal);
+						 if ($row->valor=='indeterminada') {
+						 	$terminado_proceso=1;
+						 }
+						 if ($row->valor=='debil') {
+							 $cal = array(
+								'id' => $row->id,
+								'team_id' => $row->team_id,
+								'phase_objetive_id' => $row->phase_objetive_id,
+								'question' => $row->question,
+								'question_id' => $row->question_id,
+								'valor' => $row->valor
+							);
+							array_push($Calificacion,$cal);
+						 }
 	 				}
 	 		 }
 			 $datos['actividades']=$Calificacion;
 			 $datos['Equipo']=$data['team_id'];
 			 $datos['Phase']=$Phase;
+			 $datos['valor']=$terminado_proceso;
 			 $this->load->view('questionnaires_jefe/seguimiento',$datos);
 		 }else{
 			 redirect('login', 'refresh');
@@ -160,8 +195,13 @@ class Modelos extends CI_Controller {
 	 public function SeguimientoPreguntasPriorizadas()
 	 {
 		 if($this->session->userdata('logged_in')){
-			 $data = $this->session->userdata('logged_in');
+			$data = $this->session->userdata('logged_in');
+			$objDatos = json_decode(file_get_contents("php://input"));
 
+			foreach ($objDatos->preguntas as $value) {
+				$result=$this->modelo->GuardarPriorizadas($objDatos->id,$value->id,$value->activity);
+			}
+			echo "ok";
 		 }else{
 			 redirect('login', 'refresh');
 		 }

@@ -34,36 +34,6 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-  <script>
-  $(document).ready(function() {
-    $(function() {
-      $("#from").datepicker({
-        onClose: function (selectedDate) {
-          if (selectedDate=="") {
-              var f= new Date();
-              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-            }else {
-              f = new Date(selectedDate);
-              f.setDate(f.getDate()+1);
-              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-            }
-          $("#to").datepicker("option", "minDate", selectedDate);
-        }, minDate: "0",changeMonth: true
-      });
-
-      $("#to").datepicker({
-        onClose: function (selectedDate) {
-          if (selectedDate!="") {
-            f = new Date(selectedDate);
-            f.setDate(f.getDate()-1);
-            selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-          }
-        $("#from").datepicker("option", "maxDate",selectedDate);
-        }, minDate: "0" , changeMonth: true
-      });
-    });
-  });
-  </script>
 
 </head>
 <body ng-controller="seguimiento_Controller" >
@@ -98,19 +68,19 @@
 											<p><hr/></p>
 	                </li>
 	                <li >
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li>
-	                    <a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 	                        <i class="ti-book"></i>
 	                        <p>Cuestionarios</p>
 	                    </a>
@@ -150,101 +120,146 @@
 	            </div>
 	        </nav>
 
-
 	        <div class="content">
 	            <div class="container-fluid">
-                <!-- Variables que se van a necesitar-->
-                <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+                <!-- ///////////////////////////////////////////////////////////////////////////////7 -->
+                <?php
+                  //la fase aun no es finalizada por el administrador
+                  if ($valor==1) {
+                  ?>
 
-								<div class="row">
-									<div class="col-md-12 col-xl-12" >
-                    <h1>Plan de Acción</h1>
-										<div class="card">
-											<div class="header" id="cabezera">
-													<h4 class="title">Actividades</h4>
-											</div>
-											<div class="content" id="contenido">
-                        <div id="validacion">
-
+                  <!-- Variables que se van a necesitar-->
+                  <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+                  <div class="row">
+                    <div class="col-md-12 col-xl-12" >
+                      <h1>Plan de Acción</h1>
+                      <div class="card">
+                        <div class="header" id="cabezera">
+                            <h4 class="title">Oops !!!</h4>
                         </div>
-												<table class="table">
-											    <thead>
-											      <tr>
-											        <th>Actividad</th>
-											        <th class="pnl_terminar">Priorizar</th>
-											      </tr>
-											    </thead>
-											    <tbody>
-                            <?php
-															foreach($actividades as $act){
-														?>
-											      <tr>
-											        <td><?php echo $act['question'] ?></td>
-											        <td class="pnl_terminar">
-                                <input  type="hidden" id="<?php echo $act['id'] ?>" value="<?php echo $act['question'] ?>"/>
-                                <!--id="<?php echo $act['id'] ?>"-->
-                                <input  type="checkbox" name="checkPriorizada" value="<?php echo $act['id'] ?>"/>
-                              </td>
-											      </tr>
-                            <?php } ?>
-											    </tbody>
-											  </table>
+                        <div class="content">
+                            <div class="row">
+                                <br>
+                                <div class="col-md-12">
+                                  <p>
+                                    El cuestionario aún se encuentra en revisión, para mayor información contacte con el Administrador.
+                                  </p>
+                                </div>
+                            </div>
+                          <br><br>
+                          <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                          <div id="valFechas">
+                  <?php
+                  }
+                  ?>
+
+
+                  <!-- ///////////////////////////////////////////////////////////////////////////////7 -->
+                  <?php
+                  //Si la fase ya fue finalizada por el administrador
+                  if ($valor==0) {
+                  ?>
+                  <!-- Variables que se van a necesitar-->
+                  <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+                  <div class="row">
+                    <div class="col-md-12 col-xl-12" >
+                      <h1>Plan de Acción</h1>
+                      <div class="card">
+                        <div class="header" id="cabezera">
+                            <h4 class="title">Actividades</h4>
+                            <p class="category">Seleccione las actividades con mayor prioridad.</p>
+                        </div>
+                        <div class="content" id="contenido">
+                          <div id="validacion">
 
                           </div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Actividad</th>
+                                <th class="pnl_terminar">Priorizar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php
+                                foreach($actividades as $act){
+                              ?>
+                              <tr id="o<?php echo $act['id'] ?>">
+                                <td><?php echo $act['question'] ?></td>
+                                <td class="pnl_terminar">
+                                  <input  type="hidden" id="<?php echo $act['id'] ?>" value="<?php echo $act['question'] ?>"/>
+                                  <input  type="checkbox" id="m<?php echo $act['id'] ?>" name="checkPriorizada" value="<?php echo $act['id'] ?>"/>
+                                </td>
+                              </tr>
+                              <?php } ?>
+                            </tbody>
+                          </table>
 
-                          <div class="row" ng-if='btn_terminar'>
-                            <script>
+                            <div id="valFechas">
 
-                              $(function() {
-                                $("#from").datepicker({
-                                  onClose: function (selectedDate) {
-                                    if (selectedDate=="") {
-                                        var f= new Date();
-                                        selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-                                      }else {
+                            </div>
+
+                            <div class="row" ng-if='btn_terminar'>
+                              <script>
+
+                                $(function() {
+                                  $("#from").datepicker({
+                                    onClose: function (selectedDate) {
+                                      if (selectedDate=="") {
+                                          var f= new Date();
+																					f.setDate(f.getDate()+1);
+                                          selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+                                        }else {
+                                          f = new Date(selectedDate);
+                                          f.setDate(f.getDate()+1);
+                                          selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+                                        }
+                                      $("#to").datepicker("option", "minDate", selectedDate);
+                                    }, minDate: "0",changeMonth: true
+                                  });
+
+                                  $("#to").datepicker({
+                                    onClose: function (selectedDate) {
+                                      if (selectedDate!="") {
                                         f = new Date(selectedDate);
-                                        f.setDate(f.getDate()+1);
+                                        f.setDate(f.getDate()-1);
                                         selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
                                       }
-                                    $("#to").datepicker("option", "minDate", selectedDate);
-                                  }, minDate: "0",changeMonth: true
+                                    $("#from").datepicker("option", "maxDate",selectedDate);
+                                    }, minDate: "0" , changeMonth: true
+                                  });
                                 });
 
-                                $("#to").datepicker({
-                                  onClose: function (selectedDate) {
-                                    if (selectedDate!="") {
-                                      f = new Date(selectedDate);
-                                      f.setDate(f.getDate()-1);
-                                      selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-                                    }
-                                  $("#from").datepicker("option", "maxDate",selectedDate);
-                                  }, minDate: "0" , changeMonth: true
-                                });
-                              });
-
-                            </script>
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      <label>Fecha Inicial:</label>
-                                      <input type="text" id="from" name="from" class="form-control border-input" placeholder="Fecha Inicial">
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      <label>Fecha Final:</label>
-                                      <input type="text" id="to" name="to" class="form-control border-input" placeholder="Fecha Final">
-                                  </div>
-                              </div>
+                              </script>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fecha Inicial:</label>
+                                        <input type="text" id="from" name="from" class="form-control border-input" placeholder="Fecha Inicial">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fecha Final:</label>
+                                        <input type="text" id="to" name="to" class="form-control border-input" placeholder="Fecha Final">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                          <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+                          <span ng-if='btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="terminar()" >Terminar</button><br><br></span>
+                          <span ng-if='!btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br></span>
                           </div>
-												<a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
-                        <span ng-if='btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="terminar()" >Terminar</button><br><br></span>
-                        <span ng-if='!btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br></span>
                         </div>
-											</div>
-										</div>
-									</div>
+                      </div>
+                    </div>
+
+                  <?php
+                  }
+                  ?>
 
 								</div>
 							</div>
