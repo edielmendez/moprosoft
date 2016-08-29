@@ -59,7 +59,7 @@
 	                    </a>
 	                </li>
 									<li class="active">
-											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
 													<i class="ti-check"></i>
 													<p>Resultados</p>
 											</a>

@@ -79,7 +79,7 @@ class Modelos extends CI_Controller {
 
 			if($equipos){
 				 foreach ($equipos as $row ) {
-					 if ($row->id!=2) {
+					 if ($row->rol_id!=2) {
 						 $eq = array(
   						 'id' => $row->id,
   						 'username' => $row->username,
@@ -104,17 +104,19 @@ class Modelos extends CI_Controller {
 					foreach ($result as $row ) {
 
 						if ($questionary!=$row->phase_objetive_id) {
-							$questionary=$row->phase_objetive_id;
+
 							if ($contador!=0) {
 								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
 								$nameModel = $this->modelo->getNameModel($questionary);
 								$nameProcess = $this->modelo->getNameProcess($questionary);
 								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
 								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento) );
+								$questionary=$row->phase_objetive_id;
 								$name=$row->name;
 								$suma=$row->nivel_cobertura;
 								$contador=1;
 							}elseif ($contador==0) {
+								$questionary=$row->phase_objetive_id;
 								$suma=$suma+$row->nivel_cobertura;
 								$contador++;
 							}
@@ -254,12 +256,14 @@ class Modelos extends CI_Controller {
 				 //historial
 
 	 			 $result2 = $this->Student->Phase_Historial($data['id'],$data['team_id']);
-
+				 //print_r($result2);
 	 			 $Questionary2 = array();
 	 				if($result2){
 	 					 foreach ($result2 as $row2 ) {
 	 							$questionary2 = array(
-	 								'name' => $row2->name
+	 								'model' => $row2->model,
+									'process' => $row2->process,
+									'phase' => $row2->phase
 	 							);
 	 							array_push($Questionary2,$questionary2);
 	 					 }

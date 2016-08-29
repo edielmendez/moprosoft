@@ -23,7 +23,9 @@ class Student_Controller extends CI_Controller {
 				if($result){
 					 foreach ($result as $row ) {
 							$questionary = array(
-								'name' => $row->name
+								'phase' => $row->phase,
+								'process' => $row->process,
+								'model' => $row->model,
 							);
 							array_push($Questionary,$questionary);
 					 }
@@ -45,6 +47,7 @@ class Student_Controller extends CI_Controller {
 
     $data = $this->session->userdata('logged_in');
     $result = $this->Student->getPhases($data['id'],$data['team_id']);
+
     $Questionary = array();
     $nuevos=0;
     $pendientes=0;
@@ -66,8 +69,6 @@ class Student_Controller extends CI_Controller {
            array_push($Questionary,$questionary);
         }
      }
-
-		 print_r($Questionary);
 
      $datos_vista['cuestionarios'] = $Questionary;
      $datos_vista['nuevo'] = $nuevos;
@@ -236,6 +237,8 @@ class Student_Controller extends CI_Controller {
 				echo "Ocurrio un error al gurdar los datos";
 			}
 	 }
+
+
 
 	 public function calificar($user,$equipo,$cuestionario)
 	 {

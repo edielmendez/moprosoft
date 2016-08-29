@@ -33,10 +33,10 @@ class Process extends CI_Model
 	  return $consulta->result();
   }
 
-  public function add($nombre){
+  public function add($nombre,$descripcion){
     $model=$_SESSION['modelsessionid'];
 		if ($this->validate($nombre)) {
-			$consulta=$this->db->query("INSERT INTO process VALUES(NULL,'$nombre',0,'$model');");
+			$consulta=$this->db->query("INSERT INTO process VALUES(NULL,'$nombre','$descripcion',0,'$model');");
 			if($consulta==true){
 				return 0;
 			}else{
@@ -49,11 +49,11 @@ class Process extends CI_Model
 	 }
 
 
-   public function update($id,$nombre){
+   public function update($id,$nombre,$descripcion){
 
    if ( $this->validate($nombre) ) {
      $consulta=$this->db->query("
-         UPDATE process SET name='$nombre' WHERE id=$id;
+         UPDATE process SET name='$nombre',description='$descripcion' WHERE id=$id;
          ");
      if($consulta==true){
          return 0;

@@ -53,10 +53,14 @@ app.controller('seguimiento_Controller', function($scope, $http) {
   var validarFechaMayorAHoy=function(fi,ff ) {
     var valuesInicio=fi.split("/");
     var valuesFinal=ff.split("/");
+    console.log("Despues del split fi:"+valuesInicio);
+    console.log("Despues del split ff:"+valuesFinal);
     var hoy = new Date();
-    var inicio=new Date(valuesInicio[2],valuesInicio[1],valuesInicio[0]);
-    var final=new Date(valuesFinal[2],valuesFinal[1],valuesFinal[0]);
-
+    var inicio=new Date(valuesInicio[2],valuesInicio[0],valuesInicio[1]);
+    var final=new Date(valuesFinal[2],valuesFinal[0],valuesFinal[1]);
+    console.log("hoy:"+hoy);
+    console.log("inicio:"+hoy);
+    console.log("final:"+hoy);
     if (inicio>=hoy && final>hoy) {
       console.log("no estan alteradas");
       return 1;

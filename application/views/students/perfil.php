@@ -39,7 +39,7 @@
 											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
+                    <form action="<?php echo base_url() ?>index.php/Question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">

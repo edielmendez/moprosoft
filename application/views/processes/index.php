@@ -37,13 +37,19 @@
 											<h4 class="modal-title">Nuevo Modelo</h4>
 									</div>
 									<div class="modal-body">
-                    <form  action="<?php echo base_url() ?>index.php/process_Controller/save" method="post">
+                    <form  action="<?php echo base_url() ?>index.php/Process_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nombre</label>
                                     <input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" >
                                 </div>
+                            </div>
+														<div class="col-md-12">
+															<div class="form-group">
+															  <label for="comment">Descripción:</label>
+															  <textarea name="description"  id="description" class="form-control border-input" placeholder="Descripcion del Modelo" rows="3" ></textarea>
+															</div>
                             </div>
                         </div>
 												<div class="modal-footer">
@@ -92,19 +98,19 @@
 											<p><hr/></p>
 									</li>
 	                <li class="active">
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li>
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -123,7 +129,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/process_Controller/index">Procesos</a>
+	                    <a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Process_Controller/index">Procesos</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -176,10 +182,12 @@
                                     </div>
                                     <div class="col-xs-10">
                                       <p><?php echo $fase['name'] ?></p>
+																			<p style="color:gray"><?php echo $fase['description'] ?></p>
                                     </div>
+
                                     <div class="col-xs-12" style="text-align: right;">
                                       <br>
-                                        <a href="<?php echo base_url(); ?>index.php/process_Controller/edit/<?php echo $fase['id']; ?>">Editar</a>
+                                        <a href="<?php echo base_url(); ?>index.php/Process_Controller/edit/<?php echo $fase['id']; ?>">Editar</a>
                                         <br>
                                     </div>
                                   </div>
@@ -196,26 +204,6 @@
 											}
 											?>
                   </div>
-
-	                <div class="row">
-
-
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
-	                </div>
 	            </div>
 	        </div>
 

@@ -44,6 +44,7 @@ class phase_Controller extends CI_Controller {
 						$phase = array(
 							'id' => $row->id,
 							'name' => $row->name,
+							'status' => $row->status,
 							'process_id' => $row->process_id
 						);
 						array_push($phases,$phase);

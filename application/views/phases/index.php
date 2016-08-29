@@ -104,19 +104,19 @@
 											<p><hr/></p>
 									</li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li  class="active">
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li>
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -135,7 +135,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
+												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Phase_Controller/index">Fases</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -225,14 +225,14 @@
                                    </div>
                                    <div class="col-xs-12" style="text-align: right;">
                                      <br>
- 																			  <a href="<?php echo base_url(); ?>index.php/phase_Controller/edit/{{fase.id}}" >Editar</a>
+ 																			  <a href="<?php echo base_url(); ?>index.php/Phase_Controller/edit/{{fase.id}}" >Editar</a>
                                        <br>
                                    </div>
                                  </div>
                                  <div class="footer">
                                      <hr/>
                                      <div class="stats">
-                                         <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/question_Controller/Preguntas/{{fase.id}}">Cuestionario</a>
+                                         <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/Question_Controller/Preguntas/{{fase.id}}">Cuestionario</a>
                                      </div>
                                  </div>
                              </div>

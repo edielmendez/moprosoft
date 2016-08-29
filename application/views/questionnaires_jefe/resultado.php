@@ -90,7 +90,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Home/index">Inicio</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="<?php echo base_url() ?>index.php/Modelos/resultado">Resultado</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -121,7 +121,7 @@
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
 											<div class="header">
-													<h4 class="title">Nivel de Cobertura Obtenida:
+													<h4 class="title">Nivel de Cobertura obtenida por Fase/Objetivo:
 													<?php
 														echo $q[2];
 														if ($q[2]>$q[5]) {
@@ -135,9 +135,9 @@
 											<div class="content">
 												<div class="row">
 													<div class="col-md-5">
-														<p>Modelo:<?php  echo $q[3]; ?></p>
-														<p>Proceso:<?php echo $q[4]; ?></p>
-														<p>Fase/Objetivo:<?php echo $q[0]; ?></p>
+														<p>Modelo: <b><?=$q[3]; ?></b> </p>
+														<p>Proceso: <b> <?=$q[4]; ?></b></p>
+														<p>Fase/Objetivo:<?=$q[0]; ?></p>
 														<p>Integrantes:
 															<?php
 															foreach ($equipos as $value) {

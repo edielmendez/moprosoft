@@ -39,7 +39,7 @@
 											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
+                    <form action="<?php echo base_url() ?>index.php/Question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -65,8 +65,8 @@
 		-->
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+	                <a href="<?php echo base_url(); ?>index.php/Student_Controller/index" class="simple-text">
+	                    Inicio
 	                </a>
 	            </div>
 
@@ -110,6 +110,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                </div>
+									<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio</a>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
 	                        <li class="dropdown">

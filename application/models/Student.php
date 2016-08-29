@@ -7,7 +7,7 @@ class Student extends CI_Model
 
   public function getPhases($id,$team)
   {
-    $consulta=$this->db->query("SELECT phase_objetive.id,phase_objetive.name,assignment.user_id,assignment.phase_objetive_id,assignment.status,assignment.team_id  FROM phase_objetive,assignment WHERE (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.phase_objetive_id=phase_objetive.id) AND (assignment.status!=100)  ");
+    $consulta=$this->db->query("SELECT phase_objetive.id,phase_objetive.name,assignment.user_id,assignment.phase_objetive_id,assignment.status,assignment.team_id  FROM phase_objetive,assignment WHERE (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.status!=100) AND (assignment.phase_objetive_id=phase_objetive.id)  ");
     if($consulta->num_rows() >= 1){
       return $consulta->result();
     }else{
@@ -71,7 +71,7 @@ class Student extends CI_Model
 
   public function Phase_Historial($id,$team)
   {
-    $consulta=$this->db->query("SELECT phase_objetive.name FROM phase_objetive,assignment WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.phase_objetive_id=phase_objetive.id)");
+    $consulta=$this->db->query("SELECT phase_objetive.name as phase,process.name as process,model.name as model FROM phase_objetive,assignment,process,model WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.phase_objetive_id=phase_objetive.id) AND (phase_objetive.process_id=process.id) AND (process.model_id=model.id)  ");
     return $consulta->result();
   }
 

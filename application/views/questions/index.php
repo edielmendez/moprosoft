@@ -40,7 +40,7 @@
 											<h4 class="modal-title"></h4>
 									</div>
 									<div class="modal-body">
-                    <form action="<?php echo base_url() ?>index.php/question_Controller/save" method="post">
+                    <form action="<?php echo base_url() ?>index.php/Question_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -100,19 +100,19 @@
 											<p><hr/></p>
 									</li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li   class="active">
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -132,7 +132,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index">Cuestionarios</a><p class="navbar-brand" >/</p>
-										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/questionary_Controller/index"><?php echo $_SESSION['phase_objetive_name'] ?></a>
+										  <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Questionary_Controller/index"><?php echo $_SESSION['phase_objetive_name'] ?></a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -173,7 +173,7 @@
 								<?php
 									if ($cuestionario['status']==0) {
 										if ($numPreguntas>4) {
-											echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/question_Controller/Liberar">Liberar</a><br><br>';
+											echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Question_Controller/Liberar">Liberar</a><br><br>';
 										}else {
 											echo '<br><br><p>Para la liberación de un cuestionario se necesitan 5 preguntas como mínimo.</p>';
 										}

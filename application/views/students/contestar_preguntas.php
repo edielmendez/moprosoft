@@ -42,8 +42,8 @@
 		-->
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+	                <a href="<?php echo base_url(); ?>index.php/Student_Controller/index" class="simple-text">
+	                    Inicio
 	                </a>
 	            </div>
 
@@ -92,6 +92,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio</a><p class="navbar-brand" >/</p>
                       <?php
                         foreach($cuestionario as $c){
                           echo "<p class=\"navbar-brand\">Cuestionario: $c[name]</p>";
