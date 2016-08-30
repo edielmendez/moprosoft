@@ -154,7 +154,7 @@ class Modelos extends CI_Controller {
 	 		 if($result){
 	 				foreach ($result as $row ) {
 						 $Phase=$row->phase_objetive_id;
-						 if ($row->valor=='indeterminada') {
+						 if ($row->valor=='indeterminado') {
 						 	$terminado_proceso=1;
 						 }
 						 if ($row->valor=='debil') {
@@ -175,6 +175,36 @@ class Modelos extends CI_Controller {
 			 $datos['Phase']=$Phase;
 			 $datos['valor']=$terminado_proceso;
 			 $this->load->view('questionnaires_jefe/seguimiento',$datos);
+		 }else{
+			 redirect('login', 'refresh');
+		 }
+	 }
+
+
+   public function getSeguimiento($id)
+	 {
+		 if($this->session->userdata('logged_in')){
+			 $data = $this->session->userdata('logged_in');
+
+			 $result=$this->modelo->Calificacion($id,$data['team_id']);
+			 $Calificacion = array();
+	 		 if($result){
+	 				foreach ($result as $row ) {
+						 if ($row->valor=='debil') {
+							 $cal = array(
+								'id' => $row->id,
+								'team_id' => $row->team_id,
+								'phase_objetive_id' => $row->phase_objetive_id,
+								'question' => $row->question,
+								'question_id' => $row->question_id,
+								'valor' => $row->valor
+							);
+							array_push($Calificacion,$cal);
+						 }
+	 				}
+	 		 }
+       echo json_encode($Calificacion);
+
 		 }else{
 			 redirect('login', 'refresh');
 		 }

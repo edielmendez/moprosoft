@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="seguimiento">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -17,6 +17,10 @@
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -27,7 +31,7 @@
 
 
 </head>
-<body>
+<body ng-controller="inicio_Controller">
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
@@ -153,7 +157,8 @@
 														 if ($q[6]>0) {
 														 		echo "<a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a>";
 														 }else {
-														 		echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
+														 echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
+														 //echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
 														 }
 														?>
 	                        </div>

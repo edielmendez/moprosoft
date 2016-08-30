@@ -330,7 +330,7 @@ class Student_Controller extends CI_Controller {
 				if ($desviacion<0.8) {
 					$PuntoDebilFuerte='fuerte';
 				}elseif ($desviacion>=0.8) {
-					$PuntoDebilFuerte='indeterminada';
+					$PuntoDebilFuerte='indeterminado';
 				}
 		 }
 		 echo "Punto es : $PuntoDebilFuerte";

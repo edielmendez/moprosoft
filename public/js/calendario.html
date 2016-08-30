@@ -1,0 +1,98 @@
+<!-- Variables que se van a necesitar-->
+<input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+<div class="row">
+  <div class="col-md-12 col-xl-12" >
+    <h1>Plan de Acción</h1>
+    <div class="card">
+      <div class="header" id="cabezera">
+          <h4 class="title">Actividades</h4>
+          <p class="category">Seleccione las actividades con mayor prioridad.</p>
+      </div>
+      <div class="content" id="contenido">
+        <div id="validacion">
+
+        </div>
+        <table id="mitabla" class="table">
+          <thead>
+            <tr>
+              <th>Actividad</th>
+              <th>Priorizar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="p in preguntas" id="o{{p.id}}"  >
+              <td id="pre{{p.id}}">{{p.question}}</td>
+              <td>
+                <input class="pnl_cambio" type="hidden" id="{{p.id}}" value="{{p.question}}"/>
+                <input class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
+                <!--div ng-if='bandera'>
+                  <a href="#" ng-click="subir(p.id)"><img  src="<?php echo base_url() ?>public/img/arriba.png" style="width:30px; height:30px" alt="Subir" /></a>
+                  <a href="#" ng-click="bajar(p.id)"><img  src="<?php echo base_url() ?>public/img/abajo.png" style="width:30px; height:30px" alt="Bajar" /></a>
+                </div-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+        <span ng-if='btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="terminar()" >Terminar</button><br><br></span>
+        <span ng-if='!btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    $(document).ready(function(){
+        $("#mitabla tbody").sortable();
+    });
+</script>
+
+<div id="valFechas">
+
+</div>
+
+<div class="row" ng-if='btn_terminar'>
+  <script>
+
+    $(function() {
+      $("#from").datepicker({
+        onClose: function (selectedDate) {
+          if (selectedDate=="") {
+              var f= new Date();
+              f.setDate(f.getDate()+1);
+              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+            }else {
+              f = new Date(selectedDate);
+              f.setDate(f.getDate()+1);
+              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+            }
+          $("#to").datepicker("option", "minDate", selectedDate);
+        }, minDate: "0",changeMonth: true
+      });
+
+      $("#to").datepicker({
+        onClose: function (selectedDate) {
+          if (selectedDate!="") {
+            f = new Date(selectedDate);
+            f.setDate(f.getDate()-1);
+            selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+          }
+        $("#from").datepicker("option", "maxDate",selectedDate);
+        }, minDate: "0" , changeMonth: true
+      });
+    });
+
+  </script>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Fecha Inicial:</label>
+            <input type="text" id="from" name="from" class="form-control border-input" placeholder="Fecha Inicial">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Fecha Final:</label>
+            <input type="text" id="to" name="to" class="form-control border-input" placeholder="Fecha Final">
+        </div>
+    </div>
+</div>

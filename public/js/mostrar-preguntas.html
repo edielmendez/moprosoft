@@ -1,0 +1,38 @@
+<!-- Variables que se van a necesitar-->
+<input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+<div class="row">
+  <div class="col-md-12 col-xl-12" >
+    <h1>Plan de Acción</h1>
+    <div class="card">
+      <div class="header" id="cabezera">
+          <h4 class="title">Actividades</h4>
+          <p class="category">Seleccione las actividades con mayor prioridad.</p>
+      </div>
+      <div class="content" id="contenido">
+        <div id="validacion">
+
+        </div>
+        <table id="mitabla" class="table">
+          <thead>
+            <tr>
+              <th>Actividad</th>
+              <th>Priorizar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="p in preguntas" id="o{{p.id}}"  >
+              <td id="pre{{p.id}}">{{p.question}}</td>
+              <td>
+                <input class="pnl_cambio" type="hidden" id="{{p.id}}" value="{{p.question}}"/>
+                <input class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+        <a  class="btn btn-info btn-fill btn-wd"  ng-click="siguiente()">Siguiente</a>
+        <a  href="#preguntas_priorizadas" class="btn btn-info btn-fill btn-wd" >aver</a>
+        </div>
+      </div>
+    </div>
+  </div>
