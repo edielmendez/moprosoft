@@ -12,14 +12,24 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
 
-  <link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
   <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
-	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+  <link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?php echo base_url(); ?>public/css/fullcalendar.css"/>
+
+  <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/gcal.js"></script>
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -207,8 +217,7 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+
 
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>

@@ -1,4 +1,16 @@
 <!-- Variables que se van a necesitar-->
+<style type="text/css">
+
+input[type=checkbox]{
+  width: 18px;
+  height: 18px;
+}
+
+input[type='checkbox']:checked{
+  background-color: #d9534f;
+}
+
+</style>
 <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
 <div class="row">
   <div class="col-md-12 col-xl-12" >
@@ -29,9 +41,8 @@
             </tr>
           </tbody>
         </table>
-        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
+        <button type="button" ng-click='atras()'class="btn btn-defaul btn-wd">Atrás</button>
         <a  class="btn btn-info btn-fill btn-wd"  ng-click="siguiente()">Siguiente</a>
-        <a  href="#preguntas_priorizadas" class="btn btn-info btn-fill btn-wd" >aver</a>
         </div>
       </div>
     </div>

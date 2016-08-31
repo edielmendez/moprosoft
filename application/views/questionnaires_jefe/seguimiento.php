@@ -12,24 +12,24 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
 
-  <link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
-  <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
-  <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
+	<link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
+	<link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
-  <link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
-  <!--link href="<?php echo base_url(); ?>public/css/bootstrap-datetimepicker.css" rel="stylesheet" /-->
-  <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-  <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
-  <script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?php echo base_url(); ?>public/css/fullcalendar.css"/>
 
-	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
-	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
-  <!--script src="<?php echo base_url(); ?>public/js/moment-with-locales.js"></script>
-  <script src="<?php echo base_url(); ?>public/js/bootstrap-datetimepicker.js"></script-->
-
+	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/gcal.js"></script>
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -126,11 +126,6 @@
 	        <div class="content">
 	            <div class="container-fluid">
 
-				      <a href="#"><i class="fa fa-home"></i> Home</a>
-				      <a href="#priorizadas"><i class="fa fa-shield"></i> About</a>
-				      <a href="#priorizadas"><i class="fa fa-comment"></i> Contact</a>
-							<a  href="#preguntas_priorizadas" class="btn btn-info btn-fill btn-wd" >aver</a>
-
                 <!-- ///////////////////////////////////////////////////////////////////////////////7 -->
                 <?php
                   //la fase aun no es finalizada por el administrador
@@ -172,6 +167,7 @@
                   //Si la fase ya fue finalizada por el administrador
                   if ($valor==0) {
                   ?>
+									
 									<div id="main">
 										<div ng-view></div>
 									</div>
@@ -184,29 +180,6 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <!--nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div-->
 	            </div>
 	        </footer>
 

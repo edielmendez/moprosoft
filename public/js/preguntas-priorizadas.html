@@ -6,8 +6,8 @@
     <h1>Plan de Acción</h1>
     <div class="card">
       <div class="header" id="cabezera">
-          <h4 class="title">Actividades</h4>
-          <p class="category">Seleccione las actividades con mayor prioridad.</p>
+          <h4 class="title">Ordene las Actividades</h4>
+          <p class="category">Click sobre la pregunta y arrástrela al principio o al final, según su prioridad.</p>
       </div>
       <div class="content" id="contenido">
         <div id="validacion">
@@ -17,22 +17,38 @@
           <thead>
             <tr>
               <th>Actividad</th>
-              <th>Orden</th>
             </tr>
           </thead>
-          <tbody>
-            <tr ng-repeat="p in priorizadas" id="o{{p.id}}"  >
-              <td id="pre{{p.id}}">{{p.question}}</td>
-              <td>
-                <input class="pnl_cambio" type="hidden" id="{{p.id}}" value="{{p.question}}"/>
-                <input class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
+          <tbody id="preOrdenadas" draggable="true">
+            <tr ng-repeat="p in priorizadas" >
+              <td class="mover">
+              {{p.question}}
+              <input type="hidden" id="ordenPreguntas{{p.id}}" value="{{p.id}}">
               </td>
             </tr>
           </tbody>
         </table>
-        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
-        <span ng-if='btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="terminar()" >Terminar</button><br><br></span>
-        <span ng-if='!btn_terminar'><button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br></span>
+        <style type="text/css">
+        .mover:hover{
+          font-weight: bold;
+          /*cursor:pointer; cursor: hand*/
+          cursor: move;
+        }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#mitabla tbody").sortable({
+                  //revert: true,
+                  //opacity: 0.6,
+                  //cursor: 'move',
+                  //placeholder: "ui-state-highlight"
+                  placeholder: "highlight"
+                });
+                $( "#mitabla tbody" ).disableSelection();
+            });
+        </script>
+        <a href="#/" class="btn btn-defaul btn-wd" >Atrás</a>
+        <button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br>
         </div>
       </div>
     </div>
