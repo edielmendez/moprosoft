@@ -480,8 +480,12 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    if (localStorage.getItem("UltFechaAct")!=null) {
      $scope.FechaInicio =localStorage.getItem("UltFechaAct");
+     $scope.sumInicio=1;
+     $scope.sumFinal=2;
    }else {
      $scope.FechaInicio =localStorage.getItem("fi") ;
+     $scope.sumInicio=0;
+     $scope.sumFinal=1;
    }
 
    $scope.FechaFinal =localStorage.getItem("ff") ;
@@ -531,11 +535,18 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    };
 
+  
    var y = new Date($scope.FechaInicio);
-   y.setDate(y.getDate()+1);
+   y.setDate(y.getDate()+$scope.sumFinal);
    var d = y.getDate();
    var m = y.getMonth()+1;
    var y = y.getFullYear();
+
+   var min = new Date($scope.FechaInicio);
+   min.setDate(min.getDate()+$scope.sumInicio);
+   var dd= min.getDate();
+   var mm = min.getMonth()+1;
+   var yy = min.getFullYear();
    //Configuracion fecha
    $(function() {
      var x = new Date($scope.FechaFinal);
@@ -554,7 +565,7 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
            }
          $("#to").datepicker("option", "minDate", selectedDate);
-       }, minDate: new Date($scope.FechaInicio), maxDate:x ,changeMonth: true
+       }, minDate: new Date(mm+'/'+dd+'/'+yy) , maxDate:x ,changeMonth: true
      });
 
 
@@ -568,7 +579,7 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
          }else {
            selectedDate= new Date(m+'/'+d+'/'+y);
          }
-       $("#from").datepicker("option", "minDate",selectedDate);
+       //$("#from").datepicker("option", "minDate",selectedDate);
      }, minDate: new Date(m+'/'+d+'/'+y) , maxDate: new Date($scope.FechaFinal),changeMonth: true
      });
 

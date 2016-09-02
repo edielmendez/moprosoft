@@ -8,12 +8,8 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
     var m = date.getMonth();
     var y = date.getFullYear();
 
-    var date2 = new Date();
-    date2.setDate(date2.getDate() +4);
-
      $scope.events = [];
 
-     /* event source that calls a function on every view switch */
      $scope.eventsF = function (start, end, timezone, callback) {
        var s = new Date(start).getTime() / 1000;
        var e = new Date(end).getTime() / 1000;
@@ -22,15 +18,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
        callback(events);
      };
 
-     $scope.calEventsExt = {
-        color: '#f00',
-        textColor: 'yellow',
-        events: [
-           {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-           {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-           {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-         ]
-     };
+
      /* alert on eventClick */
      $scope.alertOnEventClick = function( date, jsEvent, view){
          $scope.alertMessage = (date.title);
@@ -60,38 +48,64 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
      };
 
      $scope.index = function () {
-       /*$http.get(url+"Modelos/getActividades/"+$("#tracing").val() ).success(function(response){
+       $http.get(url+"Modelos/getActividades/"+$("#tracing").val() ).success(function(response){
          if (response) {
            ///////////////////////////////////////////////////////////////////////
            //otra clase customFeed
+           console.log(response);
            var newEvents = [];
            angular.forEach(response,function(event){
+              var inicio = new Date(event.fi);
+              inicio.setDate(inicio.getDate()+1);
+              var fin = new Date(event.ff);
+              fin.setDate(fin.getDate()+1);
+
               var clase=ActividadExistente(event.fi,event.ff);
+
               console.log(clase);
-              newEvents.push( {'title': event.activity,'start': new Date(event.fi),'end': new Date(event.ff),'className': [clase]});
+              newEvents.push( {'title': event.activity,'start':inicio,'end': fin,'className': [clase]});
             });
             angular.copy(newEvents, $scope.events);
 
           ///////////////////////////////////////////////////////////////////////
          }
-       });*/
+       });
      }
 
      var ActividadExistente = function (fi,ff) {
-       //{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}
        var hoy = new Date();
        var empezo= new Date(fi);
        var final = new Date(ff);
+       console.log("Convertir fi:"+empezo);
+       console.log("Convertir ff:"+final);
        if (hoy<=final && hoy>=empezo) {
-         $scope.fechaInicio=fi;
-         $scope.fechaFinal=ff;
-         console.log("Entro aki");
-         return "customFeed";
+        $scope.fechaInicio=fi;
+        $scope.fechaFinal=ff;
+        var aux = new Date();
+        aux.setDate(aux.getDate()+1);
+        console.log("hoy:"+aux);
+        console.log("final:"+final);
+        if (aux==final) {
+          console.log("entro en urgente");
+          return "urgente";
+        }
+        console.log("No entro");
+        return "marcha";
+
        }
-       console.log("Todo normal");
+
+       if (hoy>final ) {
+         return "pasado";
+       }
+
+       if (empezo>hoy) {
+         return "futuro";
+       }
+
+
        return "openSesame";
      }
 
-     $scope.eventSources = [$scope.events, $scope.eventsF];
+     $scope.eventSources = [$scope.events,$scope.eventsF];
 
 }]);

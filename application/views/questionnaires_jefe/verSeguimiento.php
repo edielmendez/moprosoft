@@ -39,9 +39,16 @@
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
 	<style type="text/css">
-		.highPriority,
-		.highPriority div,
-		.highPriority span {
+
+		.cuadro{
+			border-radius: 5px;
+			width: 20px;
+    	height: 15px;
+		}
+
+		.urgente,
+		.urgente div,
+		.urgente span {
 		 background-color: red; /* background color */
 		 border-color: white;     /* border color */
 		 color: white;           /* text color */
@@ -59,6 +66,14 @@
 		.marcha div,
 		.marcha span {
 		 background-color: green; /* background color */
+		 border-color: white;     /* border color */
+		 color: white;           /* text color */
+		}
+
+		.futuro,
+		.futuro div,
+		.futuro span {
+		 background-color: #33B5FF; /* background color */
 		 border-color: white;     /* border color */
 		 color: white;           /* text color */
 		}
@@ -178,7 +193,20 @@
 															</div>
 														</div>
                           </div>
+
                           <div class="col-md-12">
+														<div class="col-md-4"></div>
+														<div class="col-md-6">
+															<table>
+																<tr>
+																	<td align="center" style="padding-right: 20px; ">Anterior<div class="cuadro pasado "></div> </td>
+																	<td align="center" style="padding-right: 20px;">Actual<div class="cuadro marcha "></div> </td>
+																	<td align="center" style="padding-right: 20px;">Próximo<div class="cuadro futuro "></div> </td>
+																	<td align="center" style="padding-right: 20px;">Por terminar<div class="cuadro urgente "></div> </td>
+																</tr>
+															</table>
+														</div>
+														<div class="col-md-2"></div>
 														<br><br>
 														<div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
 											        Actividad: {{alertMessage}}
@@ -186,26 +214,6 @@
 											      <br>
 											      <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
                           </div>
-                          <!--table class="table">
-                            <thead>
-                              <tr>
-                                <th>N</th>
-                                <th>Actividad</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <?php
-                                //$contador=1;
-                                //foreach($preguntas as $p){
-                              ?>
-                              <tr>
-                                <td><?php echo $contador; $contador++;?></td>
-                                <td><?php echo $p['question'] ?></td>
-                              </tr>
-                              <?php //} ?>
-                            </tbody>
-                          </table-->
-
 												</div>
                         <br><br>
                         <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
