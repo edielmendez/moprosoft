@@ -17,14 +17,20 @@
           <a href="#/nuevo-evento" class="btn btn-info btn-fill btn-wd">Agregar Actividad</a>
         </div>
       </div>
-      <br><br>
-      <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
-        <h4>{{alertMessage}}</h4>
+      <br><br><br>
+      <div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+        Actividad: {{alertMessage}}
       </div>
-    <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
-      <br><br>
-      <a href="#/preguntas-priorizadas" class="btn btn-defaul btn-wd" >Atrás</a>
-      <button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Finalizar</button><br><br>
+      <br>
+      <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+      <br>
+      <div class="row">
+        <div class="col-md-12" id="validacion">
+        </div>
+      </div>
+      <br>
+      <a href="#/preguntas-priorizadas" class="btn btn-defaul btn-wd" >Cancelar</a>
+      <button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="finalizar()" >Finalizar</button><br><br>
     </div>
     </div>
   </div>

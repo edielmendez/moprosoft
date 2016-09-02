@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="verseguimiento">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -12,11 +12,25 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
 
-  <link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
-  <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
-  <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
+	<link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
+	<link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+	<link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?php echo base_url(); ?>public/css/fullcalendar.css"/>
+
+	<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/verSeguimiento_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-2.1.3.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/gcal.js"></script>
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -24,10 +38,35 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
+	<style type="text/css">
+		.highPriority,
+		.highPriority div,
+		.highPriority span {
+		 background-color: red; /* background color */
+		 border-color: white;     /* border color */
+		 color: white;           /* text color */
+		}
 
+		.pasado,
+		.pasado div,
+		.pasado span {
+		 background-color: gray; /* background color */
+		 border-color: white;     /* border color */
+		 color: white;           /* text color */
+		}
+
+		.marcha,
+		.marcha div,
+		.marcha span {
+		 background-color: green; /* background color */
+		 border-color: white;     /* border color */
+		 color: white;           /* text color */
+		}
+
+	</style>
 
 </head>
-<body>
+<body ng-controller="vercalendario_Controller" ng-init="index()">
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
@@ -122,8 +161,32 @@
                           <!--p class="category">En n dias termina el Plan de acción.</p-->
 											</div>
 											<div class="content">
+												<input type="hidden" name="tracing" id="tracing" value="<?=$tracing ?>">
 												<div class="row">
-                          <table class="table">
+
+													<div class="col-md-12">
+														<div class="col-md-6">
+															<div style="text-align:left">
+																<h3>Fecha Inicial:</h3>
+		                            <h5><?php echo $fi ?></h5>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div style="text-align:right">
+																<h3>Fecha Final:</h3>
+		                            <h5><?php echo $ff ?></h5>
+															</div>
+														</div>
+                          </div>
+                          <div class="col-md-12">
+														<br><br>
+														<div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+											        Actividad: {{alertMessage}}
+											      </div>
+											      <br>
+											      <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+                          </div>
+                          <!--table class="table">
                             <thead>
                               <tr>
                                 <th>N</th>
@@ -132,24 +195,17 @@
                             </thead>
                             <tbody>
                               <?php
-                                $contador=1;
-                                foreach($preguntas as $p){
+                                //$contador=1;
+                                //foreach($preguntas as $p){
                               ?>
                               <tr>
                                 <td><?php echo $contador; $contador++;?></td>
                                 <td><?php echo $p['question'] ?></td>
                               </tr>
-                              <?php } ?>
+                              <?php //} ?>
                             </tbody>
-                          </table>
-                          <div class="col-md-6">
-                            <h3>Fecha Inicial:</h3>
-                            <h5><?php echo $fi ?></h5>
-                          </div>
-                          <div class="col-md-6">
-                            <h3>Fecha Final:</h3>
-                            <h5><?php echo $ff ?></h5>
-                          </div>
+                          </table-->
+
 												</div>
                         <br><br>
                         <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>

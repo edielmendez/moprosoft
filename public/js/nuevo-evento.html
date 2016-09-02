@@ -9,51 +9,63 @@
     <div class="content" id="contenido">
       <!-- ////////////////////////////// -->
       <div id="nuevoEvento">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <h5>Actividad {{vista.num}}</h5>
-            </div>
-            <div class="card-block">
-              <blockquote class="card-blockquote">
-                <p>{{vista.question}}</p>
-              </blockquote>
-            </div>
-          </div>
-        </div>
+        <div class="row">
 
-        <div class="col-md-12">
-          <div id="valFechas"></div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Fecha Inicial:</label>
-                <input type="text" id="from" name="from" ng-model='vista.fi' class="form-control border-input" placeholder="Fecha Inicial">
+            <div class="col-md-8">
+              <div class="col-xs-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Actividad {{vista.num}}</h5>
+                  </div>
+                  <div class="card-block">
+                    <blockquote class="card-blockquote">
+                      <p>{{vista.question}}</p>
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div id="valFechas"></div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Fecha Inicial:</label>
+                    <input type="text" id="from" name="from" ng-model='vista.fi' class="form-control border-input" placeholder="Fecha Inicial">
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Fecha Final:</label>
+                    <input type="text" id="to" name="to" ng-model='vista.ff' class="form-control border-input" placeholder="Fecha Final">
+                </div>
+              </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Fecha Final:</label>
-                <input type="text" id="to" name="to" ng-model='vista.ff' class="form-control border-input" placeholder="Fecha Final">
+
+            <div class="col-md-4">
+              <h5>En Proceso</h5>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Act</th>
+                    <th>Empieza</th>
+                    <th>Termina</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="p in nuevoOrden" >
+                    <td>{{p.num}}</td>
+                    <td>{{p.fi}}</td>
+                    <td>{{p.ff}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+
         </div>
       </div>
       <div id="eventostodos">
 
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>N</th>
-            <th>Actividad</th>
-            <th>Empieza</th>
-            <th>Termina</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
       <!-- ////////////////////////////// -->
       <br><br>
       <a href="#/calendario" class="btn btn-defaul btn-wd" >Cancelar</a>

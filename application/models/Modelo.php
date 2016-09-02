@@ -59,13 +59,17 @@ class Modelo extends CI_Model
 		{
 			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
 			$c=$consulta->row();
-			return array($c->date_start,$c->date_end);
+			return array($c->date_start,$c->date_end,$c->id);
 		}
 
 		public function getPreguntasPriorizadas($phase)
 		{
-			$consulta=$this->db->query("SELECT * FROM tracing,calification_questionary_tracing,calificacion_questionary,question WHERE (tracing.phase_objetive_id=$phase) AND (tracing.id=calification_questionary_tracing.tracing_id) AND (calificacion_questionary.id=calification_questionary_tracing.calificacion_questionary_id) AND (question.id=calificacion_questionary.question_id) ");
-			return $consulta->result();
+			$consulta=$this->db->query("SELECT * FROM calification_questionary_tracing  WHERE tracing_id=$phase ");
+			if($consulta->num_rows() >= 1){
+				return $consulta->result();
+			}else{
+				return false;
+			}
 		}
 
 		public function terminarSeguimiento($fase,$fi,$ff){
@@ -100,12 +104,15 @@ class Modelo extends CI_Model
  	    return $consulta->result();
 		}
 
-		public function GuardarPriorizadas($tracing,$id,$activity)
+		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end)
 		{
 			$data = array(
 					 'calificacion_questionary_id' => $id,
 					 'tracing_id' => $tracing,
-					 'activity' => $activity
+					 'activity' => $activity,
+					 'orden' => $orden,
+					 'date_start' => $date_start,
+					 'date_end' => $date_end,
 				);
 			$id = $this->db->insert('calification_questionary_tracing', $data);
 			return $id;

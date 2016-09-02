@@ -49,7 +49,7 @@ class Modelos extends CI_Controller {
 		if($this->session->userdata('logged_in')){
 
 			$fechas = $this->modelo->getSeguimiento($phase);
-			$result = $this->modelo->getPreguntasPriorizadas($phase);
+			/*$result = $this->modelo->getPreguntasPriorizadas($phase);
 			$Preguntas=array();
 			if ($result) {
 				foreach ($result as $row) {
@@ -58,16 +58,35 @@ class Modelos extends CI_Controller {
 					);
 					array_push($Preguntas,$pre);
 				}
-			}
+			}*/
 
 			$datos['fi']=$fechas[0];
 			$datos['ff']=$fechas[1];
-			$datos['preguntas']=$Preguntas;
+			$datos['tracing']=$fechas[2];
 			$this->load->view('questionnaires_jefe/verSeguimiento',$datos);
 		}else{
 			//si no hay session se redirecciona la vista de login
 				redirect('login', 'refresh');
 		}
+	}
+
+	public function getActividades($tracing_id)
+	{
+		$result = $this->modelo->getPreguntasPriorizadas($tracing_id);
+		$Preguntas=array();
+		if ($result) {
+			foreach ($result as $row) {
+				$pre = array(
+					'activity' => $row->activity,
+					'orden' => $row->orden,
+					'fi' => $row->date_start,
+					'ff' => $row->date_end
+				);
+				array_push($Preguntas,$pre);
+			}
+		}
+
+		echo json_encode($Preguntas);
 	}
 
 	 public function resultado(){
@@ -231,7 +250,7 @@ class Modelos extends CI_Controller {
 			$objDatos = json_decode(file_get_contents("php://input"));
 
 			foreach ($objDatos->preguntas as $value) {
-				$result=$this->modelo->GuardarPriorizadas($objDatos->id,$value->id,$value->activity);
+				$result=$this->modelo->GuardarPriorizadas($objDatos->id,$value->id,$value->activity,$value->orden,$value->fi,$value->ff);
 			}
 			echo "ok";
 		 }else{

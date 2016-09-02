@@ -95,7 +95,16 @@ app.controller('inicio_Controller', ['$scope', 'serveData', '$http' ,function ($
       }
     });
 
+    if (typeof(Storage) !== "undefined") {
+      if (localStorage.getItem('phase')!=undefined) {
+        localStorage.removeItem('phase');
+      }
+      localStorage.setItem("phase",phase);
+    } else {
+        console.log("No se pudo guardar las preguntas.");
+    }
   }
+
 }]);
 
 app.controller('seguimiento_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
@@ -165,7 +174,14 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
        var contenido=$("#preOrdenadas").html();
        buscaOrden(contenido);
        guardarFechas($('#from').val(),$('#to').val());
+       borrarAvanze();
        window.location.href ='#/calendario';
+     }
+   }
+
+   var borrarAvanze = function() {
+     if (localStorage.getItem('UltFechaAct')!=undefined) {
+       localStorage.removeItem('UltFechaAct');
      }
    }
 
@@ -247,29 +263,78 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
 
 }]);
 
-app.controller('calendario_Controller', ['$scope', '$compile','$timeout','serveData', '$http' ,function ($scope, $compile,$timeout,uiCalendarConfig,serveData,$http) {
+app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout','serveData' ,function ($scope, $http,$compile,$timeout,serveData,uiCalendarConfig) {
   //Extraemos las preguntas priorizadas guardados en memoria
+  $scope.bandera=false;
+  $scope.tiempo=5;
   if (localStorage.getItem("nuevoOrden")!=null) {
       $scope.nuevoOrden = JSON.parse( localStorage.getItem("nuevoOrden") );
-      console.log( $scope.nuevoOrden );
+      $.each($scope.nuevoOrden, function(i, item) {
+        if (item.fi==''){
+          $scope.bandera=true;
+        }
+       });
    }
 
    if (localStorage.getItem("fi")!=null) {
        $scope.FechaInicio =localStorage.getItem("fi") ;
-       console.log($scope.FechaInicio);
     }
 
     if (localStorage.getItem("ff")!=null) {
         $scope.FechaFinal =localStorage.getItem("ff") ;
-        console.log($scope.FechaFinal);
      }
-
 
      var date = new Date();
      var d = date.getDate();
      var m = date.getMonth();
      var y = date.getFullYear();
 
+     console.log( JSON.stringify($scope.nuevoOrden) );
+     $scope.finalizar=function () {
+       var phase= localStorage.getItem("phase");
+       if (!$scope.bandera) {
+         //Proceso para guardar la información
+         console.log( JSON.stringify($scope.nuevoOrden) );
+         guaradarEnDB(phase,$scope.FechaInicio,$scope.FechaFinal);
+       }else {
+         $("#validacion").empty();
+         $("#validacion").append('<p style="color:red">No ha terminado de asignarle el tiempo a todas las Actividades.</p>');
+       }
+     };
+
+     function tiempoContador() {
+       $scope.tiempo--;
+       $("#tiempoSpan").empty();
+       $("#tiempoSpan").append($scope.tiempo);
+       if ($scope.tiempo==0) {
+           window.location.href = url+'Modelos/resultado';
+       }
+     }
+
+     var guaradarEnDB = function (phase,fi,ff) {
+       var asignacion = {'phase':phase,'fi':fi,'ff':ff };
+       $http.post(url+"Modelos/terminarSeguimiento", asignacion ).success(function(data){
+         console.log("Se creo el seguimiento de forma correcta:"+data);
+         //Se inserta las preguntas priorizadas
+         var pre={ 'id':data, 'preguntas':[] };
+         $.each($scope.nuevoOrden,function (i,item) {
+           pre.preguntas.push( {'id': item.id, 'activity': item.question, 'orden': item.num, 'fi': item.fi, 'ff': item.ff} );
+         });
+
+         $http.post(url+"Modelos/SeguimientoPreguntasPriorizadas", pre ).success(function(data){
+           console.log("Se insertaron las preguntas priorizadas de forma correcta:"+data);
+           $("#contenido").empty();
+           $("#cabezera").empty();
+           $("#contenido").append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Seguimiento Realizado</h1><h3>Tu plan de acción se puso en marcha.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
+           setInterval(tiempoContador, 1000);
+         }).error(function(data){
+           console.log(data);
+         });
+
+       }).error(function(data){
+         console.log(data);
+       });
+     }
      /* event source that pulls from google.com */
 
      /* event source that contains custom events on the scope */
@@ -277,10 +342,12 @@ app.controller('calendario_Controller', ['$scope', '$compile','$timeout','serveD
 
      /* add custom event*/
      $scope.addEvent = function(titulo,fi,ff) {
+       var x = new Date(ff);
+       x.setDate(x.getDate()+1);
        $scope.events.push({
          'title': titulo,
          'start': new Date(fi),
-         'end': new Date(ff),
+         'end': x,
          'className': ['openSesame']
        });
      };
@@ -320,7 +387,7 @@ app.controller('calendario_Controller', ['$scope', '$compile','$timeout','serveD
      };
      /* alert on eventClick */
      $scope.alertOnEventClick = function( date, jsEvent, view){
-         $scope.alertMessage = (date.title + ' was clicked ');
+         $scope.alertMessage = (date.title);
      };
      /* alert on Drop */
       $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
@@ -398,27 +465,28 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
           return false;
         }
        });
-      console.log( $scope.nuevoOrden );
    };
 
    if (!$scope.bandera) {
      $('#nuevoEvento').hide();
-     $('#eventostodos').append('hola');
+     var cadena = '<table class=\"table\"><thead><tr><th>N</th><th>Actividad</th><th>Empieza</th><th>Termina</th></tr></thead><tbody>';
+     $.each($scope.nuevoOrden,function (i,item) {
+       cadena+='<tr><td>'+item.num+'</td><td>'+item.question+'</td><td>'+item.fi+'</td><td>'+item.ff+'</td></tr>';
+     });
+     cadena+='</tbody></table>';
+     $('#eventostodos').append(cadena);
 
    }
 
    if (localStorage.getItem("UltFechaAct")!=null) {
      $scope.FechaInicio =localStorage.getItem("UltFechaAct");
-     console.log("sacaste la fecha gusrdada");
    }else {
      $scope.FechaInicio =localStorage.getItem("fi") ;
-     console.log("tomaste la misma");
    }
 
    $scope.FechaFinal =localStorage.getItem("ff") ;
    var x = new Date(localStorage.getItem("ff"));
    $scope.FechaEspecial=x.setDate(x.getDate()-1);
-   console.log($scope.FechaEspecial);
 
    $scope.guardar= function () {
     if (serveData.validarFecha( $scope.vista.fi,$scope.vista.ff )==1) {
@@ -427,6 +495,7 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
       var fechafi=valuesInicio[2]+"/"+valuesInicio[0]+"/"+valuesInicio[1];
       var fechaff=valuesFinal[2]+"/"+valuesFinal[0]+"/"+valuesFinal[1];
       guardar_inicio(fechaff);
+      console.log("Se gurdo fi:"+fechafi+"   ff:"+fechaff);
        $.each($scope.nuevoOrden, function(i, item) {
          if (item.fi==''){
            item.fi=fechafi;
@@ -434,8 +503,8 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
            return false;
          }
         });
-        window.location.href ='#/calendario';
         guardar_en_memoria();
+        window.location.href ='#/calendario';
      }
    };
 
@@ -462,6 +531,11 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    };
 
+   var y = new Date($scope.FechaInicio);
+   y.setDate(y.getDate()+1);
+   var d = y.getDate();
+   var m = y.getMonth()+1;
+   var y = y.getFullYear();
    //Configuracion fecha
    $(function() {
      var x = new Date($scope.FechaFinal);
@@ -469,7 +543,8 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
      $("#from").datepicker({
        onClose: function (selectedDate) {
          if (selectedDate=="") {
-             selectedDate= new Date($scope.FechaInicio);
+             //selectedDate= new Date($scope.FechaInicio);
+             selectedDate= new Date(m+'/'+d+'/'+y);
              /*var f= new Date();
              f.setDate(f.getDate()+1);
              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();*/
@@ -491,10 +566,10 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
            f.setDate(f.getDate()-1);
            selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
          }else {
-           selectedDate= new Date($scope.FechaInicio);
+           selectedDate= new Date(m+'/'+d+'/'+y);
          }
        $("#from").datepicker("option", "minDate",selectedDate);
-     }, minDate: new Date($scope.FechaInicio) , maxDate: new Date($scope.FechaFinal),changeMonth: true
+     }, minDate: new Date(m+'/'+d+'/'+y) , maxDate: new Date($scope.FechaFinal),changeMonth: true
      });
 
    });
