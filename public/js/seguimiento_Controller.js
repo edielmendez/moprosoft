@@ -388,23 +388,37 @@ app.controller('calendario_Controller', ['$scope', '$compile','$timeout','serveD
 
 app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
 
+  $scope.bandera=false;
   if (localStorage.getItem("nuevoOrden")!=null) {
       $scope.nuevoOrden = JSON.parse( localStorage.getItem("nuevoOrden") );
       $.each($scope.nuevoOrden, function(i, item) {
         if (item.fi==''){
           $scope.vista={'id':item.id,'num':item.num,'question':item.question,'fi':item.fi,'ff':item.ff};
+          $scope.bandera=true;
           return false;
         }
        });
       console.log( $scope.nuevoOrden );
    };
 
+   if (!$scope.bandera) {
+     $('#nuevoEvento').hide();
+     $('#eventostodos').append('hola');
+
+   }
+
    if (localStorage.getItem("UltFechaAct")!=null) {
      $scope.FechaInicio =localStorage.getItem("UltFechaAct");
+     console.log("sacaste la fecha gusrdada");
    }else {
      $scope.FechaInicio =localStorage.getItem("fi") ;
+     console.log("tomaste la misma");
    }
+
    $scope.FechaFinal =localStorage.getItem("ff") ;
+   var x = new Date(localStorage.getItem("ff"));
+   $scope.FechaEspecial=x.setDate(x.getDate()-1);
+   console.log($scope.FechaEspecial);
 
    $scope.guardar= function () {
     if (serveData.validarFecha( $scope.vista.fi,$scope.vista.ff )==1) {
@@ -412,7 +426,7 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
       var valuesFinal=$scope.vista.ff.split("/");
       var fechafi=valuesInicio[2]+"/"+valuesInicio[0]+"/"+valuesInicio[1];
       var fechaff=valuesFinal[2]+"/"+valuesFinal[0]+"/"+valuesFinal[1];
-      guardar_inicio(fechafi);
+      guardar_inicio(fechaff);
        $.each($scope.nuevoOrden, function(i, item) {
          if (item.fi==''){
            item.fi=fechafi;
@@ -448,15 +462,10 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    };
 
-  //Validacion de la fecha
-   $("#mitabla tbody").sortable({
-     placeholder: "highlight"
-   });
-   $( "#mitabla tbody" ).disableSelection();
    //Configuracion fecha
    $(function() {
-
-
+     var x = new Date($scope.FechaFinal);
+     x.setDate(x.getDate()-1);
      $("#from").datepicker({
        onClose: function (selectedDate) {
          if (selectedDate=="") {
@@ -470,7 +479,7 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
              selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
            }
          $("#to").datepicker("option", "minDate", selectedDate);
-       }, minDate: new Date($scope.FechaInicio), maxDate:new Date($scope.FechaFinal) ,changeMonth: true
+       }, minDate: new Date($scope.FechaInicio), maxDate:x ,changeMonth: true
      });
 
 
