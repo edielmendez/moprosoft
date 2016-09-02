@@ -1,18 +1,30 @@
 
-<!-- Variables que se van a necesitar-->
+<!--   ///////////////////////////////////////////////////////////////////////////////7          -->
 <input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
 <div class="row">
   <div class="col-md-12 col-xl-12" >
   <h1>Plan de Acción</h1>
     <div class="card">
     <div class="header" id="cabezera">
-      <h4 class="title">Ordene las Actividades</h4>
-      <p class="category">Click sobre la pregunta y arrástrela al principio o al final, según su prioridad.</p>
+      <h4 class="title">Calendario de Actividades</h4>
+      <br>
+      <p class="category">Inicia: {{FechaInicio}}.</p>
+      <p class="category">Termina: {{FechaFinal}}.</p>
     </div>
     <div class="content" id="contenido">
+      <div class="col-md-12">
+        <div class="text-center">
+          <a href="#/nuevo-evento" class="btn btn-info btn-fill btn-wd">Agregar Actividad</a>
+        </div>
+      </div>
+      <br><br>
+      <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+        <h4>{{alertMessage}}</h4>
+      </div>
+    <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
       <br><br>
       <a href="#/preguntas-priorizadas" class="btn btn-defaul btn-wd" >Atrás</a>
-      <button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Siguiente</button><br><br>
+      <button  type="button" class="btn btn-info btn-fill btn-wd" ng-click="siguiente()" >Finalizar</button><br><br>
     </div>
     </div>
   </div>

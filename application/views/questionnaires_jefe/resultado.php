@@ -26,6 +26,7 @@
 	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-2.1.3.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>

@@ -1,4 +1,4 @@
-var app = angular.module('seguimiento', ['ngRoute','ui.calendar']);
+var app = angular.module('seguimiento', ['ngRoute','ui.calendar','ui.bootstrap']);
 var url="http://localhost/moprosoft/index.php/";
 var url_htmls="http://localhost/moprosoft/";
 // configure our routes
@@ -20,11 +20,61 @@ app.config(function($routeProvider) {
       controller  : 'calendario_Controller'
     })
 
+    .when('/nuevo-evento', {
+      templateUrl : url_htmls+'public/js/nuevo-evento.html',
+      controller  : 'nuevo_evento_Controller'
+    })
+
 });
 
 app.service('serveData', [function () {
+  var validarFechaMayorAHoy=function(fi,ff ) {
+    var valuesInicio=fi.split("/");
+    var valuesFinal=ff.split("/");
+    var hoy = new Date();
+    var inicio=new Date(valuesInicio[2],valuesInicio[0],valuesInicio[1]);
+    var final=new Date(valuesFinal[2],valuesFinal[0],valuesFinal[1]);
+    if (inicio>=hoy && final>hoy) {
+      console.log("no estan alteradas");
+      return 1;
+    }else {
+      $('#valFechas').empty();
+      $('#valFechas').append('<p style="color:red">Las fechas están alteradas.</p>');
+      return 0;
+    }
+  };
+
   this.preguntas = {};
   this.priorizadas = {'p':[]};
+  this.fi ='';
+  this.fi ='';
+  this.validarFecha= function(fi,ff) {
+    var ExpReg = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+    var val1 = ExpReg.test(fi)
+    var val2 = ExpReg.test(ff)
+
+    if (fi!="" && ff!="")  {
+      if (val1 && val2) {
+        var res=validarFechaMayorAHoy(fi,ff);
+        if (res==0) {
+          return 0;
+        }
+        $('#valFechas').empty();
+        return 1;
+      }else {
+        $('#valFechas').empty();
+        $('#valFechas').append('<p style="color:red">Fechas no válidas.</p>')
+        return 0;
+      }
+    }else {
+      $('#valFechas').empty();
+      $('#valFechas').append('<p style="color:red">Fechas vacias.</p>');
+      return 0;
+    }
+
+  };
+
+
 }])
 
 app.controller('inicio_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
@@ -111,9 +161,36 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
 
    //funcion obtiene el contenido html y lo pasa a la funcion buscaOrden para poder ser procesada
    $scope.siguiente = function () {
-     var contenido=$("#preOrdenadas").html();
-     buscaOrden(contenido);
-     window.location.href ='#/calendario';
+     if (serveData.validarFecha( $('#from').val(),$('#to').val() )==1) {
+       var contenido=$("#preOrdenadas").html();
+       buscaOrden(contenido);
+       guardarFechas($('#from').val(),$('#to').val());
+       window.location.href ='#/calendario';
+     }
+   }
+
+   var guardarFechas=function (fi,ff) {
+
+     var valuesInicio=fi.split("/");
+     var valuesFinal=ff.split("/");
+     var fechafi=valuesInicio[2]+"/"+valuesInicio[0]+"/"+valuesInicio[1];
+     var fechaff=valuesFinal[2]+"/"+valuesFinal[0]+"/"+valuesFinal[1];
+     if (typeof(Storage) !== "undefined") {
+       if (localStorage.getItem('fi')!=undefined) {
+         localStorage.removeItem('fi');
+       }
+       if (localStorage.getItem('ff')!=undefined) {
+         localStorage.removeItem('ff');
+       }
+       //Se guardan en variables
+       serveData.fi=fechafi;
+       serveData.ff=fechafi;
+       //Se guardan en memorias
+       localStorage.setItem("fi",fechafi);
+       localStorage.setItem("ff",fechaff);
+     } else {
+         console.log("No se pudo guardar las preguntas.");
+     }
    }
 
    //funcion recursiva que recorre toda la tabla para poder dar un nuevo orden a las actividades
@@ -130,6 +207,10 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
    }
    //Gurdamos el nuevo orden para no perderlo
    var guardarNuevoOrden=function () {
+     $.each($scope.orden, function(i, item) {
+       item.num=i+1;
+      });
+
      if (typeof(Storage) !== "undefined") {
        if (localStorage.getItem('nuevoOrden')!=undefined) {
          localStorage.removeItem('nuevoOrden');
@@ -157,7 +238,7 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
      var id = parseInt(cadena)
      $.each($scope.priorizadas, function(i, item) {
           if (item.id==id) {
-            $scope.orden.push({'id':item.id,'question':item.question});
+            $scope.orden.push({'id':item.id,'num':0,'question':item.question,'fi':'','ff':''});
           }
       });
    }
@@ -166,136 +247,252 @@ app.controller('priorizadas_Controller', ['$scope', 'serveData', '$http' ,functi
 
 }]);
 
-app.controller('calendario_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
+app.controller('calendario_Controller', ['$scope', '$compile','$timeout','serveData', '$http' ,function ($scope, $compile,$timeout,uiCalendarConfig,serveData,$http) {
+  //Extraemos las preguntas priorizadas guardados en memoria
+  if (localStorage.getItem("nuevoOrden")!=null) {
+      $scope.nuevoOrden = JSON.parse( localStorage.getItem("nuevoOrden") );
+      console.log( $scope.nuevoOrden );
+   }
 
-      /*var date = new Date();
-      var d = date.getDate();
-      var m = date.getMonth();
-      var y = date.getFullYear();
+   if (localStorage.getItem("fi")!=null) {
+       $scope.FechaInicio =localStorage.getItem("fi") ;
+       console.log($scope.FechaInicio);
+    }
 
-      $scope.changeTo = 'Hungarian';
-      // event source that pulls from google.com
-      $scope.eventSource = {
-              url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
-              className: 'gcal-event',           // an option!
-              currentTimezone: 'America/Chicago' // an option!
-      };
-      // event source that contains custom events on the scope
-      $scope.events = [
-        {title: 'All Day Event',start: new Date(y, m, 1)},
-        {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-        {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-        {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-        {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-        {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-      ];
-      // event source that calls a function on every view switch
-      $scope.eventsF = function (start, end, timezone, callback) {
-        var s = new Date(start).getTime() / 1000;
-        var e = new Date(end).getTime() / 1000;
-        var m = new Date(start).getMonth();
-        var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-        callback(events);
-      };
+    if (localStorage.getItem("ff")!=null) {
+        $scope.FechaFinal =localStorage.getItem("ff") ;
+        console.log($scope.FechaFinal);
+     }
 
-      $scope.calEventsExt = {
-         color: '#f00',
-         textColor: 'yellow',
-         events: [
-            {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-            {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-            {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-          ]
-      };
-      // alert on eventClick
-      $scope.alertOnEventClick = function( date, jsEvent, view){
-          $scope.alertMessage = (date.title + ' was clicked ');
-      };
-      // alert on Drop
-       $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
-         $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
-      };
-      // alert on Resize
-      $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view ){
-         $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
-      };
-      // add and removes an event source of choice
-      $scope.addRemoveEventSource = function(sources,source) {
-        var canAdd = 0;
-        angular.forEach(sources,function(value, key){
-          if(sources[key] === source){
-            sources.splice(key,1);
-            canAdd = 1;
-          }
-        });
-        if(canAdd === 0){
-          sources.push(source);
-        }
-      };
-      // add custom event
-      $scope.addEvent = function() {
-        $scope.events.push({
-          title: 'Open Sesame',
-          start: new Date(y, m, 28),
-          end: new Date(y, m, 29),
-          className: ['openSesame']
-        });
-      };
-      // remove event
-      $scope.remove = function(index) {
-        $scope.events.splice(index,1);
-      };
-      // Change View
-      $scope.changeView = function(view,calendar) {
-        uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
-      };
-      // Change View
-      $scope.renderCalender = function(calendar) {
-        if(uiCalendarConfig.calendars[calendar]){
-          uiCalendarConfig.calendars[calendar].fullCalendar('render');
-        }
-      };
-       // Render Tooltip
-      $scope.eventRender = function( event, element, view ) {
-          element.attr({'tooltip': event.title,
-                       'tooltip-append-to-body': true});
-          $compile(element)($scope);
-      };
-      // config object
-      $scope.uiConfig = {
-        calendar:{
-          height: 450,
-          editable: true,
-          header:{
-            left: 'title',
-            center: '',
-            right: 'today prev,next'
-          },
-          eventClick: $scope.alertOnEventClick,
-          eventDrop: $scope.alertOnDrop,
-          eventResize: $scope.alertOnResize,
-          eventRender: $scope.eventRender
-        }
-      };
 
-      $scope.changeLang = function() {
-        if($scope.changeTo === 'Hungarian'){
-          $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-          $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
-          $scope.changeTo= 'English';
-        } else {
-          $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-          $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-          $scope.changeTo = 'Hungarian';
-        }
-      };
-      // event sources array
-      $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
-      $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];*/
+     var date = new Date();
+     var d = date.getDate();
+     var m = date.getMonth();
+     var y = date.getFullYear();
 
+     /* event source that pulls from google.com */
+
+     /* event source that contains custom events on the scope */
+     $scope.events = [];
+
+     /* add custom event*/
+     $scope.addEvent = function(titulo,fi,ff) {
+       $scope.events.push({
+         'title': titulo,
+         'start': new Date(fi),
+         'end': new Date(ff),
+         'className': ['openSesame']
+       });
+     };
+
+     if (localStorage.getItem('nuevoOrden')!=undefined) {
+       $.each($scope.nuevoOrden,function (i,item) {
+         if (item.fi!='') {
+           $scope.addEvent(item.question,item.fi,item.ff);
+         }
+       });
+     }
+     /*$scope.events = [
+       {title: 'All Day Event',start: new Date(y, m, 1)},
+       {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
+       {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
+       {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
+       {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
+       {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
+     ];*/
+     /* event source that calls a function on every view switch */
+     $scope.eventsF = function (start, end, timezone, callback) {
+       var s = new Date(start).getTime() / 1000;
+       var e = new Date(end).getTime() / 1000;
+       var m = new Date(start).getMonth();
+       var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
+       callback(events);
+     };
+
+     $scope.calEventsExt = {
+        color: '#f00',
+        textColor: 'yellow',
+        events: [
+           {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
+           {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
+           {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
+         ]
+     };
+     /* alert on eventClick */
+     $scope.alertOnEventClick = function( date, jsEvent, view){
+         $scope.alertMessage = (date.title + ' was clicked ');
+     };
+     /* alert on Drop */
+      $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
+        $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
+     };
+     /* alert on Resize */
+     $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view ){
+        $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
+     };
+     /* add and removes an event source of choice */
+     $scope.addRemoveEventSource = function(sources,source) {
+       var canAdd = 0;
+       angular.forEach(sources,function(value, key){
+         if(sources[key] === source){
+           sources.splice(key,1);
+           canAdd = 1;
+         }
+       });
+       if(canAdd === 0){
+         sources.push(source);
+       }
+     };
+
+     /* remove event */
+     $scope.remove = function(index) {
+       $scope.events.splice(index,1);
+     };
+     /* Change View */
+     $scope.changeView = function(view,calendar) {
+       uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+     };
+     /* Change View */
+     $scope.renderCalender = function(calendar) {
+       if(uiCalendarConfig.calendars[calendar]){
+         uiCalendarConfig.calendars[calendar].fullCalendar('render');
+       }
+     };
+      /* Render Tooltip */
+     $scope.eventRender = function( event, element, view ) {
+         element.attr({'tooltip': event.title,
+                      'tooltip-append-to-body': true});
+         $compile(element)($scope);
+     };
+     /* config object */
+     $scope.uiConfig = {
+       calendar:{
+         height: 450,
+         editable: true,
+         header:{
+           left: 'title',
+           center: '',
+           right: 'today prev,next'
+         },
+         eventClick: $scope.alertOnEventClick,
+         eventDrop: $scope.alertOnDrop,
+         eventResize: $scope.alertOnResize,
+         eventRender: $scope.eventRender
+       }
+     };
+     /* event sources array*/
+     $scope.eventSources = [$scope.events, $scope.eventsF];
+     //$scope.eventSources = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 
 }]);
 
+app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
+
+  if (localStorage.getItem("nuevoOrden")!=null) {
+      $scope.nuevoOrden = JSON.parse( localStorage.getItem("nuevoOrden") );
+      $.each($scope.nuevoOrden, function(i, item) {
+        if (item.fi==''){
+          $scope.vista={'id':item.id,'num':item.num,'question':item.question,'fi':item.fi,'ff':item.ff};
+          return false;
+        }
+       });
+      console.log( $scope.nuevoOrden );
+   };
+
+   if (localStorage.getItem("UltFechaAct")!=null) {
+     $scope.FechaInicio =localStorage.getItem("UltFechaAct");
+   }else {
+     $scope.FechaInicio =localStorage.getItem("fi") ;
+   }
+   $scope.FechaFinal =localStorage.getItem("ff") ;
+
+   $scope.guardar= function () {
+    if (serveData.validarFecha( $scope.vista.fi,$scope.vista.ff )==1) {
+      var valuesInicio=$scope.vista.fi.split("/");
+      var valuesFinal=$scope.vista.ff.split("/");
+      var fechafi=valuesInicio[2]+"/"+valuesInicio[0]+"/"+valuesInicio[1];
+      var fechaff=valuesFinal[2]+"/"+valuesFinal[0]+"/"+valuesFinal[1];
+      guardar_inicio(fechafi);
+       $.each($scope.nuevoOrden, function(i, item) {
+         if (item.fi==''){
+           item.fi=fechafi;
+           item.ff=fechaff;
+           return false;
+         }
+        });
+        window.location.href ='#/calendario';
+        guardar_en_memoria();
+     }
+   };
+
+   var guardar_inicio = function (fi) {
+     if (typeof(Storage) !== "undefined") {
+       if (localStorage.getItem('UltFechaAct')!=undefined) {
+         localStorage.removeItem('UltFechaAct');
+       }
+       localStorage.setItem("UltFechaAct",fi );
+     } else {
+         console.log("No se pudo guardar las preguntas.");
+     }
+   }
+
+   var guardar_en_memoria = function () {
+     if (typeof(Storage) !== "undefined") {
+       if (localStorage.getItem('nuevoOrden')!=undefined) {
+         localStorage.removeItem('nuevoOrden');
+       }
+       localStorage.setItem("nuevoOrden",JSON.stringify($scope.nuevoOrden) );
+     } else {
+         console.log("No se pudo guardar las preguntas.");
+     }
+
+   };
+
+  //Validacion de la fecha
+   $("#mitabla tbody").sortable({
+     placeholder: "highlight"
+   });
+   $( "#mitabla tbody" ).disableSelection();
+   //Configuracion fecha
+   $(function() {
+
+
+     $("#from").datepicker({
+       onClose: function (selectedDate) {
+         if (selectedDate=="") {
+             selectedDate= new Date($scope.FechaInicio);
+             /*var f= new Date();
+             f.setDate(f.getDate()+1);
+             selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();*/
+           }else {
+             f = new Date(selectedDate);
+             f.setDate(f.getDate()+1);
+             selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+           }
+         $("#to").datepicker("option", "minDate", selectedDate);
+       }, minDate: new Date($scope.FechaInicio), maxDate:new Date($scope.FechaFinal) ,changeMonth: true
+     });
+
+
+
+     $("#to").datepicker({
+       onClose: function (selectedDate) {
+         if (selectedDate!="") {
+           f = new Date(selectedDate);
+           f.setDate(f.getDate()-1);
+           selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
+         }else {
+           selectedDate= new Date($scope.FechaInicio);
+         }
+       $("#from").datepicker("option", "minDate",selectedDate);
+     }, minDate: new Date($scope.FechaInicio) , maxDate: new Date($scope.FechaFinal),changeMonth: true
+     });
+
+   });
+
+
+
+}]);
 
 /*
 

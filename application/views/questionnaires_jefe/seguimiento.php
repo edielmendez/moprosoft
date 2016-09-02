@@ -26,6 +26,7 @@
 	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-2.1.3.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
@@ -167,7 +168,7 @@
                   //Si la fase ya fue finalizada por el administrador
                   if ($valor==0) {
                   ?>
-									
+
 									<div id="main">
 										<div ng-view></div>
 									</div>
@@ -187,13 +188,6 @@
 	</div>
 </body>
 
-<!--   Core JS Files   -->
-
-
-
-
-<!--  Charts Plugin -->
-<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
