@@ -14,6 +14,7 @@ class Estudiantes extends CI_Controller {
       $this->load->model('equipo','',TRUE);
       $this->load->model('modelo','',TRUE);
       $this->load->model('CuestionarioAdmin','',TRUE);
+      $this->load->library('email','','correo');
 			
    }
 
@@ -192,17 +193,21 @@ class Estudiantes extends CI_Controller {
          $result = $this->user->actualizar($username,$email,$name,$grupo,$id);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Estudiante Actualizado</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Estudiante Actualizado</strong>";
             $mensaje.="</div>";
+
+            
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo actualizar la información</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo actualizar la información</strong>";
             $mensaje.="</div>";
+
+           
 
             $this->session->set_flashdata('message', $mensaje);
             
@@ -217,7 +222,7 @@ class Estudiantes extends CI_Controller {
 
    public function eliminar($id){
       $result = $this->user->delete($id); 
-
+      
       if($result){
          $mensaje.="<div class='alert alert-info'>";
             $mensaje.="<span><b>Usuario eliminado</b></span>";
@@ -343,6 +348,60 @@ class Estudiantes extends CI_Controller {
 
          echo json_encode($usuarios);
 
+      }
+   }
+
+   public function getEstudiantesById(){
+      $id = $this->input->post('id');
+      $data_estudiante = $this->user->getUsuarioById($id);
+      $estudiante;
+      foreach ($data_estudiante as $value) {
+         $estudiante = array(
+           'id' => $value->id,
+           'username' => $value->username,
+           'password' => $value->password,
+           'email' => $value->email,
+           'name' => $value->name,
+           'rol_id' => $value->rol_id,
+           'grupo' => $value->grupo,
+           'team_id' => $value->team_id
+         );
+      }
+
+      echo json_encode($estudiante);
+   }
+
+   public function sendMail(){
+      if($this->session->userdata('logged_in')){
+         $email = $this->input->post('email');
+         $mensaje = $this->input->post('mensaje');
+
+         $this->correo->from('mendezjunior2015@gmail.com', 'Ediel');
+         $this->correo->to('mendezediel@gmail.com'); 
+         $this->correo->subject('Esto es una prueba');
+         $this->correo->message('Aqui va el cuerpo del mensaje');
+         if($this->correo->send())
+         {
+            $mensaje="<div class='alert alert-warning fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Mensaje Enviado</strong>";
+            $mensaje.="</div>";
+
+            $this->session->set_flashdata('message', $mensaje);
+         }
+         else
+         {
+            //show_error($this->correo->print_debugger());
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Mensaje No Enviado</strong>";
+            $mensaje.="</div>";
+
+            $this->session->set_flashdata('message', $mensaje);
+         }
+         redirect('Equipos/', 'refresh');
+      }else{
+         redirect('login', 'refresh');
       }
    }
 

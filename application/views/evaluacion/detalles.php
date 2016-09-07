@@ -16,7 +16,7 @@
   <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
-	
+	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/datatables.min.css"); ?>" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/toastr.min.css"); ?>" rel="stylesheet">
 	
@@ -89,8 +89,15 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
+	                <li >
+	                    <a href="<?php echo base_url() ?>index.php/Evaluacion/">
+	                        <i class="ti-pencil-alt"></i>
+	                        <p>ASIGNAR CUESTIONARIOS</p>
+	                    </a>
+	                </li>
 	                <li class="active">
 	                	<a >
+							<i class="ti-settings"></i>
 	                		<p>Detalles de evaluación</p>
 	                	</a>
 	                </li>
@@ -144,7 +151,7 @@
 	                
 	    		</div>
 	    	</div>
-	    	<?php //print_r($fases_terminadas); ?>
+	    	<?php //print_r($fases); ?>
 			<?php //echo $mostrar_kiviat ?>
 	        <div class="content container" id="contenedor_principal">
 	        	<!--<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-danger'><i class="ti-arrow-left"></i>  Regresar</a><hr>-->
@@ -183,7 +190,11 @@
 					    <div class="panel-body">
 					     	<div class="tab-content">
 							    <div id="fases_asig" class="tab-pane fade in active">
-							      
+							      	<?php if (count($fases) == 0): ?>
+							    		<h3>SIN CUESTIONARIOS ASIGNADOS</h3>
+							    	<?php else: ?>
+							    		<h3>CUESTIONARIOS ASIGNADOS</h3>		
+							    	<?php endif ?>
 							        <!---->
 							        <div class="container">
 									  <div class="panel-group" id="accordion">
@@ -192,7 +203,7 @@
 									    <div class="panel panel-default">
 									      <div class="panel-heading">
 									        <h4 class="panel-title">
-									          <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $fase['id'];?>"><?php echo $fase['name']; ?></a>
+									          <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $fase['id'];?>"><?php echo $fase['name']; ?>   <b> Proceso : <?php echo $fase['proceso']; ?> </b></a>
 									        </h4>
 									      </div>
 									      <div id="collapse<?php echo $fase['id'];?>" class="panel-collapse collapse">
@@ -233,7 +244,12 @@
 							    </div>
 
 							    <div id="fases_term" class="tab-pane fade">
-							      <h3>CUESTIONARIOS TERMINADOS</h3>
+							    	<?php if (count($fases_terminadas) == 0): ?>
+							    		<h3>SIN CUESTIONARIOS</h3>
+							    	<?php else: ?>
+							    		<h3>CUESTIONARIOS TERMINADOS</h3>		
+							    	<?php endif ?>
+							      
 									<div class="container">
 									  <div class="panel-group" id="accordion">
 									    
@@ -246,6 +262,8 @@
 									      </div>
 									      
 									      <div id="collapse<?php echo $fase['id'];?>x" class="panel-collapse collapse">
+									      		<input type="hidden" name="x" value="<?php echo $fase['show_kiviat'] ?>" id="show_kiviat_<?php echo $fase['id'] ?>">
+
 									      		<?php if (strcmp($fase['show_results'],"TRUE") == 0): ?>
 
 									      			<div class="row">
@@ -254,7 +272,7 @@
 												                
 												               <span class="glyphicon glyphicon-ok"></span> <strong>Fase Evaluada</strong>
 												                <hr class="message-inner-separator">
-												                <p><strong><a href="#" class="btnVerResultados" id="<?php echo $fase['id'];?>-<?php echo $equipo['id'] ?>"> <i class="ti-stats-up"></i>   Ver Resultados</a></strong></p>
+												                <p><strong><a href="#" class="btnVerResultados" id="<?php echo $fase['id'];?>-<?php echo $equipo['id'] ?>-<?php echo $fase['process_id'] ?>"> <i class="ti-stats-up"></i>   Ver Resultados</a></strong></p>
 												            </div>
 												        </div>
 									      			</div>
@@ -299,7 +317,7 @@
 	        </div>
 
 	        <div class="container" style="display: none;" id="contenedor_secundario"><!--Inicio del segundo container-->
-	        	
+	        	<a href="#"  class='btn btn-danger btnBack'><i class="ti-arrow-left"></i>  Regresar</a><hr>
 	        	<div class="row">
 	        		<div class="col-md-9">
 	        			<h3 id="titulo_tabla"></h3>		
@@ -360,29 +378,23 @@
 	        </div><!--fin del segundo container-->
 
 	        <div class="container" style="display: none;" id="tercer_contenedor"><!--inicio de el tercer container-->
+	        	<a href="#"  class='btn btn-danger btnBack'><i class="ti-arrow-left"></i>  Regresar</a><hr>
 	        	<div class="row">
 	        		<div class="col-md-8">
 	        					
 	        		</div>
-	        		<?php if (strcmp($mostrar_kiviat,"TRUE") == 0): ?>
-	        			<div class="col-md-2">
-		        			<a href="#" class="btn btn-default btn-block " id="btn_ver_resultados">
-		        				<i class="ti-stats-up"></i> Tabla de resultados
-						    </a>	
-		        		</div>
+	      
+        			<div class="col-md-2">
+	        			<a href="#" class="btn btn-md" id="btn_ver_resultados">
+	        				<i class="ti-stats-up"></i> Tabla de resultados</a>	
+	        		</div>
 
-		        		<div class="col-md-2">
-		        			<a href="#" class="btn btn-default btn-block " id="btn_ver_grafica_kiviat" type="<?php echo $equipo['id'] ?>">
-		        				<i class="ti-stats-up"></i> Grafica Kiviat
-						    </a>	
-		        		</div>
-	        		<?php else: ?>
-	        			<div class="col-md-2">
-		        			<a href="#" class="btn btn-default btn-block " id="btn_ver_resultados">
-		        				<i class="ti-stats-up"></i> Tabla de resultados
-						    </a>	
-		        		</div>
-	        		<?php endif ?>
+	        		<div class="col-md-2" style="display:none" id="btnVerGraficaKiviat">
+	        			<a href="#" class="btn btn-md" id="btn_ver_grafica_kiviat" type="<?php echo $equipo['id'] ?>">
+	        				<i class="ti-stats-up"></i> Grafica Kiviat
+					    </a>	
+	        		</div>
+	        		
 	        		
 	        	</div>
 	        	<br>

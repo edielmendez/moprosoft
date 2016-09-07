@@ -288,133 +288,112 @@ class Evaluacion extends CI_Controller {
                }
 
                
-               
-               ///obtenemos las fases asignados y terminados de este equipo
 
+               //print_r($map);
                
+               //////FASES TERMINADAS
                $records = $this->CuestionarioAdmin->getFasesInAssignmentComplete($id);
-
-               //obtenemos los integrantes de este equipo
-               /*$data_est = $this->user->getByEquipo($id);
-               foreach ($data_est as $rowx) {
-                  $data_fase_completa_por_integrante = $this->CuestionarioAdmin->getPorcentajeDeAvanceDeFasePorUsuario($rowx->id);
-               }*/
-
-
-               $fases_terminadas = array();
-               foreach ($records as $row) {
-                  $data_fase= $this->Phase->getPhase($row->phase_objetive_id);
-                  $fase;
-                  foreach ($data_fase as $row2) {
-                     $proceso;
-                     $data_procesos = $this->CuestionarioAdmin->getProcesoById($row2->process_id);
-                     foreach ($data_procesos as $key) {
-                        $proceso = $key->name;
-                     }
-                     $fase= array(
-                        'id' => $row2->id,
-                        'name' => $row2->name,
-                        'status' => $row2->status,
-                        'process_id' => $row2->process_id,
-                        'nombre_proceso' => $proceso
-                     );
-
+               $temp = array( );
+               if($records){
+                  foreach ($records as $row) {
+                     array_push($temp,$row->phase_objetive_id);
                   }
-
-                  //se obtiene todas las preguntas del fase que estan indeterminadas
-                  /*echo "equipo : ".$id."<br>";
-                  echo "cuestionario : ".$row->questionary_id."<br>";
-                  return;*/
-                  $data = $this->CuestionarioAdmin->getQuestionsIndeterminate($id,$row->phase_objetive_id);
-                  if($data){
-                     $fase['show_results'] = "FALSE";
-                  }else{
-                     $fase['show_results'] = "TRUE";
-                  }
-
-                  array_push($fases_terminadas,$fase);
-
-
-
-
                }
+               
+               //echo "records<br>";
+               //print_r($temp);
+               $fases_terminadas = array();
+               $id_proceso;
+               if($records){
+                  foreach ($records as $row) {
+                     $data_fase= $this->Phase->getPhase($row->phase_objetive_id);
+                     $fase;
+                     foreach ($data_fase as $row2) {
+                        $proceso;
+                        $data_procesos = $this->CuestionarioAdmin->getProcesoById($row2->process_id);
+       
+                        foreach ($data_procesos as $key) {
+                           $proceso = $key->name;
+                           $id_proceso = $key->id;
+                        }
 
+                        $fase= array(
+                           'id' => $row2->id,
+                           'name' => $row2->name,
+                           'status' => $row2->status,
+                           'process_id' => $row2->process_id,
+                           'nombre_proceso' => $proceso
+                        );
 
-               ////fin del código para obtener datos de los cuestionarios completos
-               ///
-               //// Código para verificar si ya se terminaron todos las fases de dos procesos o mas para 
-               ///poder mostrar la grafica kiviat en la vista
-               ///
-               $data_procesos_in_calificacion = $this->CuestionarioAdmin->getProcesosInTableCalificacion($id);
-               //print_r($data_procesos_in_calificacion);
-               $datos['mostrar_kiviat'] = "TRUE";
-               if(count($data_procesos_in_calificacion) >1){
-                  foreach ($data_procesos_in_calificacion as $key) {
-                     //obtenemos todas las fases de este proceso
-                     $data_fases = $this->CuestionarioAdmin->getAllFasesByProcessId($key->process_id);
-                     $temp = array( );
-                     foreach ($data_fases as $row) {
-                        array_push($temp,array('id' => $row->id ));
                      }
-                     //echo "<br>FASES_TOTALES<br>";
-                     //print_r($temp);
-                     $data_fases_calificadas = $this->CuestionarioAdmin->getAllFasesByProcessIdCalificadas($key->process_id);
-                     $temp2 = array( );
-                     foreach ($data_fases_calificadas as $row) {
-                        array_push($temp2,array('id' => $row->phase_objetive_id ));
-                     }
-                     //echo "<br>FASES_CALIFICADAS<br>";
-                     //print_r($temp2);
-                     //echo "merge : <br>";
-                     //$resultado = var_dump($temp === $temp2);
-                     //echo $resultado;
-                     //print_r($resultado);
-                     //
-                     if(!($temp === $temp2)){
-                        $datos['mostrar_kiviat'] = "FALSE";
-                        break;
-                     }
+
                      
+                     $data = $this->CuestionarioAdmin->getQuestionsIndeterminate($id,$row->phase_objetive_id);
+                     if($data){
+                        $fase['show_results'] = "FALSE";
+                     }else{
+                        $fase['show_results'] = "TRUE";
+                     }
+
+                     if($this->check($id_proceso)){
+                        $fase['show_kiviat'] = "TRUE";
+                     }else{
+                        $fase['show_kiviat'] = "FALSE";
+                     }
+                    
+                     array_push($fases_terminadas,$fase);
+
                   }
-               }else{
-                  $datos['mostrar_kiviat'] = "FALSE";
                }
                
         
                 
                
 
-
                /*obtenemos los fases a los que esta asignado este equipo pero que no estan terminados*/
                $result = $this->CuestionarioAdmin->getFasesInAssignment($id);
+               $temp2= array( );
+               foreach ($result as $row) {
+                  array_push($temp2,$row->phase_objetive_id);
+               }
+               //echo "<br><br>result<br>";
+               //print_r($temp2);
+               
+               $fases_incompletas = array_diff($temp2, $temp);
+               //$diff = array_diff($temp2, $temp);
+               //echo "<br><br>diff : <br><br>";
+               //print_r($diff);
+               //return;
                $fases = array();
-               if($result){
+               if($fases_incompletas){
 
-                  foreach ($result as $row) {
-                     $data_fase = $this->Phase->getPhase($row->phase_objetive_id);
+                  foreach ($fases_incompletas as $row) {
+                     $data_fase = $this->Phase->getPhase($row);
                      $fase;
+                     
                      foreach ($data_fase as $row2) {
-                        
+                        $data_procesos = $this->CuestionarioAdmin->getProcesoById($row2->process_id);
+                        $nombre_proceso;
+                        foreach ($data_procesos as $key) {
+                           $nombre_proceso = $key->name;
+                        }
                         
                         $fase= array(
                            'id' => $row2->id,
                            'name' => $row2->name,
                            'status' => $row2->status,
                            'process_id' => $row2->process_id,
+                           'proceso' => $nombre_proceso
                         );
 
                      }
 
 
-                       $cuestionario= array(
-                          'id' => $row2->id,
-                          'name' => $row2->name,
-                          'phase_objetive_id' => $row2->phase_objetive_id,
-                       );
+                       
 
 
                      /*obtenemos el total de preguntas que tiene este cuestionario**/
-                     $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row->phase_objetive_id);
+                     $num_preguntas = $this->CuestionarioAdmin->getTotalPreguntas($row);
                      
                     
                      foreach ($num_preguntas as $x) {
@@ -430,37 +409,41 @@ class Evaluacion extends CI_Controller {
                      $total_integrantes = count($data_est);
                      $estudiantes = array();
                      $cont=0;
-                     foreach ($data_est as $rowx) {
-                        $num_preguntas_contestadas = $this->CuestionarioAdmin->getTotalPreguntasContestadas($row->phase_objetive_id,$rowx->id);
-                        foreach ($num_preguntas_contestadas as $x) {
-                           $num_preguntas_contestadas = $x->total;
-                        }
-                        if($num_preguntas == 0){
-                           $porcentaje = 0;
-                        }else{
-                           
-                           $porcentaje = ( (intval($num_preguntas_contestadas) * 100) / intval($num_preguntas));
-                           $porcentaje = round($porcentaje, 2);
-                        }
 
-                        
-                        $usuario = array(
-                          'id' => $rowx->id,
-                          'username' => $rowx->username,
-                          'password' => $rowx->password,
-                          'email' => $rowx->email,
-                          'name' => $rowx->name,
-                          'rol_id' => $rowx->rol_id,
-                          'grupo' => $rowx->grupo,
-                          'team_id' => $rowx->team_id,
-                          'preguntas_contestadas' => intval($num_preguntas_contestadas),
-                          'porcentaje' => $porcentaje
-                        );
-                        if( (intval($num_preguntas) == intval($num_preguntas_contestadas)) && ($num_preguntas!=0) ){ 
-                           $cont++;
+                     if($data_est){
+                        foreach ($data_est as $rowx) {
+                           $num_preguntas_contestadas = $this->CuestionarioAdmin->getTotalPreguntasContestadas($row,$rowx->id);
+                           foreach ($num_preguntas_contestadas as $x) {
+                              $num_preguntas_contestadas = $x->total;
+                           }
+                           if($num_preguntas == 0){
+                              $porcentaje = 0;
+                           }else{
+                              
+                              $porcentaje = ( (intval($num_preguntas_contestadas) * 100) / intval($num_preguntas));
+                              $porcentaje = round($porcentaje, 2);
+                           }
+
+                           
+                           $usuario = array(
+                             'id' => $rowx->id,
+                             'username' => $rowx->username,
+                             'password' => $rowx->password,
+                             'email' => $rowx->email,
+                             'name' => $rowx->name,
+                             'rol_id' => $rowx->rol_id,
+                             'grupo' => $rowx->grupo,
+                             'team_id' => $rowx->team_id,
+                             'preguntas_contestadas' => intval($num_preguntas_contestadas),
+                             'porcentaje' => $porcentaje
+                           );
+                           if( (intval($num_preguntas) == intval($num_preguntas_contestadas)) && ($num_preguntas!=0) ){ 
+                              $cont++;
+                           }
+                           array_push($estudiantes,$usuario);
                         }
-                        array_push($estudiantes,$usuario);
-                     }
+                     }                     
+                     
                      $fase["integrantes"] = $estudiantes;
                      $fase["total_preguntas"] = $num_preguntas;
                      $fase["avance_por_equipo"] = round((($cont*100)/$total_integrantes));
@@ -490,6 +473,102 @@ class Evaluacion extends CI_Controller {
          redirect('Home/', 'refresh');
       }
    }
+
+   
+
+
+   ///funcion auxilar
+   public function check($id_proceso){
+      
+     
+      //obtenemos todas las fases de este proceso
+      $data_fases = $this->CuestionarioAdmin->getAllFasesByProcessId($id_proceso);
+      $temp = array( );
+      foreach ($data_fases as $row) {
+         array_push($temp,array('id' => $row->id ));
+      }
+      //echo "<br>FASES_TOTALES<br>";
+      //print_r($temp);
+      $data_fases_calificadas = $this->CuestionarioAdmin->getAllFasesByProcessIdCalificadas($id_proceso);
+      $temp2 = array( );
+      foreach ($data_fases_calificadas as $row) {
+         array_push($temp2,array('id' => $row->phase_objetive_id ));
+      }
+      /*echo "<br>FASES_CALIFICADAS<br>";
+      print_r($temp2);
+      echo "<br>";
+      echo "merge : <br>";
+      $resultado = var_dump($temp === $temp2);
+      echo $resultado;
+      print_r($resultado);*/
+      
+      if(!($temp === $temp2)){
+         return FALSE;
+      }else{
+         return TRUE;
+      }
+   }
+   ///
+   
+   ///funcion para validar que el proceso que se reciba como parametro ya tenga otro proceso del mismo
+   ///modelo para comparar
+   public function checkprocess($id_proceso){
+      //obtenemos el modelo al que pertenece
+      $data_proceso = $this->CuestionarioAdmin->getProcesoById($key->process_id);
+      $proceso;
+      foreach ($data_proceso as $key2) {
+         $process = array(
+            'id' => $key2->id,
+            'name' => $key2->name,
+            'model_id' => $key2->model_id,
+            'fases' => $fases
+         );
+      }
+      //obtemos todos los procesos terminados en 
+      //obtenemos todos los modelos de este equipo con sus respectivos procesos y estos con sus fases
+               $data_modelos = $this->modelo->getModels($id);
+               $map = array( );
+               foreach ($data_modelos as $key) {
+                  $procesos = array();
+                  $data_procesos = $this->CuestionarioAdmin->getProcesoByIdModel($key->id);
+                  
+                  foreach ($data_procesos as $key2) {
+
+                     $fases = array();
+                     $data_fases = $this->CuestionarioAdmin->getFaseByIdProcess($key2->id);
+                     if($data_fases){
+                        foreach ($data_fases as $key3) {
+                           $phase = array(
+                              'id' => $key3->id,
+                              'name' => $key3->name,
+                              'process_id' => $key3->process_id
+                           );
+                           array_push($fases,$phase);
+                        }
+                        
+                     }
+
+                     $process = array(
+                        'id' => $key2->id,
+                        'name' => $key2->name,
+                        'model_id' => $key2->model_id,
+                        'fases' => $fases
+                     );
+                     array_push($procesos,$process);
+                  }
+                  $modelo = array(
+                    'id' => $key->id,
+                    'name' => $key->name,
+                    'version' => $key->version,
+                    'level' => $key->level,
+                    'phase_objetive' => $key->phase_objetive,
+                    'team_id' => $key->team_id,
+                    'procesos' => $procesos
+                  );
+                  array_push($map,$modelo);
+               }
+   }
+   ///
 
 
    public function getResultadosEvaluation(){
@@ -697,29 +776,48 @@ class Evaluacion extends CI_Controller {
          $data = $this->session->userdata('logged_in');
          if(strcmp($data['rol'],"ADMINISTRADOR")==0){
             $id = $this->input->post('id_equipo');
+            $id_fase = $this->input->post('id_fase');
+            $id_proceso = $this->input->post('id_proceso');
+            $data = $this->CuestionarioAdmin->getProcesoById($id_proceso);
+            $id_model;
+            foreach ($data as $key) {
+               $id_model = $key->model_id;
+            }
             $data_procesos_in_calificacion = $this->CuestionarioAdmin->getProcesosInTableCalificacion($id);
             //print_r($data_procesos_in_calificacion);
             $json = array( );
-            if(count($data_procesos_in_calificacion) >1){
+            if(count($data_procesos_in_calificacion) >=1){
                foreach ($data_procesos_in_calificacion as $key) {
-                  
-                  $data_fases_calificadas = $this->CuestionarioAdmin->getAllDataFasesByProcessId($key->process_id);
-                 
-                  $suma = 0;
-                  foreach ($data_fases_calificadas as $row) {
-                     $suma+=intval($row->nivel_cobertura);
+                  $data = $this->CuestionarioAdmin->getProcesoById($key->process_id);
+                  $model_id;
+                  foreach ($data as $key2) {
+                     $model_id = $key2->model_id;
                   }
-                  $data_proceso = $this->CuestionarioAdmin->getProcesoById($key->process_id);
-                  $proceso;
-                  foreach ($data_proceso as $value) {
-                     $proceso = array(
-                        'id' => $value->id,
-                        'name' => $value->name,
-                        'nivel_cobertura' => round(floatval($suma/count($data_fases_calificadas)))
-                     ); 
+                  if(intval($model_id) == intval($id_model)){
+                     $data_fases_calificadas = $this->CuestionarioAdmin->getAllDataFasesByProcessId($key->process_id);
+                    
+                     $suma = 0;
+                     foreach ($data_fases_calificadas as $row) {
+                        $suma+=intval($row->nivel_cobertura);
+                     }
+                     $data_proceso = $this->CuestionarioAdmin->getProcesoById($key->process_id);
+                     $proceso;
+                     foreach ($data_proceso as $value) {
+                        $data_modelo = $this->CuestionarioAdmin->getModeloById($value->model_id);
+                        $nombre_modelo;
+                        foreach ($data_modelo as $valor) {
+                           $nombre_modelo = $valor->name;
+                        }
+                        $proceso = array(
+                           'id' => $value->id,
+                           'name' => $value->name,
+                           'modelo' => $nombre_modelo,
+                           'nivel_cobertura' => round(floatval($suma/count($data_fases_calificadas)))
+                        ); 
+                     }
+                     
+                     array_push($json,$proceso);
                   }
-                  
-                  array_push($json,$proceso);
                  
                   
                }

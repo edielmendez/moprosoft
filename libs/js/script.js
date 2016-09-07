@@ -1,3 +1,5 @@
+var extra;
+var extra2;
 $(document).ready(function(){
 	$('[rel="popover"]').popover({
         container: 'body',
@@ -559,9 +561,16 @@ $(document).one('click','.btnVerResultados',function(){
 
 	var ids = id.split('-')
 	id_fase = ids[0];
+	extra = id_fase;
 	id_equipo = ids[1];
+	extra2 = ids[2];
 	$("#contenedor_principal").hide("slow");
-	
+	var id_show_kiviat = "#show_kiviat_"+id_fase
+	var show_kiviat = $(id_show_kiviat).val();
+	console.log("id: ",id_show_kiviat,"valor : ",show_kiviat);
+	if(show_kiviat === "TRUE"){
+		$("#btnVerGraficaKiviat").show();
+	}
 
 	$.ajax({
 	 	method: "POST",
@@ -747,13 +756,14 @@ $(document).on('click','#btn_ver_resultados',function(){
 $("#btn_ver_grafica_kiviat").click(function(){
 	$("#tercer_contenedor").hide("slow");
 	id_equipo = $(this).attr('type');
-	console.log(id_equipo)
 	
+	console.log(extra2);
+
 	$.ajax({
 
 		method: "POST",
 	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getPorcentajePorProceso",
-	  	data: { id_equipo:id_equipo},
+	  	data: { id_equipo:id_equipo,id_fase:extra,id_proceso:extra2},
 	    beforeSend: function(){
 	     	console.log("Enviando......")
 	    },
@@ -776,6 +786,7 @@ var drawChartKiviat = function(data){
 	var procesos = JSON.parse(data);
 	var categorias = [];
 	var datos = [];
+	var nombre_modelo = procesos[0].modelo
 	for (var i = 0; i < procesos.length; i++) {
 		categorias.push(procesos[i].name);
 		datos.push(parseFloat(procesos[i].nivel_cobertura));
@@ -788,7 +799,7 @@ var drawChartKiviat = function(data){
         },
 
         title: {
-            text: 'Nivel de cobertura alcanzado por proceso'
+            text: 'Nivel de cobertura alcanzado por proceso del modelo  <b>'+nombre_modelo+'</b>'
         },
 
         pane: {
@@ -848,4 +859,45 @@ $("#export2pdf").click(function(){
 
 /**
  * final
+ */
+
+
+$(document).on('click','.btnBack',function(){
+	window.location.reload();
+	/*$("#contenedor_secundario").hide();
+	$("#contenedor_principal").show("slow");
+	$("#tercer_contenedor").hide();
+	$("#cuarto_contenedor").hide();*/
+})
+
+/**
+ ****************************************************************************
+ * ENVIAR CORREOS                                                           *
+ * **************************************************************************
+ */
+
+
+$(document).on('click','.btnEnviarMails',function(){
+	idUsuario = $(this).attr('id');
+	console.log(idUsuario)
+	
+	$.ajax({
+	 	method: "POST",
+	  	url: "http://localhost/moprosoft/index.php/Estudiantes/getEstudiantesById",
+	  	data: { id:idUsuario},
+	  	success : showModalSendMail
+	})
+})
+
+
+var showModalSendMail = function(data){
+	var usuario = JSON.parse(data);
+	console.log(usuario);
+	$("#areaMensajeEnviarmail").val("");
+	$("#nombreUsuarioEnviarMail").val(usuario.name);
+	$("#mailUsuarioEnviarMail").val(usuario.email);
+	$("#modalMail").modal();
+}
+/***************************************************************************
+ ***************************************************************************
  */

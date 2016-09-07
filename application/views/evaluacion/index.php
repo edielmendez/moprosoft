@@ -19,7 +19,7 @@
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/datatables.min.css"); ?>" rel="stylesheet">
 	<link href="<?php echo base_url("libs/css/toastr.min.css"); ?>" rel="stylesheet">
-	<link href="<?php echo base_url(); ?>libs/checkbox/style.css" rel="stylesheet" />
+	
 	<!--<link href="<?php echo base_url(); ?>libs/css/normalize.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>libs/css/demo.css" rel="stylesheet" />-->
 	<link href="<?php echo base_url(); ?>libs/css/tabs.css" rel="stylesheet" />
@@ -32,7 +32,10 @@
 	
 
 	<style type="text/css">
-	
+	input[type="checkbox"]{
+		width: 20px;
+		height: 20px;
+	}
 	
 
 	</style>
@@ -69,11 +72,13 @@
 	                    </a>
 	                </li>
 	                <li class="active">
-	                    <a href="">
-	                        <i class="ti-settings"></i>
-	                        <p>Evaluación</p>
+	                    <a >
+	                        <i class="ti-pencil-alt"></i>
+	                        <p>ASIGNAR CUESTIONARIOS</p>
 	                    </a>
 	                </li>
+	                
+	                
 	            </ul>
 	    	</div>
 	    </div>
