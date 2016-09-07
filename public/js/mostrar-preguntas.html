@@ -1,0 +1,49 @@
+<!-- Variables que se van a necesitar-->
+<style type="text/css">
+
+input[type=checkbox]{
+  width: 18px;
+  height: 18px;
+}
+
+input[type='checkbox']:checked{
+  background-color: #d9534f;
+}
+
+</style>
+<input type="hidden" name="phase" id="phase" value="<?php echo $Phase ?>">
+<div class="row">
+  <div class="col-md-12 col-xl-12" >
+    <h1>Plan de Acción</h1>
+    <div class="card">
+      <div class="header" id="cabezera">
+          <h4 class="title">Actividades</h4>
+          <p class="category">Seleccione las actividades con mayor prioridad.</p>
+      </div>
+      <div class="content" id="contenido">
+        <div id="validacion">
+
+        </div>
+        <table id="mitabla" class="table">
+          <thead>
+            <tr>
+              <th>Actividad</th>
+              <th>Priorizar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="p in preguntas" id="o{{p.id}}"  >
+              <td id="pre{{p.id}}">{{p.question}}</td>
+              <td>
+                <input class="pnl_cambio" type="hidden" id="{{p.id}}" value="{{p.question}}"/>
+                <input class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" ng-click='atras()'class="btn btn-defaul btn-wd">Atrás</button>
+        <a  class="btn btn-info btn-fill btn-wd"  ng-click="siguiente()">Siguiente</a>
+        </div>
+      </div>
+    </div>
+  </div>

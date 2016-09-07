@@ -27,6 +27,7 @@ class questionary_Controller extends CI_Controller {
 						array_push($phases,$phase);
 				 }
 			}
+
 			$aux['phases']=$phases;
    		$this->load->view('questionnaires/index',$aux);
    	}else{
@@ -37,7 +38,7 @@ class questionary_Controller extends CI_Controller {
 
 	 public function getQuestionary(){
 		 if($this->session->userdata('logged_in')){
-			 $result=$this->Questionary->getQuestionary();
+			 $result=$this->Phase->getPhases();
 			 $questionnaires = array();
 			 if($result){
 					foreach ($result as $row ) {
@@ -45,8 +46,8 @@ class questionary_Controller extends CI_Controller {
 						 $questionary = array(
 							 'id' => $row->id,
 							 'name' => $row->name,
-							 'phase_objetive_id' => $row->phase_objetive_id,
-							 'status' => $row->status
+							 'status' => $row->status,
+							 'process_id' => $row->process_id
 						 );
 						 array_push($questionnaires,$questionary);
 					}

@@ -6,8 +6,8 @@ class Question extends CI_Model
 {
   public function getQuestions()
   {
-   $Questionary=$_SESSION['Questionary_id'];
-   $consulta=$this->db->query("SELECT * FROM question WHERE question.questionary_id=$Questionary ");
+   $Pashe=$_SESSION['phase_objetive_id'];
+   $consulta=$this->db->query("SELECT * FROM question WHERE phase_objetive_id=$Pashe ");
    if($consulta->num_rows() >= 1){
      return $consulta->result();
    }else{
@@ -16,14 +16,14 @@ class Question extends CI_Model
   }
 
   public function getCountQuestion($id){
-    $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
+    $consulta=$this->db->query("SELECT * FROM question WHERE phase_objetive_id=$id");
     return $consulta->num_rows();
   }
 
   public function add($nombre,$comentario){
-    $Questionary=$_SESSION['Questionary_id'];
+    $Phase=$_SESSION['phase_objetive_id'];
     if ($this->validate($nombre)) {
-      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre','$comentario',0,'$Questionary');");
+      $consulta=$this->db->query("INSERT INTO question VALUES(NULL,'$nombre','$comentario',0,'$Phase');");
       if($consulta==true){
         return 0;
       }else{

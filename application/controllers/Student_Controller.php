@@ -17,13 +17,15 @@ class Student_Controller extends CI_Controller {
 	 public function historial()
 	 {
 			 $data = $this->session->userdata('logged_in');
-			 $result = $this->Student->Questionary_Historial($data['id'],$data['team_id']);
+			 $result = $this->Student->Phase_Historial($data['id'],$data['team_id']);
 
 			 $Questionary = array();
 				if($result){
 					 foreach ($result as $row ) {
 							$questionary = array(
-								'name' => $row->name
+								'phase' => $row->phase,
+								'process' => $row->process,
+								'model' => $row->model,
 							);
 							array_push($Questionary,$questionary);
 					 }
@@ -44,7 +46,8 @@ class Student_Controller extends CI_Controller {
    {
 
     $data = $this->session->userdata('logged_in');
-    $result = $this->Student->getQuestionary($data['id'],$data['team_id']);
+    $result = $this->Student->getPhases($data['id'],$data['team_id']);
+
     $Questionary = array();
     $nuevos=0;
     $pendientes=0;
@@ -59,7 +62,7 @@ class Student_Controller extends CI_Controller {
              'id' => $row->id,
              'name' => $row->name,
              'user_id' => $row->user_id,
-             'questionary_id' => $row->questionary_id,
+             'phase_objetive_id' => $row->phase_objetive_id,
              'status' => $row->status,
              'team_id' => $row->status
            );
@@ -75,7 +78,7 @@ class Student_Controller extends CI_Controller {
 
    public function Contestar($id)
    {
-      $result = $this->Student->Questionary($id);
+      $result = $this->Student->Phase($id);
       $Questionary= array();
       if($result){
          foreach ($result as $row ) {
@@ -83,8 +86,8 @@ class Student_Controller extends CI_Controller {
             $questionary = array(
               'id' => $row->id,
               'name' => $row->name,
-              'phase_objetive_id' => $row->phase_objetive_id,
-              'status' => $row->status
+              'status' => $row->status,
+							'process_id' => $row->process_id
             );
             array_push($Questionary,$questionary);
          }
@@ -101,7 +104,7 @@ class Student_Controller extends CI_Controller {
 							 'question' => $row->question,
 							 'answer_id' => $row->answer_id,
 							 'commentary' => $row->commentary,
-							 'questionary_id' => $row->questionary_id,
+							 'phase_objetive_id' => $row->phase_objetive_id,
 							 'res' => $row->answer_id
 						 );
 						 array_push($Question,$question);
@@ -235,6 +238,8 @@ class Student_Controller extends CI_Controller {
 			}
 	 }
 
+
+
 	 public function calificar($user,$equipo,$cuestionario)
 	 {
 	 		 $NumCuestionarios = $this->Student->NumCuestionarioEquipo($cuestionario,$equipo);
@@ -325,7 +330,7 @@ class Student_Controller extends CI_Controller {
 				if ($desviacion<0.8) {
 					$PuntoDebilFuerte='fuerte';
 				}elseif ($desviacion>=0.8) {
-					$PuntoDebilFuerte='indeterminada';
+					$PuntoDebilFuerte='indeterminado';
 				}
 		 }
 		 echo "Punto es : $PuntoDebilFuerte";

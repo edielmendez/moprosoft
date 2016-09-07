@@ -7,29 +7,33 @@ class question_Controller extends CI_Controller {
    {
       parent::__construct();
       $this->load->model('Question','',TRUE);
-			$this->load->model('Questionary','',TRUE);
+			$this->load->model('Phase','',TRUE);
+			$this->load->model('Question','',TRUE);
+			$this->load->model('Process','',TRUE);
+			//$this->load->model('Questionary','',TRUE);
 			$this->load->helper('url');
    }
 
 	 public function back(){
-		  $Questionary=$_SESSION['Questionary_id'];
-		 	$result=$this->Questionary->getQ($Questionary);
+		  $Phase=$_SESSION['phase_objetive_id'];
+		 	$result=$this->Phase->getPhase($Phase);
 			$sess_array = array();
 			foreach($result as $row)
-		 {
-			 $sess_array = array(
-				 'id' => $row->id,
-				 'name' => $row->name,
-				 'phase_objetive_id' => $row->phase_objetive_id,
-				 'status' => $row->status
-			 );
-		 }
+		  {
+				 $sess_array = array(
+					 'id' => $row->id,
+					 'name' => $row->name,
+					 'status' => $row->status,
+					 'process_id' => $row->process_id
+				 );
+		  }
 
-		 	$result2=$this->Question->getCountQuestion($Questionary);
+		 	$result2=$this->Question->getCountQuestion($Phase);
 
 		 	$aux['cuestionario']=$sess_array;
 			$aux['numPreguntas']=$result2;
 			$this->load->view('questions/index',$aux);
+			//$this->load->view('questions/index');
 	 }
 
    public function index(){
@@ -39,14 +43,13 @@ class question_Controller extends CI_Controller {
 			$contador=1;
 			if($result){
 				 foreach ($result as $row ) {
-
 						$question = array(
 							'id' => $row->id,
 							'n' => $contador,
 							'question' => $row->question,
 							'commentary' => $row->commentary,
 							'answer_id' => $row->answer_id,
-							'questionary_id' => $row->questionary_id
+							'phase_objetive_id' => $row->phase_objetive_id
 						);
 						array_push($questions,$question);
 						$contador++;
@@ -57,11 +60,20 @@ class question_Controller extends CI_Controller {
    		//si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
    	}
-   }
+	}
 
 	 public function Liberar(){
-		 $Questionary=$_SESSION['Questionary_id'];
-		 $result=$this->Questionary->updateStatus($Questionary);
+		 $Phase=$_SESSION['phase_objetive_id'];
+		 $result=$this->Phase->updateStatus($Phase);
+
+		 //Liberer el proceso
+		 $Process=$_SESSION['phase_objetive_process'];
+		 $NumCuestionarios=$this->Phase->getCountPhases($Process);
+		 $CuestionariosLiberados=0;
+		 $CuestionariosLiberados=$this->Phase->getCountPhasesBreakFree($Process);
+		 if ($NumCuestionarios==$CuestionariosLiberados) {
+       $this->Process->updateStatus($Process);
+		 }
 
 		 if($result==0){
 			 $this->session->set_flashdata('correcto', 'Se ha liberado el cuestionario de forma satisfactoria');
@@ -78,34 +90,40 @@ class question_Controller extends CI_Controller {
 	 public function Preguntas($id){
 		 if($this->session->userdata('logged_in')){
 
-				$result=$this->Questionary->getQ($id);
+				$result=$this->Phase->getPhase($id);
 				$sess_array = array();
 				foreach($result as $row)
 			 {
 				 $sess_array = array(
 					 'id' => $row->id,
 					 'name' => $row->name,
-					 'phase_objetive_id' => $row->phase_objetive_id,
 					 'status' => $row->status,
+					 'process_id' => $row->process_id
 				 );
 			 }
 
-			 if (!isset($_SESSION['Questionary_id'])) {
-				 $_SESSION['Questionary_id'] = $sess_array['id'];
+			 if (!isset($_SESSION['phase_objetive_process'])) {
+				 $_SESSION['phase_objetive_process'] = $sess_array['process_id'];
 			 } else {
-				 $_SESSION['Questionary_id'] = $sess_array['id'];
+				 $_SESSION['phase_objetive_process'] = $sess_array['process_id'];
 			 }
 
-			 if (!isset($_SESSION['Questionary_status'])) {
-				 $_SESSION['Questionary_status'] = $sess_array['status'];
+			 if (!isset($_SESSION['phase_objetive_id'])) {
+				 $_SESSION['phase_objetive_id'] = $sess_array['id'];
 			 } else {
-				 $_SESSION['Questionary_status'] = $sess_array['status'];
+				 $_SESSION['phase_objetive_id'] = $sess_array['id'];
 			 }
 
-			 if (!isset($_SESSION['Questionary_name'])) {
-				 $_SESSION['Questionary_name'] = $sess_array['name'];
+			 if (!isset($_SESSION['phase_objetive_status'])) {
+				 $_SESSION['phase_objetive_status'] = $sess_array['status'];
 			 } else {
-				 $_SESSION['Questionary_name'] = $sess_array['name'];
+				 $_SESSION['phase_objetive_status'] = $sess_array['status'];
+			 }
+
+			 if (!isset($_SESSION['phase_objetive_name'])) {
+				 $_SESSION['phase_objetive_name'] = $sess_array['name'];
+			 } else {
+				 $_SESSION['phase_objetive_name'] = $sess_array['name'];
 			 }
 
 			redirect('question_Controller/back', 'refresh');

@@ -102,19 +102,19 @@
 											<p><hr/></p>
 									</li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li   class="active">
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -179,12 +179,9 @@
 																							<input type="text" ng-model="buscar" name="buscar" id="buscar" class="form-control border-input" placeholder="Nombre" >
 																					</div>
 																			</div>
-                                      <div class="col-md-6">
+                                      <div class="col-md-12">
                                           <div class="form-group">
                                             <label>Proceso</label>
-																						<div ng-if=''>
-
-																						</div>
 																							<select class="form-control" id="proceso" name="proceso" ng-model="proceso"   ng-change="cargarPhases()" >
 																								<option value="Todos" selected>Todos</option>
 																								<option ng-repeat="proceso in process" value="{{proceso.id}}">{{proceso.name}}</option>
@@ -192,24 +189,15 @@
 
                                           </div>
                                       </div>
-                                      <div class="col-md-6">
-                                          <div class="form-group">
-                                              <label>Fase/Objetivos</label>
-                                              <select class="form-control" id="fase" name="fase" ng-model="fase"   ng-change="cargarCuestionarios()" ng-options="fase.id as fase.name for fase in phases">
-                                              </select>
-                                          </div>
-                                      </div>
                                   </div>
-																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Cuestionario">Nuevo</button><br><br>
+																	<br><br>
+																	<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Cuestionario">Nuevo</button><br><br-->
                           </div>
                       </div>
                   </div>
                 </div>
 
                 <div class="row">
-									<!--div class="col-md-12" id="aviso">
-										<h2 ng-bind="bandera"><h2>
-									</div-->
                     <div class="col-lg-3 col-sm-6" ng-repeat="cuestionario in cuestionarios | filter:buscar">
                         <div class="card">
                             <div class="content">
@@ -222,8 +210,7 @@
                                     <p ng-bind="cuestionario.name" ></p>
                                   </div>
                                   <div ng-if='cuestionario.status==0' class="col-xs-12" style="text-align: right;">
-                                    <br>
-                                      <a href="<?php echo base_url() ?>index.php/questionary_Controller/edith/{{cuestionario.id}}">Editar</a>
+                                    <br><br>
                                   </div>
 																	<div class="col-xs-12" style="text-align: left;">
 																		<div ng-if='cuestionario.status==1'>
@@ -238,7 +225,7 @@
                                 <div class="footer">
                                     <hr/>
                                     <div class="stats">
-                                        <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/question_Controller/Preguntas/{{cuestionario.id}}">Preguntas</a>
+                                        <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/Question_Controller/Preguntas/{{cuestionario.id}}">Preguntas</a>
                                     </div>
                                 </div>
                             </div>

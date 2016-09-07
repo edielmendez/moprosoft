@@ -21,6 +21,7 @@ class process_Controller extends CI_Controller {
 						$process = array(
 							'id' => $row->id,
 							'name' => $row->name,
+							'description' => $row->description,
 							'model_id' => $row->model_id
 						);
 						array_push($processes,$process);
@@ -39,7 +40,8 @@ class process_Controller extends CI_Controller {
 	 if($this->input->post("submit")){
 		 //llamo al metodo add
 		 $add=$this->Process->add(
-						 $this->input->post("nombre")
+						 $this->input->post("nombre"),
+						 $this->input->post("description")
 						 );
 		 }
 
@@ -64,7 +66,8 @@ class process_Controller extends CI_Controller {
     if($this->input->post("submit")){
 	    	$mod=$this->Process->update(
 	      	$id,
-	        $this->input->post("nombre")
+	        $this->input->post("nombre"),
+					$this->input->post("description")
 	        );
 
 					if($mod==0){
@@ -107,10 +110,10 @@ class process_Controller extends CI_Controller {
   		$id = $this->input->post("id");
   		$result = $this->Process->getProcessByModelId($id);
 
-    
+
         $procesos = array();
         if($result){
-        	
+
 			if($result){
 				 foreach ($result as $row ) {
 

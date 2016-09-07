@@ -39,6 +39,7 @@ app.controller('questionary_Controller', function($scope, $http) {
       //Obtenemos las Fases/Objetivos de un Proceso en especifico
       $http.get(url+"phase_Controller/getPhase_ProcessId/"+$scope.proceso).success(function(response){
           $scope.phases=response;
+          $scope.cuestionarios=response;
         }
       );
       console.log("Especifico");

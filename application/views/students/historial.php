@@ -38,8 +38,8 @@
 		-->
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
+	                <a href="<?php echo base_url(); ?>index.php/Student_Controller/index" class="simple-text">
+	                    Inicio
 	                </a>
 	            </div>
 
@@ -63,7 +63,7 @@
 											</a>
 									</li>
                   <li class="active">
-                      <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+                      <a href="<?php echo base_url() ?>index.php/Student_Controller/historial">
                           <i class="ti-view-list-alt"></i>
                           <p>Historial</p>
                       </a>
@@ -83,6 +83,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                </div>
+									<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio<?php  //print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="<?php echo base_url() ?>index.php/Student_Controller/historial">Historial</a>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
 	                        <li class="dropdown">
@@ -113,12 +114,21 @@
                       </div>
                       <div class="content table-responsive table-full-width"  >
                         <table class="table table-striped">
+													<thead>
+														<tr>
+															<th>Modelo</th>
+															<th>Proceso</th>
+															<th>Fase/Objetivo</th>
+														</tr>
+													</thead>
                           <tbody>
                             <?php
                               foreach($cuestionarios as $c){
                             ?>
                             <tr>
-                              <td><?php echo $c['name']; ?></td>
+                              <td><?=$c['model']; ?></td>
+															<td><?=$c['process']; ?></td>
+															<td><?=$c['phase']; ?></td>
                             </tr>
                             <?php } ?>
                           </tbody>

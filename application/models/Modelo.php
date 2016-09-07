@@ -50,10 +50,94 @@ class Modelo extends CI_Model
 	    return $consulta->result();
     }
 
+		public function ExisteSeguimiento($phase){
+	    $consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (status=0) ");
+	    return $consulta->num_rows();
+		}
+
+		public function getSeguimiento($phase)
+		{
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
+			$c=$consulta->row();
+			return array($c->date_start,$c->date_end,$c->id);
+		}
+
+		public function getPreguntasPriorizadas($phase)
+		{
+			$consulta=$this->db->query("SELECT * FROM calification_questionary_tracing  WHERE tracing_id=$phase ");
+			if($consulta->num_rows() >= 1){
+				return $consulta->result();
+			}else{
+				return false;
+			}
+		}
+
+		public function terminarSeguimiento($fase,$fi,$ff){
+			$data = array(
+	         'phase_objetive_id' => $fase,
+					 'date_start' => $fi,
+					 'date_end' => $ff,
+					 'status' => 0
+	      );
+      $id_nuevo_equipo = $this->db->insert('tracing', $data);
+			$this -> db -> select('*');
+      $this-> db-> from('tracing');
+      $this-> db-> where('phase_objetive_id', $fase);
+			$this-> db-> where('date_start', $fi);
+			$this-> db-> where('date_end', $ff);
+      $this -> db -> limit(1);
+
+      $query = $this -> db -> get();
+			$c= $query->row();
+      return $c->id;
+
+    }
+
 		public function getResultado($equipo){
- 	    $consulta=$this->db->query("SELECT * FROM calificacion_questionary,questionary WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.questionary_id=questionary.id)   ");
+ 	    $consulta=$this->db->query("SELECT * FROM calificacion_questionary,phase_objetive WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=phase_objetive.id)   ");
  	    return $consulta->result();
-     }
+    }
+
+		public function Calificacion($id,$equipo)
+		{
+			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
+ 	    return $consulta->result();
+		}
+
+		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end)
+		{
+			$data = array(
+					 'calificacion_questionary_id' => $id,
+					 'tracing_id' => $tracing,
+					 'activity' => $activity,
+					 'orden' => $orden,
+					 'date_start' => $date_start,
+					 'date_end' => $date_end,
+				);
+			$id = $this->db->insert('calification_questionary_tracing', $data);
+			return $id;
+		}
+
+		public function getNameProcessPorcentaje($n)
+		{
+			$consulta=$this->db->query("SELECT * FROM model WHERE name='$n' " );
+			$c = $consulta->row();
+ 	    return $c->cp;
+		}
+
+		public function getNameProcess($phase)
+		{
+			$consulta=$this->db->query("SELECT process.* FROM process,phase_objetive WHERE (phase_objetive.id=$phase) AND (phase_objetive.process_id=process.id) ");
+			$c = $consulta->row();
+ 	    return $c->name;
+		}
+
+		public function getNameModel($phase)
+		{
+			$consulta=$this->db->query("SELECT model.* FROM process,phase_objetive,model WHERE (phase_objetive.id=$phase) AND (phase_objetive.process_id=process.id) AND (process.model_id=model.id)");
+			$c = $consulta->row();
+ 	    return $c->name;
+		}
 
 	public function update($id,$nombre,$version,$nivel,$cp,$trabajara){
 

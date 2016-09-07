@@ -104,19 +104,19 @@
 											<p><hr/></p>
 									</li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li  class="active">
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li>
-											<a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+											<a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
@@ -135,7 +135,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
+												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Phase_Controller/index">Fases</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -185,13 +185,10 @@
                                       <div class="col-md-4">
                                           <div class="form-group">
                                               <label>Proceso</label>
-
 																								<select class="form-control" id="proceso" name="proceso" ng-model="proceso"  ng-change="cargarProcess()">
 																									<option value="Todos" selected>Todos</option>
 																									<option ng-repeat="proceso in process" value="{{proceso.id}}">{{proceso.name}}</option>
 	                                              </select>
-
-
                                           </div>
                                       </div>
                                   </div>
@@ -200,7 +197,7 @@
                                   </div>
                                   <div class="clearfix"></div-->
                                   <br>
-																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br>
+																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br-->
 
                               </form>
                           </div>
@@ -228,14 +225,14 @@
                                    </div>
                                    <div class="col-xs-12" style="text-align: right;">
                                      <br>
- 																			  <a href="<?php echo base_url(); ?>index.php/phase_Controller/edit/{{fase.id}}" >Editar</a>
+ 																			  <a href="<?php echo base_url(); ?>index.php/Phase_Controller/edit/{{fase.id}}" >Editar</a>
                                        <br>
                                    </div>
                                  </div>
                                  <div class="footer">
                                      <hr/>
                                      <div class="stats">
-                                         <i class="ti-eye"></i><a href="#">Cuestionarios</a>
+                                         <i class="ti-eye"></i><a href="<?php echo base_url() ?>index.php/Question_Controller/Preguntas/{{fase.id}}">Cuestionario</a>
                                      </div>
                                  </div>
                              </div>
@@ -282,9 +279,6 @@
 <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
-
 <!--  Charts Plugin -->
 <script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
 
@@ -311,7 +305,7 @@
         	$(this).find('.modal-title').text(titleData);
     		});
 
-				//$('#proceso option[value="13"]').attr("selected", "selected");
+				$('#proceso option[value="Todos"]').attr("selected", "selected");
 
 	});
 </script>

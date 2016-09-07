@@ -33,11 +33,11 @@
 			dataType : 'json',
 			success : function(json) {
 				//alert("Bien")
-				window.location.href= '<?php echo base_url(); ?>index.php/questionary_Controller/index';
+				window.location.href= '<?php echo base_url(); ?>index.php/Questionary_Controller/index';
 			},
 			error : function(xhr, status) {
 				//alert('Disculpe, existió un problema');
-				window.location.href= '<?php echo base_url(); ?>index.php/questionary_Controller/index';
+				window.location.href= '<?php echo base_url(); ?>index.php/Questionary_Controller/index';
 			}
 		});
 	}
@@ -107,7 +107,7 @@
 											<p><hr/></p>
 									</li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
@@ -119,7 +119,7 @@
 	                    </a>
 	                </li>
                   <li   class="active">
-                      <a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+                      <a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
                           <i class="ti-book"></i>
                           <p>Cuestionarios</p>
                       </a>
@@ -199,7 +199,7 @@
                                         </div>
                                     </div>
                                     <br><br>
-                                    <a href="<?php echo base_url() ?>index.php/questionary_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
+                                    <a href="<?php echo base_url() ?>index.php/Questionary_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
 																		<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
 																		<button  type="button" class="btn btn-danger btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Cuidado !!!" >Eliminar</button><br><br>
 																		<?php } ?>

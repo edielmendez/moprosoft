@@ -59,19 +59,19 @@
 											<p><hr/></p>
 	                </li>
 	                <li >
-	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
 	                    </a>
 	                </li>
 									<li>
-	                    <a href="<?php echo base_url() ?>index.php/questionary_Controller/index">
+	                    <a href="<?php echo base_url() ?>index.php/Questionary_Controller/index">
 	                        <i class="ti-book"></i>
 	                        <p>Cuestionarios</p>
 	                    </a>
