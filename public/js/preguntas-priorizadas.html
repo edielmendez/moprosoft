@@ -43,6 +43,7 @@
                 //Configuracion fecha
                 $(function() {
                   $("#from").datepicker({
+                    beforeShowDay: $.datepicker.noWeekends,
                     onClose: function (selectedDate) {
                       if (selectedDate=="") {
                           var f= new Date();
@@ -58,6 +59,7 @@
                   });
 
                   $("#to").datepicker({
+                    beforeShowDay: $.datepicker.noWeekends,
                     onClose: function (selectedDate) {
                       if (selectedDate!="") {
                         f = new Date(selectedDate);

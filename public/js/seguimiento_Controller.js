@@ -276,6 +276,8 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
        });
    }
 
+   //var dias = ["Domingo","Lunes","Martes","Jueves","Viernes","Sábado"];
+   //var meses = [""]
    if (localStorage.getItem("fi")!=null) {
        $scope.FechaInicio =localStorage.getItem("fi") ;
     }
@@ -359,14 +361,7 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
          }
        });
      }
-     /*$scope.events = [
-       {title: 'All Day Event',start: new Date(y, m, 1)},
-       {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-       {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-       {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-       {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-       {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-     ];*/
+
      /* event source that calls a function on every view switch */
      $scope.eventsF = function (start, end, timezone, callback) {
        var s = new Date(start).getTime() / 1000;
@@ -456,12 +451,14 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
 app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
 
   $scope.bandera=false;
+  $scope.ultimo=0;
   if (localStorage.getItem("nuevoOrden")!=null) {
       $scope.nuevoOrden = JSON.parse( localStorage.getItem("nuevoOrden") );
       $.each($scope.nuevoOrden, function(i, item) {
         if (item.fi==''){
           $scope.vista={'id':item.id,'num':item.num,'question':item.question,'fi':item.fi,'ff':item.ff};
           $scope.bandera=true;
+          $scope.ultimo =i+1;
           return false;
         }
        });
@@ -480,29 +477,44 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    if (localStorage.getItem("UltFechaAct")!=null) {
      $scope.FechaInicio =localStorage.getItem("UltFechaAct");
-     $scope.sumInicio=1;
-     $scope.sumFinal=2;
    }else {
      $scope.FechaInicio =localStorage.getItem("fi") ;
-     $scope.sumInicio=0;
-     $scope.sumFinal=1;
    }
 
+   var aux = $scope.FechaInicio.split("/");
+   $scope.fi=aux[1]+"/"+aux[2]+"/"+aux[0];
+
    $scope.FechaFinal =localStorage.getItem("ff") ;
-   var x = new Date(localStorage.getItem("ff"));
-   $scope.FechaEspecial=x.setDate(x.getDate()-1);
+   $scope.Empieza =localStorage.getItem("fi") ;
+
+   var validarFinal= function (ff) {
+     if (ff=="") {
+       $('#valFechas').empty();
+       $('#valFechas').append('<p style="color:red">Fechas vacias.</p>');
+       return 0;
+     }
+     var valuesFinal=ff.split("/");
+     var final=new Date(valuesFinal[2],valuesFinal[0]-1,valuesFinal[1]);
+     var empieza = new Date($scope.Empieza);
+     var termina = new Date($scope.FechaFinal);
+     if (final>empieza && final<=termina) {
+       console.log("no estan alteradas");
+       return 1;
+     }else {
+       $('#valFechas').empty();
+       $('#valFechas').append('<p style="color:red">Las fechas están alteradas.</p>');
+       return 0;
+     }
+   }
 
    $scope.guardar= function () {
-    if (serveData.validarFecha( $scope.vista.fi,$scope.vista.ff )==1) {
-      var valuesInicio=$scope.vista.fi.split("/");
+    if (validarFinal($scope.vista.ff )==1) {
       var valuesFinal=$scope.vista.ff.split("/");
-      var fechafi=valuesInicio[2]+"/"+valuesInicio[0]+"/"+valuesInicio[1];
       var fechaff=valuesFinal[2]+"/"+valuesFinal[0]+"/"+valuesFinal[1];
-      guardar_inicio(fechaff);
-      console.log("Se gurdo fi:"+fechafi+"   ff:"+fechaff);
+      guardar_inicio(sumDias(fechaff));
        $.each($scope.nuevoOrden, function(i, item) {
          if (item.fi==''){
-           item.fi=fechafi;
+           item.fi=$scope.FechaInicio;
            item.ff=fechaff;
            return false;
          }
@@ -511,6 +523,27 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
         window.location.href ='#/calendario';
      }
    };
+
+   var sumDias = function (fechaff) {
+     var aux=new Date(fechaff);
+     if (aux.getDay()==5) {
+       aux.setDate(aux.getDate()+3);
+     }else {
+       aux.setDate(aux.getDate()+1);
+     }
+
+     var dia=aux.getDate();
+     var mes=aux.getMonth()+1;
+     if (aux.getDate()<10) {
+       dia="0"+aux.getDate();
+     }
+     if (aux.getMonth()<10) {
+       mes="0"+(aux.getMonth()+1);
+     }
+
+     return aux.getFullYear()+"/"+mes+"/"+dia;
+
+   }
 
    var guardar_inicio = function (fi) {
      if (typeof(Storage) !== "undefined") {
@@ -535,191 +568,28 @@ app.controller('nuevo_evento_Controller', ['$scope', 'serveData', '$http' ,funct
 
    };
 
-  
    var y = new Date($scope.FechaInicio);
-   y.setDate(y.getDate()+$scope.sumFinal);
+   y.setDate(y.getDate()+1);
    var d = y.getDate();
    var m = y.getMonth()+1;
    var y = y.getFullYear();
 
-   var min = new Date($scope.FechaInicio);
-   min.setDate(min.getDate()+$scope.sumInicio);
-   var dd= min.getDate();
-   var mm = min.getMonth()+1;
-   var yy = min.getFullYear();
-   //Configuracion fecha
    $(function() {
-     var x = new Date($scope.FechaFinal);
-     x.setDate(x.getDate()-1);
-     $("#from").datepicker({
-       onClose: function (selectedDate) {
-         if (selectedDate=="") {
-             //selectedDate= new Date($scope.FechaInicio);
-             selectedDate= new Date(m+'/'+d+'/'+y);
-             /*var f= new Date();
-             f.setDate(f.getDate()+1);
-             selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();*/
-           }else {
-             f = new Date(selectedDate);
-             f.setDate(f.getDate()+1);
-             selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-           }
-         $("#to").datepicker("option", "minDate", selectedDate);
-       }, minDate: new Date(mm+'/'+dd+'/'+yy) , maxDate:x ,changeMonth: true
-     });
 
-
-
-     $("#to").datepicker({
-       onClose: function (selectedDate) {
-         if (selectedDate!="") {
-           f = new Date(selectedDate);
-           f.setDate(f.getDate()-1);
-           selectedDate=(f.getMonth()+1)+"/"+f.getDate()+"/"+f.getFullYear();
-         }else {
-           selectedDate= new Date(m+'/'+d+'/'+y);
-         }
-       //$("#from").datepicker("option", "minDate",selectedDate);
-     }, minDate: new Date(m+'/'+d+'/'+y) , maxDate: new Date($scope.FechaFinal),changeMonth: true
-     });
+      if ($scope.nuevoOrden.length==$scope.ultimo) {
+        var x=$scope.FechaFinal.split("/");
+        $scope.vista.ff=x[1]+"/"+x[2]+"/"+x[0];
+        $("#to").prop('readonly',true);
+      }else {
+        $("#to").datepicker({
+          beforeShowDay: $.datepicker.noWeekends,
+          minDate: new Date(m+'/'+d+'/'+y) ,
+          maxDate: new Date($scope.FechaFinal),
+          changeMonth: true
+        });
+        console.log("No debes entrar aqui");
+      }
 
    });
 
-
-
 }]);
-
-/*
-
-$scope.btn_terminar=false;
-$scope.tiempo=5;
-$scope.bandera=false;
-
-
-$scope.subir = function(id){
-  console.log("lo que me llego:"+id);
-  var posicion=buscarElemento(id);
-  //$('#o'+id).empty();
-  cambiOrdenPreguntas(posicion,posicion-1)
-  console.log($scope.priorizadas);
-}
-
-$scope.bajar = function(id){
-  console.log(buscarElemento(id));
-}
-
-var buscarElemento = function(valor) {
-  for (var i = 0; i < $scope.priorizadas.length; i++) {
-    if ($scope.priorizadas[i][0]==valor) {
-          return i;
-    }
-  }
-}
-
-var cambiOrdenPreguntas =function(posicion,nueva_posicion) {
-  var respaldo=new Array($scope.priorizadas[nueva_posicion][0],$scope.priorizadas[nueva_posicion][1]);
-  CambioTexto($scope.priorizadas[posicion][0],$scope.priorizadas[nueva_posicion][1],$scope.priorizadas[nueva_posicion][0],$scope.priorizadas[posicion][1]);
-  $scope.priorizadas[nueva_posicion]= new Array($scope.priorizadas[posicion][0],$scope.priorizadas[posicion][1]);
-  $scope.priorizadas[posicion]=respaldo;
-}
-
-var CambioTexto = function(id,text,id2,text2) {
-  var respaldo=$('#o'+id).html();
-  $('#o'+id).html($('#o'+id2).html());
-  $('#o'+id2).html(respaldo);
-
-}
-
-
-function tiempoContador() {
-  $scope.tiempo--;
-  $("#tiempoSpan").empty();
-  $("#tiempoSpan").append($scope.tiempo);
-  if ($scope.tiempo==0) {
-      window.location.href = url+'Modelos/resultado';
-  }
-}
-
-$scope.terminar = function(){
-
-  if ( validarFecha($("#from").val(),$("#to").val()) ) {
-    var asignacion = {'phase': $("#phase").val(),'fi':$("#from").val(),'ff':$("#to").val()};
-    $http.post(url+"Modelos/terminarSeguimiento", asignacion ).success(function(data){
-      console.log("Se creo el seguimiento de forma correcta:"+data);
-      //Se inserta las preguntas priorizadas
-      var pre={ 'id':data, 'preguntas':[] };
-      for (var i = 0; i < $scope.priorizadas.length; i++) {
-        pre.preguntas.push({'id':$scope.priorizadas[i][0],'activity':$scope.priorizadas[i][1]});
-      }
-      $http.post(url+"Modelos/SeguimientoPreguntasPriorizadas", pre ).success(function(data){
-        console.log("Se insertaron las preguntas priorizadas de forma correcta:"+data);
-        $("#contenido").empty();
-        $("#cabezera").empty();
-        $("#contenido").append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Seguimiento Realizado</h1><h3>Tu plan de acción se puso en marcha.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
-        setInterval(tiempoContador, 1000);
-      }).error(function(data){
-        console.log(data);
-      });
-
-    }).error(function(data){
-      console.log(data);
-    });
-
-  }
-}
-
-var validarFechaMayorAHoy=function(fi,ff ) {
-  var valuesInicio=fi.split("/");
-  var valuesFinal=ff.split("/");
-  console.log("Despues del split fi:"+valuesInicio);
-  console.log("Despues del split ff:"+valuesFinal);
-  var hoy = new Date();
-  var inicio=new Date(valuesInicio[2],valuesInicio[0],valuesInicio[1]);
-  var final=new Date(valuesFinal[2],valuesFinal[0],valuesFinal[1]);
-  console.log("hoy:"+hoy);
-  console.log("inicio:"+hoy);
-  console.log("final:"+hoy);
-  if (inicio>=hoy && final>hoy) {
-    console.log("no estan alteradas");
-    return 1;
-  }else {
-    $('#valFechas').empty();
-    $('#valFechas').append('<p style="color:red">Las fechas están alteradas.</p>');
-    console.log("estan alteradas");
-    return 0;
-  }
-}
-
-var validarFecha = function(fi,ff) {
-
-  var ExpReg = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
-  var val1 = ExpReg.test(fi)
-  var val2 = ExpReg.test(ff)
-
-  var res=validarFechaMayorAHoy(fi,ff);
-  if (res==0) {
-    return 0;
-  }
-
-  if (fi!="" && ff!="")  {
-    if (val1 && val2) {
-      $('#valFechas').empty();
-      return 1;
-    }else {
-      $('#valFechas').empty();
-      $('#valFechas').append('<p style="color:red">Fechas no válidas.</p>')
-      return 0;
-    }
-
-  }else {
-    $('#valFechas').empty();
-    $('#valFechas').append('<p style="color:red">Fechas vacias.</p>');
-    return 0;
-  }
-
-}
-
-
-
-
-*/

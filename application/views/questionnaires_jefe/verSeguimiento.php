@@ -32,8 +32,9 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/gcal.js"></script>
 
-  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-  <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+
+  <!--link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'-->
 
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
@@ -83,6 +84,57 @@
 </head>
 <body ng-controller="vercalendario_Controller" ng-init="index()">
 	<div class="wrapper">
+				<div id="myModal" class="modal fade">
+					<div class="modal-dialog">
+							<div class="modal-content">
+									<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h4 class="modal-title">Editar Fecha</h4>
+									</div>
+									<div class="modal-body" id="modalupdate">
+										<form  ng-submit="updateDate()">
+												<div class="row">
+														<div class="col-md-12">
+																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
+																	del seguimiento como puntos buenos o puntos malos.
+																</p>
+																<br><br>
+														</div>
+														<div class="col-md-12">
+																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
+																	del seguimiento como puntos buenos o puntos malos.
+																</p>
+																<br><br>
+														</div>
+
+														<div class="col-md-12">
+																<p>Seleccione la nueva fecha final.
+																</p>
+
+														</div>
+
+														<div class="col-md-6">
+										            <div class="form-group">
+										                <label>Fecha Inicial:</label>
+										                <input readonly type="text" name="from" ng-model="activity_start" class="form-control border-input" >
+										            </div>
+										        </div>
+														<div class="col-md-6">
+										            <div class="form-group">
+										                <label>Fecha Final:</label>
+										                <input type="text" id="to" name="to" ng-model="dataUpdateDate" class="form-control border-input">
+										            </div>
+										        </div>
+												</div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Aceptar" />
+												</div>
+										</form>
+									</div>
+							</div>
+					</div>
+			</div>
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
 			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
@@ -168,6 +220,8 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
+								<div id="avisos">
+								</div>
 								<div class="row">
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
@@ -176,9 +230,13 @@
                           <!--p class="category">En n dias termina el Plan de acción.</p-->
 											</div>
 											<div class="content">
+												<?php
+												$cadena = date("Y")."-".date("m")."-".date("d");
+												echo $cadena;
+												 ?>
 												<input type="hidden" name="tracing" id="tracing" value="<?=$tracing ?>">
+												<input type="hidden" name="phase" id="phase" value="<?=$phase ?>">
 												<div class="row">
-
 													<div class="col-md-12">
 														<div class="col-md-6">
 															<div style="text-align:left">
@@ -208,8 +266,9 @@
 														</div>
 														<div class="col-md-2"></div>
 														<br><br>
-														<div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+														<div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != '' ">
 											        Actividad: {{alertMessage}}
+															<a style="color:black" ng-show='bandera' href="#" data-toggle="modal" data-target="#myModal" >| Editar</a>
 											      </div>
 											      <br>
 											      <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
@@ -258,16 +317,6 @@
 	    </div>
 	</div>
 </body>
-
-<!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
-
-<!--  Charts Plugin -->
-<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
