@@ -139,10 +139,12 @@ class Equipos extends CI_Controller {
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo actualizar la información</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo actualizar la información</strong>";
             $mensaje.="</div>";
+
+            
 
             $this->session->set_flashdata('message', $mensaje);
             

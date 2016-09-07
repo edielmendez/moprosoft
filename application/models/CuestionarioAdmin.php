@@ -54,6 +54,21 @@ class CuestionarioAdmin extends CI_Model
       }
    }
 
+   public function getFaseByIdProcess($id){
+      $this->db->select('*');
+      $this->db->from('phase_objetive');
+      $this->db->where('process_id',$id);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
    public function getProcesoById($id){
       $this->db->select('*');
       $this->db->from('process');
@@ -61,6 +76,20 @@ class CuestionarioAdmin extends CI_Model
       $query = $this->db->get();
 
       if($query -> num_rows() == 1){
+
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+   public function getProcesoByIdModel($id){
+      $this->db->select('*');
+      $this->db->from('process');
+      $this->db->where('model_id',$id);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
 
          return $query->result();
       }
@@ -167,7 +196,6 @@ class CuestionarioAdmin extends CI_Model
       $this->db->select('DISTINCT(phase_objetive_id)');
       $this->db->from('assignment');
       $this->db->where('team_id =',$id);
-      $this->db->where('status !=',100);
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){

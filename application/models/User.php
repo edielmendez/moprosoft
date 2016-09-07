@@ -128,7 +128,10 @@ class User extends CI_Model
    }
 
    public function eliminar($id){
+      //se eliminan todos los datos de este usuario de la tabla asignación
       return $this->db->delete('user', array('id' => $id));
+      
+
    }
 
    public function getUsuarioByUsername($username){
@@ -166,6 +169,7 @@ class User extends CI_Model
    }
 
    function delete($id){
+      $this->db->delete('assignment', array('user_id' => $id));
    	return $this->db->delete('user', array('id' => $id));
   	}
 
@@ -236,6 +240,8 @@ class User extends CI_Model
       $rowAfects  = $this->db->update('user', $data);
       return $rowAfects;
    }
+
+   
 
 
 }

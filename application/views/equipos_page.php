@@ -67,14 +67,13 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
-	                <li >
+	                
+	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/Evaluacion/">
-	                        <i class="ti-settings"></i>
-	                        <p>Evaluación</p>
+	                        <i class="ti-pencil-alt"></i>
+	                        <p>ASIGNAR CUESTIONARIOS</p>
 	                    </a>
 	                </li>
-	                
-	                
 	            </ul>
 	    	</div>
 	    </div>
@@ -157,14 +156,16 @@
 	                                        
 	                                        <button class='btn btn-danger btn_elim_equipo' id='<?php echo $equipo['id']?>'><i class="ti-trash"></i> Eliminar</button>
 	                                        <button class='btn btn-primary btn_act_name_equipo' id='<?php echo $equipo['id']?>'> Actualizar</button>
+	                                        &nbsp;&nbsp;&nbsp;
 	                                        <?php
 	                                        if(strcmp($equipo['estadistica'],"con") == 0){
-	                                        	echo "<a href='".base_url()."index.php/Evaluacion/detalles/".$equipo['id']."' id='".$equipo['id']."'  ><i class='ti-settings'></i>Estadisticas de evaluación</a>";
+	                                        	echo "<a href='".base_url()."index.php/Evaluacion/detalles/".$equipo['id']."' id='".$equipo['id']."' class='btn btn-sucess' ><i class='ti-settings'></i>Estadisticas de evaluación</a>";
 	                                        }else{
-												echo "<a  id=''><i class='ti-settings'></i>sin estadisticas</a>";
+												echo "<a  id='' ><i class='ti-settings'></i>sin estadisticas</a>";
 	                                        }
 	                                        ?>
-	                                        <!--<a href="#" id='<?php echo $equipo['id']?>'><i class="ti-settings"></i>Estadisticas de evaluación</a>-->
+	                                        &nbsp;&nbsp;&nbsp;
+	                                        <a href="<?php echo base_url(); ?>index.php/Calendario/modificar/<?php echo $equipo['id']?>" id="<?php echo $equipo['id']?>" class="btn"><i class="ti-calendar"></i>Modificar Calendario</a>
 	                                        <?php
 	                                        $b=1;
 	                                        foreach ($equipo['integrantes'] as $integrante) {
@@ -242,7 +243,7 @@
 		                                            
 		                                            
 		                                            <div class="col-xs-2 ">
-		                                                <btn class="btn btn-sm btn-danger btn-icon"><i class="fa fa-envelope"></i> Enviar correo</btn>
+		                                                <btn class="btn btn-sm btn-danger btn-icon btnEnviarMails" id='<?php echo $miembro['id']?>'><i class="fa fa-envelope"></i> Enviar correo</btn>
 		                                            </div>
 		                                        </div>
 		                                    </li>
@@ -425,6 +426,52 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+
+	<!--Modal Mail-->
+	<div class="modal fade" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	  	<?php echo form_open('Estudiantes/sendMail'); ?>
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">Nuevo Email</h4>
+	      </div>
+	      <div class="modal-body">
+	        
+	          	<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Para</label>
+                            <input type="text" class="form-control border-input" placeholder="Company" value="" id="nombreUsuarioEnviarMail" name="usuario" disabled="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="text" class="form-control border-input" placeholder="Company" value="" id="mailUsuarioEnviarMail" name="email" disabled="">
+                        </div>
+                    </div>
+                </div>
+
+	            <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea rows="5" class="form-control border-input" id="areaMensajeEnviarmail" placeholder="Here can be your description" value="" name="mensaje" required=""></textarea>
+                        </div>
+                    </div>
+                </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+	      </div>
+	    </div>
+	    </form>
+	  </div>
+	</div>
+	<!---->
 
 </body>
 
