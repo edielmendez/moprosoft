@@ -901,3 +901,43 @@ var showModalSendMail = function(data){
 /***************************************************************************
  ***************************************************************************
  */
+
+
+/**
+ *****************************************************************************
+ *CÓDIGO PARA CAMBIAR LA FECHA FINAL DE UN SEGUIMIENTO 
+ *****************************************************************************
+ */
+
+$(document).on('click','.changeFechaFinal',function(){
+	var id = $(this).attr('id');
+	$.ajax({
+	 	method: "POST",
+	  	url: "http://localhost/moprosoft/index.php/Calendario/getDataFaseInTableTracingById",
+	  	data: { id:id},
+	  	success : showModalChangeDate
+	})
+})
+
+var showModalChangeDate = function(data){
+	console.log(data);
+	var fase = JSON.parse(data);
+	console.log(fase)
+	var fecha = new Date(fase.date_end.replace('-','/'));
+
+	$("#id_tracing").val(fase.id)
+	$("#fecha_inicio").val(fase.date_start);
+	$("#fecha_final").val(fase.date_end);
+	
+	$( "#fecha_final" ).datepicker({
+		minDate: new Date(fase.date_end.replace('-','/')),
+		dateFormat: "yy-mm-dd",
+		beforeShowDay: $.datepicker.noWeekends
+	});
+	$("#modalChangeDate").modal();
+}
+
+/**
+ ***********************************************************************
+ ***********************************************************************
+ */

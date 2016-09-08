@@ -13,6 +13,7 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
 
   <link href="<?php echo base_url(); ?>libs/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
@@ -99,6 +100,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                    <a class="navbar-brand" href="#">MODIFICAR FECHAS      /    Equipo : <?php echo $equipo['name'] ?></a>
+
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -131,85 +133,86 @@
 	    		</div>
 	    	</div>
 
+	    	<?php //print_r($fases); ?>
+
 	        <div class="content container">
-	        	
-	        	
-	        	<section>
-					<div class="tabs tabs-style-underline">
-						<nav>
-							<ul>
-								<li><a href="#section-bar-1" class="icon icon-home"><span>ACTIVIDADES EN SEGUIMIENTO DE ESTE EQUIPO</span></a></li>
-								<!--<li><a href="#section-bar-2" class="icon icon-tools"><span>ESTADISTICAS</span></a></li>-->
-							</ul>
-						</nav>
-						
-								
-								
-				</section>
-	        	<?php //print_r($procesos) ?>
-	        	
+	        	<!--<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-info btn-fill btn-wd'>Regresar</a><br><br>-->
+	        	<?php if (count($fases)!=0): ?>
+	        		<div class="content table-responsive table-full-width">
 
-	        	
-	        	
+	                    <table class="table table-striped" id="tabla_estudiantes">
+	                        <thead>
+	                            <th>PROCESO</th>
+	                        	<th>FASE</th>
+	                        	<th>FECHA INICIAL</th>
+	                        	<th>FECHA FINAL</th>
+	                        	<th></th>
+	                        	
+	                        </thead>
+	                        <tbody>
+	                        <?php
+	                        for ($i=0; $i < count($fases) ; $i++) { 
+	                        	# code...
+	                        	echo "<tr>";
+	                        		echo "<td>".$fases[$i]['proceso']."</td>";
+	                        		echo "<td>".$fases[$i]['fase_objetivo']."</td>";
+	                        		echo "<td>".$fases[$i]['fecha_inicio']."</td>";
+	                        		echo "<td>".$fases[$i]['fecha_final']."</td>";
+	                        		echo "<td><a class='btn btn-primary changeFechaFinal' id='".$fases[$i]['id']."' href='#'>Actualizar Fecha</a></td>";
+	                        		
+	                        	echo "</tr>";
+	                        }
+	                        
+	                        ?>
+	                        	
+	                            
+	                            
+	                        </tbody>
+	                    </table>
 
-			    
+	                </div>
+	        	<?php else: ?>
+	        		<h3>NO HAY ACTIVIDADES EN SEGUIMIENTO</h3>
+	        		<br><br>
+	        		<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-info btn-fill btn-wd'>Regresar</a>
+	        		
+	        	<?php endif ?>
+	            
 	            
 	        </div>
 
 
-	        <footer class="footer">
-	            <!--<div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>-->
-	        </footer>
+	        
 
 	    </div>
 	</div>
 
 	<!-- Modales-->
-	<div class="modal fade" tabindex="-1" role="dialog" id="modal_elegir_equipos_eva">
+	<div class="modal fade" tabindex="-1" role="dialog" id="modalChangeDate">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
-	    	<?php echo form_open('Evaluacion/setCuestionarios'); ?>
+	    	<?php echo form_open('Calendario/changeFechaFinal'); ?>
 	        <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title">Aplicar Cuestionario</h4>
+	        <h4 class="modal-title">Cambiar Fecha</h4>
 	        </div>
 	      <div class="modal-body">
-	        <h3>Selecciona los equipos a los que se aplicara este cuestionario</h3>
+	        <h4 id="nombre_fase"></h4>
 	        <hr>
-	        <div id="form_equipos_apl_cuest">
-	        	
+	        <div class="row">
+	        	<div class="col-md-6">
+	        		<p>Fecha Inicial<input type="text" id="fecha_inicio" disabled=""></p>
+	        	</div>
+	        	<div class="col-md-6">
+	        		<p>Fecha Final<input type="text" name="fecha_final" id="fecha_final" required=""></p>
+	        	</div>
 	        </div>
-	        
-	        <input type="hidden" name="id_proceso" value="" id="id_proceso">
-	  
+	        <input type="hidden" id="id_equipo_hidden" name="id_equipo_hidden" value="<?php echo $equipo['id'] ?>">
+	        <input type="hidden" name="id_tracing" value="" id="id_tracing">
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-	        <input type="submit" class="btn btn-info" name="" value="Aplicar">
+	        <input type="submit" class="btn btn-info" name="" value="Cambiar">
 	      </div>
 	      </form><!-- /.end form -->
 	    </div><!-- /.modal-content -->
@@ -219,6 +222,7 @@
 
 <!--   Core JS Files   -->
 <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>public/js/jquery-ui.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
 
@@ -247,17 +251,11 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*
-			demo.initChartist();
-			$.notify({
-					icon: 'ti-gift',
-					message: "Bienvenido <b>ediel</b> , usted a iniciado sessión."
-
-				},{
-						type: 'success',
-						timer: 4000
-				});
-				*/
+			/*$( "#fecha_final" ).datepicker({
+				dateFormat: "yy-mm-dd",
+				beforeShowDay: $.datepicker.noWeekends
+			});*/
+			
 	});
 </script>
 
