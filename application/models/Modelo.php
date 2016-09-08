@@ -156,6 +156,38 @@ class Modelo extends CI_Model
 
 	}
 
+	public function updateFollow($id,$fi,$ff){
+		$consulta=$this->db->query("
+				UPDATE calification_questionary_tracing SET date_start='$fi',date_end='$ff'  WHERE id=$id;
+				");
+		if($consulta==true){
+				return 0;
+		}else{
+				return 1;
+		}
+	}
+
+	public function updateFollow_id($id,$ff){
+		$consulta=$this->db->query("
+				UPDATE tracing SET date_end='$ff' WHERE id=$id;
+				");
+		if($consulta==true){
+				return "OK";
+		}else{
+				return "Error";
+		}
+	}
+	public function updateFollow_status($id,$status){
+		$consulta=$this->db->query("
+				UPDATE tracing SET status='$status' WHERE id=$id;
+				");
+		if($consulta==true){
+				return 0;
+		}else{
+				return 1;
+		}
+	}
+
 	public function delete($id){
        $consulta=$this->db->query("DELETE FROM model WHERE id=$id");
 			 if($consulta==true){

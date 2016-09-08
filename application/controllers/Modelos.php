@@ -49,20 +49,11 @@ class Modelos extends CI_Controller {
 		if($this->session->userdata('logged_in')){
 
 			$fechas = $this->modelo->getSeguimiento($phase);
-			/*$result = $this->modelo->getPreguntasPriorizadas($phase);
-			$Preguntas=array();
-			if ($result) {
-				foreach ($result as $row) {
-					$pre = array(
-						'question' => $row->question
-					);
-					array_push($Preguntas,$pre);
-				}
-			}*/
 
 			$datos['fi']=$fechas[0];
 			$datos['ff']=$fechas[1];
 			$datos['tracing']=$fechas[2];
+			$datos['phase']=$phase;
 			$this->load->view('questionnaires_jefe/verSeguimiento',$datos);
 		}else{
 			//si no hay session se redirecciona la vista de login
@@ -77,6 +68,7 @@ class Modelos extends CI_Controller {
 		if ($result) {
 			foreach ($result as $row) {
 				$pre = array(
+					'id'=> $row->id,
 					'activity' => $row->activity,
 					'orden' => $row->orden,
 					'fi' => $row->date_start,
@@ -87,6 +79,27 @@ class Modelos extends CI_Controller {
 		}
 
 		echo json_encode($Preguntas);
+	}
+
+	public function updateFollow()
+	{
+		if($this->session->userdata('logged_in')){
+			$data = $this->session->userdata('logged_in');
+			$objDatos = json_decode(file_get_contents("php://input"));
+			$fecha_final="";
+
+			foreach ($objDatos->follow as $row) {
+				$result2 = $this->modelo->updateFollow($row->id,$row->fi,$row->ff);
+				$fecha_final=$row->ff;
+			}
+			$result = $this->modelo->updateFollow_id($objDatos->id,$fecha_final);
+			echo $result;
+			//$result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff);
+			//print_r($objDatos);
+
+		}else{
+			redirect('login', 'refresh');
+		}
 	}
 
 	 public function resultado(){
