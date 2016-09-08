@@ -98,13 +98,7 @@
 																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
 																	del seguimiento como puntos buenos o puntos malos.
 																</p>
-																<br><br>
-														</div>
-														<div class="col-md-12">
-																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
-																	del seguimiento como puntos buenos o puntos malos.
-																</p>
-																<br><br>
+																<br>
 														</div>
 
 														<div class="col-md-12">
@@ -220,7 +214,7 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-							
+
 								<div id="avisos">
 								</div>
 								<div class="row">
@@ -231,26 +225,6 @@
                           <!--p class="category">En n dias termina el Plan de acción.</p-->
 											</div>
 											<div class="content">
-												<?php
-												$fechActual = date("Y")."-".date("m")."-".date("d");
-												$fechAlmacenada='2016-09-07';
-
-												$hoy = new DateTime($fechActual);
-												$ayer = new DateTime('2016-09-09');
-
-												$dif=$hoy->diff($ayer);
-
-												echo "Diferencia:".$dif->format('%a');
-												//print_r($dif);
-
-
-												if ($hoy>$ayer) {
-													echo "hoy es mayor";
-												}else {
-													echo "La fecha aun no vence";
-												}
-
-												 ?>
 												<input type="hidden" name="tracing" id="tracing" value="<?=$tracing ?>">
 												<input type="hidden" name="phase" id="phase" value="<?=$phase ?>">
 												<div class="row">
