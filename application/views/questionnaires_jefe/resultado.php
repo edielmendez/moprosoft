@@ -129,21 +129,121 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<?php
-									foreach($cuestionarios as $q){
-								?>
 								<div class="row">
+									<div class="col-md-12 col-xl-12">
+										<div class="card">
+											<div class="header">
+												<h4>Resultados</h4>
+											</div>
+											<div class="content">
+												<div class="row">
+
+													<div class="col-md-12">
+														<h5>Integrantes</h5>
+														<?php
+														foreach ($equipos as $value) {
+															echo "Username:"."<b>".$value['username']."</b> ";
+														}
+														?>
+														<br><br>
+													</div>
+
+													<div class="col-md-12">
+														<table class="table table-striped">
+															<thead>
+																<tr>
+																	<th>Modelo</th>
+																	<th>Proceso</th>
+																	<th>Fase/Objetivo</th>
+																	<th>N.C Obtenida</th>
+																	<th>N.C Requerida</th>
+																</tr>
+															</thead>
+															<tbody>
+																<?php
+																	foreach($cuestionarios as $q){
+																?>
+																<tr>
+																	<td><?=$q[3]; ?></td>
+																	<td><?=$q[4]; ?></td>
+																	<td><?=$q[0]; ?></td>
+																	<?php
+
+																		echo "<td>";
+																		echo $q[2]." ";
+																		if ($q[2]>$q[5]) {
+																			echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:10px; height:20px\" alt=\"Bien\" />";
+																		}else {
+																			echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:10px; height:20px\" alt=\"Mal\" />";
+																		}
+																		echo "</td>";
+
+																	?>
+																	<!--td><?=$q[2]; ?>%</td-->
+																	<td><?=$q[5]; ?>%</td>
+																	<?php
+																	 if ($q[6]>0) {
+																	 		echo "<td><a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a></td>";
+																	 }else {
+																	 		echo "<td><a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
+																	 //echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
+																	 }
+																	 if ($q[7]>0) {
+																	 		echo "<a class=\"btn btn-default btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/historial/$q[1]\">Historial</a>";
+																	 }
+																	 echo "</td>";
+																	?>
+
+																</tr>
+																<?php
+																	}
+																?>
+															</tbody>
+														</table>
+														<!--h4>Integrantes</h4>
+														<table class="table table-striped">
+															<thead>
+																<tr>
+																	<th>Username</th>
+																</tr>
+															</thead>
+															<tbody>
+
+																	<?php
+																	/*foreach ($equipos as $value) {
+																		echo "<tr>";
+																		echo "<td>".$value['username']."</td>";
+																		echo "</tr>";
+																	}*/
+																	?>
+
+															</tbody>
+														</table-->
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+								<?php
+									//foreach($cuestionarios as $q){
+								?>
+								<!--div class="row">
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
 											<div class="header">
 													<h4 class="title">Nivel de Cobertura obtenida por Fase/Objetivo:
 													<?php
-														echo $q[2];
+														/*echo $q[2];
 														if ($q[2]>$q[5]) {
 															echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:15px; height:25px\" alt=\"Bien\" />";
 														}else {
 															echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:15px; height:25px\" alt=\"Mal\" />";
-														}
+														}*/
 													?>
 												  </h4>
 											</div>
@@ -155,9 +255,9 @@
 														<p>Fase/Objetivo:<?=$q[0]; ?></p>
 														<p>Integrantes:
 															<?php
-															foreach ($equipos as $value) {
-																echo $value['username']." ";
-															}
+															//foreach ($equipos as $value) {
+															//	echo $value['username']." ";
+															//}
 															?>
 														</p>
 	                        </div>
@@ -165,21 +265,20 @@
 														<p>Nivel de Cobertura Requirida:<?php echo $q[5]; ?>%</p>
 														<br><br><br>
 														<?php
-														 if ($q[6]>0) {
+														 /*if ($q[6]>0) {
 														 		echo "<a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a>";
 														 }else {
-														 echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
-														 //echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
-														 }
+														 		echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
+														 }*/
 														?>
 	                        </div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</div-->
 								<?php
-									}
+									//}
 								?>
 
 								</div>

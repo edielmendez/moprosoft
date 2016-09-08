@@ -72,7 +72,7 @@ class Modelos extends CI_Controller {
 					'activity' => $row->activity,
 					'orden' => $row->orden,
 					'fi' => $row->date_start,
-					'ff' => $row->date_end
+					'ff' => $row->date_end,
 				);
 				array_push($Preguntas,$pre);
 			}
@@ -92,7 +92,7 @@ class Modelos extends CI_Controller {
 				$result2 = $this->modelo->updateFollow($row->id,$row->fi,$row->ff);
 				$fecha_final=$row->ff;
 			}
-			$result = $this->modelo->updateFollow_id($objDatos->id,$fecha_final);
+			//$result = $this->modelo->updateFollow_id($objDatos->id,$fecha_final);
 			echo $result;
 			//$result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff);
 			//print_r($objDatos);
@@ -139,10 +139,11 @@ class Modelos extends CI_Controller {
 
 							if ($contador!=0) {
 								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
+								$historial = $this->modelo->historial_seguimineto($questionary);
 								$nameModel = $this->modelo->getNameModel($questionary);
 								$nameProcess = $this->modelo->getNameProcess($questionary);
 								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento) );
+								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial) );
 								$questionary=$row->phase_objetive_id;
 								$name=$row->name;
 								$suma=$row->nivel_cobertura;
@@ -159,10 +160,11 @@ class Modelos extends CI_Controller {
 						}
 					}
 					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
+					$historial = $this->modelo->historial_seguimineto($questionary);
 					$nameModel = $this->modelo->getNameModel($questionary);
 					$nameProcess = $this->modelo->getNameProcess($questionary);
 					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento) );
+					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial) );
 			 }
 
 			$datos['cuestionarios']=$Resultado;
@@ -173,6 +175,36 @@ class Modelos extends CI_Controller {
          redirect('login', 'refresh');
    	}
    }
+
+
+	 public function historial($id)
+	 {
+		 if($this->session->userdata('logged_in')){
+
+		 $result=$this->modelo->get_historial_seguimiento($id);
+		 $tracing=$this->modelo->getSeguimiento($id);
+
+		 $Calificacion = array();
+		 if($result){
+				foreach ($result as $row ) {
+						 $cal = array(
+							'activity' => $row->activity,
+							'orden' => $row->orden,
+							'date_start' => $row->date_start,
+							'date_end' => $row->date_end,
+						);
+						array_push($Calificacion,$cal);
+				}
+		 }
+
+		 $datos['activity']=$Calificacion;
+		 $datos['fi']=$tracing[0];
+		 $datos['ff']=$tracing[1];
+		 $this->load->view('questionnaires_jefe/historial',$datos);
+	 }else{
+		 redirect('login', 'refresh');
+	 }
+	 }
 
 	 public function Seguimiento($id)
 	 {
@@ -196,7 +228,8 @@ class Modelos extends CI_Controller {
 								'phase_objetive_id' => $row->phase_objetive_id,
 								'question' => $row->question,
 								'question_id' => $row->question_id,
-								'valor' => $row->valor
+								'valor' => $row->valor,
+								'bandera' => $row->bandera
 							);
 							array_push($Calificacion,$cal);
 						 }
@@ -229,7 +262,8 @@ class Modelos extends CI_Controller {
 								'phase_objetive_id' => $row->phase_objetive_id,
 								'question' => $row->question,
 								'question_id' => $row->question_id,
-								'valor' => $row->valor
+								'valor' => $row->valor,
+								'bandera'=>$row->bandera
 							);
 							array_push($Calificacion,$cal);
 						 }

@@ -64,66 +64,33 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
            var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
            console.log("esta es mi longitud:"+longitud);
 
-          event.fi=suma1dia(referencia);
-          console.log("Esta es mi referencia y fecha event.fi:"+event.fi);
-          var tem1=event.fi.split("/");
-          event.ff=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],longitud,"yy/mm/dd");
+
+           event.fi=suma1dia(referencia);
+           var tem1=event.fi.split("/");
+           console.log("Esta es mi referencia y fecha event.fi:"+event.fi);
+
+           event.ff=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],longitud,encuentraSabDom(trozo1[1]+"/"+trozo1[2]+"/"+trozo1[0],longitud),"yy/mm/dd");
          }
          var temx= event.ff.split("/");
          referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
-         /*if (bandera=="suma") {
-            console.log("entre en suma");
-           if ($scope.activity_id==event.id) {
-             event.ff=z[2]+"/"+z[0]+"/"+z[1];
-           }else {
-
-             var trozo1=event.fi.split("-");
-             var trozo2=event.ff.split("-");
-             console.log("EStos son mis trosos1:"+trozo1);
-             console.log("EStos son mis trosos2:"+trozo2);
-
-             var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
-             console.log("esta es mi longitud:"+longitud);
-
-            event.fi=suma1dia(referencia);
-            console.log("esta es mi referencia:"+event.fi);
-            //event.fi=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
-            //event.ff=sumaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
-            event.ff=sumaDias(referencia,longitud,"yy/mm/dd");
-           }
-           var temx= event.ff.split("/");
-           referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
-
-         }else if (bandera=="resta") {
-           console.log("entre en resta");
-           if ($scope.activity_id==event.id) {
-             event.ff=z[2]+"/"+z[0]+"/"+z[1];
-           }else {
-             var trozo1=event.fi.split("-");
-             var trozo2=event.ff.split("-");
-             console.log("EStos son mis trosos1:"+trozo1);
-             console.log("EStos son mis trosos2:"+trozo2);
-
-             var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
-             console.log("esta es mi longitud:"+longitud+1);
-
-            event.fi=suma1dia(referencia);
-            console.log("esta es mi referencia:"+event.fi);
-            //event.fi=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
-            //event.ff=sumaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
-            event.ff=sumaDias(referencia,longitud+1,"yy/mm/dd");
-
-             event.fi=restaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
-             event.ff=restaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
-
-           }
-           var temx= event.ff.split("/");
-           referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
-
-         }*/
-
        });
        guardarDB();
+     }
+
+     var encuentraSabDom = function(fecha,dias) {
+       // formato  mm/dd/aaaa
+       var f = new Date(fecha);
+       f.setHours(0,0,0,0);
+       var sabdom=0;
+
+       for (var i = 0; i < dias; i++) {
+           if (f.getDay()==6 || f.getDay()==0) {
+            sabdom++;
+           }
+           f.setDate(f.getDate()+1);
+       }
+       console.log("Funcion encuentraSabDom() Num de sabados y domingos:"+sabdom);
+       return sabdom;
      }
 
      var direccionar = function () {
@@ -139,13 +106,27 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
           $("#avisos").empty();
           $("#avisos").append('<div class="alert alert-success fade in" style="margin-top:18px;"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a><strong>Bien!</strong>La actualización de fechas de realizo de manera exitosa.</div>');
           $('#myModal').modal('hide');
-          //setTimeout(function(){
-          //  window.location.href= url+'Modelos/VerSeguimiento/'+$("#phase").val();
-          //},4000);
+          setTimeout(function(){
+            window.location.href= url+'Modelos/VerSeguimiento/'+$("#phase").val();
+          },4000);
         }).error(function(data){
           console.log(data);
         });
         //console.log("RESULTADO:"+JSON.stringify($scope.dateOriginal));
+     }
+
+     var sumaDiasAviles= function (fecha,dias) {
+       //formato fecha mm/dd/yyyy
+       var f = new Date(fecha);
+
+       for (var i = 0; i < dias; i++) {
+         f.setDate(f.getDate()+1);
+         if (f.getDay()==6 || f.getDay()==0) {
+          dias+=1;
+         }
+       }
+       return f;
+
      }
 
      var suma1dia= function (fecha) {
@@ -172,26 +153,10 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
 
      }
 
-     var sumaDias = function (fecha,dias,tipo) {
+     var sumaDias = function (fecha,dias,sabdom,tipo) {
        // formato  mm/dd/aaaa
        var f = new Date(fecha);
-       var temp=new Date(fecha);
        f.setHours(0,0,0,0);
-       temp.setHours(0,0,0,0);
-       var sabdom=0;
-       console.log("Funcion sumaDias() dias recibidos:"+dias);
-       //console.log("dias:"+dias);
-       //f.setDate(f.getDate()+dias);
-       //console.log("resultado:"+f);
-       for (var i = 0; i < dias; i++) {
-           if (temp.getDay()==6 || temp.getDay()==0) {
-            //f.setDate(f.getDate()+2);
-            //dias+=1;
-            sabdom++;
-           }
-           temp.setDate(temp.getDate()+1);
-           //f.setDate(f.getDate()+1);
-       }
 
        console.log("Funcion sumaDias() Num Sabado y domingos:"+sabdom);
        var numVueltas=dias-sabdom;
@@ -231,44 +196,6 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
 
      }
 
-     var restaDias = function (fecha,dias,tipo) {
-       // formato  mm/dd/aaaa.
-       var f = new Date(fecha);
-       dias=dias*(-1);
-       f.setHours(0,0,0,0);
-       //f.setDate(f.getDate()-dias);
-       for (var i = 0; i < dias; i++) {
-         /////////////////////////////7
-         f.setDate(f.getDate()-1);
-         if (f.getDay()==6 || f.getDay()==0) {
-          //f.setDate(f.getDate()+2);
-          dias+=1;
-         }
-       }
-       if (tipo==undefined || tipo=="") {
-         return f;
-       }
-
-       var mes=f.getMonth()+1;
-       var dia=f.getDate();
-       if (dia<10) {
-         dia="0"+dia;
-       }
-
-       if (mes<10) {
-         mes="0"+mes;
-       }
-
-       if (tipo=="yy/mm/dd") {
-         return f.getFullYear()+"/"+mes+"/"+dia;
-       }
-
-       if (tipo=="mm/dd/yy") {
-         return mes+"/"+dia+"/"+f.getFullYear();
-       }
-       return f;
-     }
-
      var restaFechas = function(f1,f2){
        //f1 f2 en formato dd/mm/aaaa.
        var aFecha1 = f1.split('/');
@@ -299,7 +226,6 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
            mes="0"+mes;
          }
          $scope.activity_start = mes +"/"+dia+"/"+inicio.getFullYear();
-         //var  min = new Date(sumaDias(mes +"/"+dia+"/"+inicio.getFullYear(),1));
 
          dia=final.getDate();
          mes=final.getMonth()+1;
@@ -312,7 +238,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
          }
          $scope.activity_end = mes+"/"+dia+"/"+final.getFullYear();
          $scope.dataUpdateDate=mes+"/"+dia+"/"+final.getFullYear();
-         //var max= new Date(sumaDias(mes+"/"+dia+"/"+final.getFullYear(),10));
+         var max= new Date(sumaDiasAviles(mes+"/"+dia+"/"+final.getFullYear(),5));
 
 
          //Configuracion calemndario
@@ -321,7 +247,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
             $("#to").datepicker({
               beforeShowDay: $.datepicker.noWeekends,
               minDate:new Date(),
-              //maxDate: max,
+              maxDate: max,
               changeMonth: true
             });
 

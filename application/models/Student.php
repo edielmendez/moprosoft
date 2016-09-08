@@ -39,7 +39,7 @@ class Student extends CI_Model
     $consulta=$this->db->query("SELECT * FROM phase_objetive WHERE id=$questionary_id ");
     $c= $consulta->row();
 
-    $result=$this->db->query("INSERT INTO calificacion_questionary VALUES(NULL,'$team_id','$c->process_id','$questionary_id','$question_id','$siempre','$usualmente','$aveces','$rara','$nunca','$nivel','$media','$desviacion','$valor');");
+    $result=$this->db->query("INSERT INTO calificacion_questionary VALUES(NULL,'$team_id','$c->process_id','$questionary_id','$question_id','$siempre','$usualmente','$aveces','$rara','$nunca','$nivel','$media','$desviacion','$valor',0);");
     if($result==true){
       return 0;
     }else{

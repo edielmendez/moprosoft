@@ -346,9 +346,12 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
      $scope.addEvent = function(titulo,fi,ff) {
        var x = new Date(ff);
        x.setDate(x.getDate()+1);
+       x.setHours(8,0,0,0);
+       var y=new Date(fi);
+       y.setHours(8,0,0,0);
        $scope.events.push({
          'title': titulo,
-         'start': new Date(fi),
+         'start': y,
          'end': x,
          'className': ['openSesame']
        });

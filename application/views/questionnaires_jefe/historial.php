@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en" ng-app="verseguimiento">
+<html lang="en" ng-app="seguimiento">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -13,19 +13,19 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/img/favicon.png">
 
 	<link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
-	<link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
-	<link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
+  <link href="<?php echo base_url(); ?>public/css/animate.min.css" rel="stylesheet"/>
+  <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
+  <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
-	<link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
+  <link href="<?php echo base_url(); ?>public/css/jquery-ui.css" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url(); ?>public/css/fullcalendar.css"/>
 
-	<script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
-	<script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+  <script src="<?php echo base_url(); ?>public/js/jquery-1.10.2.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/jquery-ui.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/angular-route.js"></script>
-	<script src="<?php echo base_url(); ?>public/js/verSeguimiento_Controller.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/seguimiento_Controller.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-2.1.3.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/moment.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
@@ -39,102 +39,11 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-	<style type="text/css">
 
-		.cuadro{
-			border-radius: 5px;
-			width: 20px;
-    	height: 15px;
-		}
-
-		.urgente,
-		.urgente div,
-		.urgente span {
-		 background-color: red; /* background color */
-		 border-color: white;     /* border color */
-		 color: white;           /* text color */
-		}
-
-		.pasado,
-		.pasado div,
-		.pasado span {
-		 background-color: gray; /* background color */
-		 border-color: white;     /* border color */
-		 color: white;           /* text color */
-		}
-
-		.marcha,
-		.marcha div,
-		.marcha span {
-		 background-color: green; /* background color */
-		 border-color: white;     /* border color */
-		 color: white;           /* text color */
-		}
-
-		.futuro,
-		.futuro div,
-		.futuro span {
-		 background-color: #33B5FF; /* background color */
-		 border-color: white;     /* border color */
-		 color: white;           /* text color */
-		}
-
-	</style>
 
 </head>
-<body ng-controller="vercalendario_Controller" ng-init="index()">
+<body ng-controller="inicio_Controller">
 	<div class="wrapper">
-				<div id="myModal" class="modal fade">
-					<div class="modal-dialog">
-							<div class="modal-content">
-									<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Editar Fecha</h4>
-									</div>
-									<div class="modal-body" id="modalupdate">
-										<form  ng-submit="updateDate()">
-												<div class="row">
-														<div class="col-md-12">
-																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
-																	del seguimiento como puntos buenos o puntos malos.
-																</p>
-																<br><br>
-														</div>
-														<div class="col-md-12">
-																<p>Terminar antes o extender la fecha establecida de la actividad, se reflejará al termino
-																	del seguimiento como puntos buenos o puntos malos.
-																</p>
-																<br><br>
-														</div>
-
-														<div class="col-md-12">
-																<p>Seleccione la nueva fecha final.
-																</p>
-
-														</div>
-
-														<div class="col-md-6">
-										            <div class="form-group">
-										                <label>Fecha Inicial:</label>
-										                <input readonly type="text" name="from" ng-model="activity_start" class="form-control border-input" >
-										            </div>
-										        </div>
-														<div class="col-md-6">
-										            <div class="form-group">
-										                <label>Fecha Final:</label>
-										                <input type="text" id="to" name="to" ng-model="dataUpdateDate" class="form-control border-input">
-										            </div>
-										        </div>
-												</div>
-												<div class="modal-footer">
-														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-														<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Aceptar" />
-												</div>
-										</form>
-									</div>
-							</div>
-					</div>
-			</div>
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 	    <!--
 			Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
@@ -196,7 +105,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/Home/index">Inicio</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="<?php echo base_url() ?>index.php/Modelos/resultado">Resultado</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -220,85 +129,103 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-							
-								<div id="avisos">
-								</div>
 								<div class="row">
 									<div class="col-md-12 col-xl-12">
 										<div class="card">
 											<div class="header">
-													<h4 class="title">Actividades</h4>
-                          <!--p class="category">En n dias termina el Plan de acción.</p-->
+												<h4>Historial</h4>
+                        <p class="category">Fecha Inicial:<?=$fi;?>.</p>
+                        <p class="category">Fecha Final:<?=$ff;?>.</p>
 											</div>
 											<div class="content">
-												<?php
-												$fechActual = date("Y")."-".date("m")."-".date("d");
-												$fechAlmacenada='2016-09-07';
-
-												$hoy = new DateTime($fechActual);
-												$ayer = new DateTime('2016-09-09');
-
-												$dif=$hoy->diff($ayer);
-
-												echo "Diferencia:".$dif->format('%a');
-												//print_r($dif);
-
-
-												if ($hoy>$ayer) {
-													echo "hoy es mayor";
-												}else {
-													echo "La fecha aun no vence";
-												}
-
-												 ?>
-												<input type="hidden" name="tracing" id="tracing" value="<?=$tracing ?>">
-												<input type="hidden" name="phase" id="phase" value="<?=$phase ?>">
 												<div class="row">
-													<div class="col-md-12">
-														<div class="col-md-6">
-															<div style="text-align:left">
-																<h3>Fecha Inicial:</h3>
-		                            <h5><?php echo $fi ?></h5>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div style="text-align:right">
-																<h3>Fecha Final:</h3>
-		                            <h5><?php echo $ff ?></h5>
-															</div>
-														</div>
-                          </div>
-
                           <div class="col-md-12">
-														<div class="col-md-4"></div>
-														<div class="col-md-6">
-															<table>
-																<tr>
-																	<td align="center" style="padding-right: 20px; ">Anterior<div class="cuadro pasado "></div> </td>
-																	<td align="center" style="padding-right: 20px;">Actual<div class="cuadro marcha "></div> </td>
-																	<td align="center" style="padding-right: 20px;">Próximo<div class="cuadro futuro "></div> </td>
-																	<td align="center" style="padding-right: 20px;">Por terminar<div class="cuadro urgente "></div> </td>
-																</tr>
-															</table>
-														</div>
-														<div class="col-md-2"></div>
-														<br><br>
-														<div class="alert-info calAlert" ng-show="alertMessage != undefined && alertMessage != '' ">
-											        Actividad: {{alertMessage}}
-															<a style="color:black" ng-show='bandera' href="#" data-toggle="modal" data-target="#myModal" >| Editar</a>
-											      </div>
-											      <br>
-											      <div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+                            <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Actividad</th>
+                                  <th>Prioridad</th>
+                                  <th>Fecha Inicial</th>
+                                  <th>Fecha Final</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
+    														foreach ($activity as $a) {
+    														?>
+                                <tr>
+                                  <td width=70% ><?=$a['activity']; ?></td>
+                                  <td><?=$a['orden'] ; ?></td>
+                                  <td><?=$a['date_start']; ?></td>
+                                  <td><?=$a['date_end']; ?></td>
+                                </tr>
+                                <?php
+                                  }
+                                 ?>
+                              </tbody>
+                            </table>
+                            <br><br>
+                            <a href="<?php echo base_url(); ?>index.php/Modelos/resultado" class="btn btn-primary btn-fill btn-wd" >Atrás</a>
                           </div>
 												</div>
-                        <br><br>
-                        <a href="<?php echo base_url() ?>index.php/Modelos/resultado" class="btn btn-defaul btn-wd">Atrás</a></button>
-                        <br><br>
 											</div>
 										</div>
 									</div>
 								</div>
 
+
+
+								<?php
+									//foreach($cuestionarios as $q){
+								?>
+								<!--div class="row">
+									<div class="col-md-12 col-xl-12">
+										<div class="card">
+											<div class="header">
+													<h4 class="title">Nivel de Cobertura obtenida por Fase/Objetivo:
+													<?php
+														/*echo $q[2];
+														if ($q[2]>$q[5]) {
+															echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:15px; height:25px\" alt=\"Bien\" />";
+														}else {
+															echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:15px; height:25px\" alt=\"Mal\" />";
+														}*/
+													?>
+												  </h4>
+											</div>
+											<div class="content">
+												<div class="row">
+													<div class="col-md-5">
+														<p>Modelo: <b><?=$q[3]; ?></b> </p>
+														<p>Proceso: <b> <?=$q[4]; ?></b></p>
+														<p>Fase/Objetivo:<?=$q[0]; ?></p>
+														<p>Integrantes:
+															<?php
+															//foreach ($equipos as $value) {
+															//	echo $value['username']." ";
+															//}
+															?>
+														</p>
+	                        </div>
+													<div class="col-md-5">
+														<p>Nivel de Cobertura Requirida:<?php echo $q[5]; ?>%</p>
+														<br><br><br>
+														<?php
+														 /*if ($q[6]>0) {
+														 		echo "<a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a>";
+														 }else {
+														 		echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
+														 }*/
+														?>
+	                        </div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div-->
+								<?php
+									//}
+								?>
 
 								</div>
 							</div>
@@ -334,6 +261,15 @@
 	    </div>
 	</div>
 </body>
+
+<!--   Core JS Files   -->
+
+
+<!--  Checkbox, Radio & Switch Plugins -->
+<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
+
+<!--  Charts Plugin -->
+<script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script>
 
 <!--  Notifications Plugin    -->
 <script src="<?php echo base_url(); ?>public/js/bootstrap-notify.js"></script>
