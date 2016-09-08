@@ -38,22 +38,41 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
        var numero=0;
        var fechaEstimadaFinal= y[1]+"/"+y[0]+"/"+y[2];
        var fechaNueva=z[1]+"/"+z[0]+"/"+z[2];
-       numero=restaFechas(fechaEstimadaFinal,fechaNueva);
+       //numero=restaFechas(fechaEstimadaFinal,fechaNueva);
 
        if (nuevofinal>final) {
          bandera="suma";
        }else if (nuevofinal<final) {
          bandera="resta";
        }
-       console.log("Dias a SUMAR/RESTAR:"+numero);
+       //console.log("Dias a SUMAR/RESTAR:"+numero);
 
        var referencia;
 
        angular.forEach($scope.dateOriginal,function(event){
-         var tem1=event.fi.split("/");
-         var tem2=event.ff.split("/");
-         if (bandera=="suma") {
+         //var tem1=event.fi.split("/");
+         //var tem2=event.ff.split("/");
+         if ($scope.activity_id==event.id) {
+           event.ff=z[2]+"/"+z[0]+"/"+z[1];
+         }else {
 
+           var trozo1=event.fi.split("-");
+           var trozo2=event.ff.split("-");
+           console.log("EStos son mis trosos1:"+trozo1);
+           console.log("EStos son mis trosos2:"+trozo2);
+
+           var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
+           console.log("esta es mi longitud:"+longitud);
+
+          event.fi=suma1dia(referencia);
+          console.log("Esta es mi referencia y fecha event.fi:"+event.fi);
+          var tem1=event.fi.split("/");
+          event.ff=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],longitud,"yy/mm/dd");
+         }
+         var temx= event.ff.split("/");
+         referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
+         /*if (bandera=="suma") {
+            console.log("entre en suma");
            if ($scope.activity_id==event.id) {
              event.ff=z[2]+"/"+z[0]+"/"+z[1];
            }else {
@@ -62,11 +81,12 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
              var trozo2=event.ff.split("-");
              console.log("EStos son mis trosos1:"+trozo1);
              console.log("EStos son mis trosos2:"+trozo2);
-             restaFechas
+
              var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
              console.log("esta es mi longitud:"+longitud);
-             console.log("Esta es mi referencia:"+referencia);
+
             event.fi=suma1dia(referencia);
+            console.log("esta es mi referencia:"+event.fi);
             //event.fi=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
             //event.ff=sumaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
             event.ff=sumaDias(referencia,longitud,"yy/mm/dd");
@@ -75,17 +95,32 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
            referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
 
          }else if (bandera=="resta") {
-
+           console.log("entre en resta");
            if ($scope.activity_id==event.id) {
              event.ff=z[2]+"/"+z[0]+"/"+z[1];
            }else {
+             var trozo1=event.fi.split("-");
+             var trozo2=event.ff.split("-");
+             console.log("EStos son mis trosos1:"+trozo1);
+             console.log("EStos son mis trosos2:"+trozo2);
+
+             var longitud=restaFechas(trozo1[2]+"/"+trozo1[1]+"/"+trozo1[0] , trozo2[2]+"/"+trozo2[1]+"/"+trozo2[0] )
+             console.log("esta es mi longitud:"+longitud+1);
+
+            event.fi=suma1dia(referencia);
+            console.log("esta es mi referencia:"+event.fi);
+            //event.fi=sumaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
+            //event.ff=sumaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
+            event.ff=sumaDias(referencia,longitud+1,"yy/mm/dd");
+
              event.fi=restaDias(tem1[1]+"/"+tem1[2]+"/"+tem1[0],numero,"yy/mm/dd");
              event.ff=restaDias(tem2[1]+"/"+tem2[2]+"/"+tem2[0],numero,"yy/mm/dd");
+
            }
            var temx= event.ff.split("/");
            referencia=temx[1]+"/"+temx[2]+"/"+temx[0];
 
-         }
+         }*/
 
        });
        guardarDB();
@@ -144,6 +179,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
        f.setHours(0,0,0,0);
        temp.setHours(0,0,0,0);
        var sabdom=0;
+       console.log("Funcion sumaDias() dias recibidos:"+dias);
        //console.log("dias:"+dias);
        //f.setDate(f.getDate()+dias);
        //console.log("resultado:"+f);
@@ -157,9 +193,9 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
            //f.setDate(f.getDate()+1);
        }
 
-       console.log("Num Sabado y domingos:"+sabdom);
+       console.log("Funcion sumaDias() Num Sabado y domingos:"+sabdom);
        var numVueltas=dias-sabdom;
-       console.log("Num Vueltas:"+numVueltas);
+       console.log("Funcion sumaDias() Num Vueltas:"+numVueltas);
        var indice=0;
 
        do {
@@ -167,9 +203,9 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
          if (f.getDay()!=6 && f.getDay()!=0) {
           indice++;
          }
-       } while (indice<=numVueltas);
+       } while (indice<numVueltas);
 
-
+       console.log("Funcion sumaDias() fecha a retornar:"+f);
        if (tipo==undefined || tipo=="") {
          return f;
        }
@@ -263,7 +299,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
            mes="0"+mes;
          }
          $scope.activity_start = mes +"/"+dia+"/"+inicio.getFullYear();
-         var  min = new Date(sumaDias(mes +"/"+dia+"/"+inicio.getFullYear(),1));
+         //var  min = new Date(sumaDias(mes +"/"+dia+"/"+inicio.getFullYear(),1));
 
          dia=final.getDate();
          mes=final.getMonth()+1;
@@ -276,10 +312,8 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
          }
          $scope.activity_end = mes+"/"+dia+"/"+final.getFullYear();
          $scope.dataUpdateDate=mes+"/"+dia+"/"+final.getFullYear();
-         var max= new Date(sumaDias(mes+"/"+dia+"/"+final.getFullYear(),10));
-         console.log("mes:"+mes);
-         console.log("dia:"+dia);
-         console.log("Maximo:"+max);
+         //var max= new Date(sumaDias(mes+"/"+dia+"/"+final.getFullYear(),10));
+
 
          //Configuracion calemndario
 
