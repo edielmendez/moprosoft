@@ -56,19 +56,7 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
-	                <!--<li >
-	                    <a href="">
-	                        <i class="ti-panel"></i>
-	                        <p>Reportes de avance</p>
-	                    </a>
-	                </li>
-	                
-	                <li>
-	                    <a href="">
-	                        <i class="ti-view-list-alt"></i>
-	                        <p>Enviar Correos</p>
-	                    </a>
-	                </li>-->
+	               
 	            </ul>
 	    	</div>
 	    </div>
@@ -120,12 +108,7 @@
 	                            </div>
 	                            
 	                        </div>
-
-	                        
-
-	                        
-
-	                        
+	                         
 
 	                        
 	                        <div class="text-center">

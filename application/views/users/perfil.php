@@ -174,33 +174,7 @@
 	        </div>
 
 
-	        <footer class="footer">
-	            <!--<div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>-->
-	        </footer>
+	        
 
 	    </div>
 	</div>
@@ -255,17 +229,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*
-			demo.initChartist();
-			$.notify({
-					icon: 'ti-gift',
-					message: "Bienvenido <b>ediel</b> , usted a iniciado sessión."
-
-				},{
-						type: 'success',
-						timer: 4000
-				});
-				*/
 	});
 </script>
 

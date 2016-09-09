@@ -228,8 +228,9 @@ class Evaluacion extends CI_Controller {
             return;*/
             $mensaje;
             if(count($teams)==0){
-               $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se seleccionaron equipos</b></span>";
+               $mensaje="<div class='alert alert-danger fade in'>";
+               $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+               $mensaje.="<strong>No se seleccionaron equipos</strong>";
                $mensaje.="</div>";
 
                $this->session->set_flashdata('message', $mensaje);
@@ -245,17 +246,19 @@ class Evaluacion extends CI_Controller {
                         
                      }
                   }else{
-                     $mensaje.="<div class='alert alert-info'>";
-                     $mensaje.="<span><b>No se pudo hacer la asignación porque el equipo no tiene integrantes !!</b></span>";
+                     $mensaje="<div class='alert alert-warning fade in'>";
+                     $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+                     $mensaje.="<strong>No se pudo hacer la asignación porque el equipo no tiene integrantes !!</strong>";
                      $mensaje.="</div>";
+
                      $this->session->set_flashdata('message', $mensaje);
                      redirect('Evaluacion/');
                   }
 
                }
-
-               $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Asignación echa</b></span>";
+               $mensaje="<div class='alert alert-info fade in'>";
+               $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+               $mensaje.="<strong>Asignación echa</strong>";
                $mensaje.="</div>";
                $this->session->set_flashdata('message', $mensaje);
             }

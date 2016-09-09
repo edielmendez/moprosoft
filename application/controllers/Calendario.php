@@ -35,9 +35,6 @@ class Calendario extends CI_Controller {
                $AllActividades = array();
                if($data_actividades){
                   foreach ($data_actividades as $row) {
-                     /*$actividad = array(
-                        'id' => $row->id
-                     );*/
                      array_push($AllActividades, $row->id);
                   }
                }
@@ -46,9 +43,7 @@ class Calendario extends CI_Controller {
                $actividades_seguimiento = array();
                if($data_actividades){
                   foreach ($data_actividades as $row) {
-                     /*$actividad = array(
-                        'id' => $row->calificacion_questionary_id
-                     );*/
+                     
                      array_push($actividades_seguimiento, $row->calificacion_questionary_id);
                   }
                }
@@ -164,20 +159,27 @@ class Calendario extends CI_Controller {
 
 
    public function getDataFaseInTableTracingById(){
-      $id = $this->input->post('id');
 
-      $data = $this->CalendarModel->getDataTableTracingById($id);
-      $fase;
-      foreach ($data as $row) {
-         $fase = array(
-            'id' => $row->id,
-            'phase_objetive_id' => $row->phase_objetive_id,
-            'date_start' => $row->date_start,
-            'date_end' => $row->date_end
-         );
+      if($this->session->userdata('logged_in')){
+         $id = $this->input->post('id');
+
+         $data = $this->CalendarModel->getDataTableTracingById($id);
+         $fase;
+         foreach ($data as $row) {
+            $fase = array(
+               'id' => $row->id, 
+               'phase_objetive_id' => $row->phase_objetive_id,
+               'date_start' => $row->date_start,
+               'date_end' => $row->date_end
+            );
+         }
+
+
+         echo json_encode($fase);
+      }else{
+         redirect('Home', 'refresh');
       }
-
-      echo json_encode($fase);
+      
    }
 
    public function changeFechaFinal(){
@@ -208,9 +210,7 @@ class Calendario extends CI_Controller {
 
             redirect('Calendario/modificar/'.$id_equipo_hidden, 'refresh');
 
-            /*echo "id_tracing : <br>".$id_tracing;
-            echo "fecha_final : <br>".$fecha_final;
-            return;*/
+            
          }else{
             redirect('Home', 'refresh');
          }

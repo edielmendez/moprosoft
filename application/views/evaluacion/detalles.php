@@ -154,7 +154,7 @@
 	    	<?php //print_r($fases); ?>
 			<?php //echo $mostrar_kiviat ?>
 	        <div class="content container" id="contenedor_principal">
-	        	<!--<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-danger'><i class="ti-arrow-left"></i>  Regresar</a><hr>-->
+	        	
 				<div class="row">
 					<div class="col-lg-12 col-md-12">
                         <div class="card card-user">

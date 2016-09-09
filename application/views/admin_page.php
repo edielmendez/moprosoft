@@ -64,19 +64,7 @@
 	                        <p>ASIGNAR CUESTIONARIOS</p>
 	                    </a>
 	                </li>
-	                <!--<li >
-	                    <a href="">
-	                        <i class="ti-panel"></i>
-	                        <p>Reportes de avance</p>
-	                    </a>
-	                </li>
 	                
-	                <li>
-	                    <a href="">
-	                        <i class="ti-view-list-alt"></i>
-	                        <p>Enviar Correos</p>
-	                    </a>
-	                </li>-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -129,69 +117,53 @@
 
 	        <div class="content container">
 	        	<a href="<?php echo base_url() ?>index.php/Estudiantes/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Estudiante</a><br><br>
-	            <div class="content table-responsive table-full-width">
 
-                    <table class="table table-striped" id="tabla_estudiantes">
-                        <thead>
-                            <th>nombre</th>
-                        	<th>username</th>
-                        	<th>email</th>
-                        	<th>grupo</th>
-                        	<th></th>
-                        	<th></th>
-                        </thead>
-                        <tbody>
-                        <?php
-                        for ($i=1; $i < count($usuarios) ; $i++) { 
-                        	# code...
-                        	echo "<tr>";
-                        		echo "<td>".$usuarios[$i]['name']."</td>";
-                        		echo "<td>".$usuarios[$i]['username']."</td>";
-                        		echo "<td>".$usuarios[$i]['email']."</td>";
-                        		echo "<td>".$usuarios[$i]['grupo']."</td>";
-                        		echo "<td><a class='btn btn-primary' href='".base_url()."index.php/Estudiantes/edit/".$usuarios[$i]['id']."'>Actualizar</a></td>";
-                        		echo "<td id='".$usuarios[$i]['rol_id']."'><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
-                        	echo "</tr>";
-                        }
-                        
-                        ?>
-                        	
-                            
-                            
-                        </tbody>
-                    </table>
+	        	<?php if (count($usuarios) != 0): ?>
+	        		<div class="content table-responsive table-full-width">
 
-                </div>
+	                    <table class="table table-striped" id="tabla_estudiantes">
+	                        <thead>
+	                            <th>nombre</th>
+	                        	<th>username</th>
+	                        	<th>email</th>
+	                        	<th>grupo</th>
+	                        	<th></th>
+	                        	<th></th>
+	                        </thead>
+	                        <tbody>
+	                        <?php
+	                        for ($i=1; $i < count($usuarios) ; $i++) { 
+	                        	# code...
+	                        	echo "<tr>";
+	                        		echo "<td>".$usuarios[$i]['name']."</td>";
+	                        		echo "<td>".$usuarios[$i]['username']."</td>";
+	                        		echo "<td>".$usuarios[$i]['email']."</td>";
+	                        		echo "<td>".$usuarios[$i]['grupo']."</td>";
+	                        		echo "<td><a class='btn btn-primary' href='".base_url()."index.php/Estudiantes/edit/".$usuarios[$i]['id']."'>Actualizar</a></td>";
+	                        		echo "<td id='".$usuarios[$i]['rol_id']."'><a class='btn btn-danger eliminarUsuario' id='".$usuarios[$i]['id']."'>Eliminar</a></td>";
+	                        	echo "</tr>";
+	                        }
+	                        
+	                        ?>
+	                            
+	                        </tbody>
+	                    </table>
+
+	                </div>
+	        	<?php else: ?>
+	        		<div class="row">
+	        			<div class="col-md-6">
+	        				<div class="well">
+	        					<h2>SIN ESTUDIANTES</h2>
+	        				</div>
+	        			</div>
+	        		</div>
+	        	<?php endif ?>
+	            
 	        </div>
 
 
-	        <footer class="footer">
-	            <!--<div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>-->
-	        </footer>
+	        
 
 	    </div>
 	</div>
@@ -246,17 +218,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*
-			demo.initChartist();
-			$.notify({
-					icon: 'ti-gift',
-					message: "Bienvenido <b>ediel</b> , usted a iniciado sessión."
-
-				},{
-						type: 'success',
-						timer: 4000
-				});
-				*/
 	});
 </script>
 
