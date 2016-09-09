@@ -141,40 +141,45 @@
 							</ul>
 						</nav>
 						<div class="content-wrap">
-							<section id="section-bar-1">
+							<?php if (count($procesos) == 0): ?>
+								<h3>NO HAY PROCESOS PARA SER APLICADOS</h3>
+							<?php else: ?>
+								<section id="section-bar-1">
 								
-								<div class="row">
-					        		<?php foreach ($procesos as $proceso): ?>
-				        			<div class="col-md-4">
-					        			<div class="panel panel-info">
-										    <div class="panel-heading">
+									<div class="row">
+						        		<?php foreach ($procesos as $proceso): ?>
+					        			<div class="col-md-4">
+						        			<div class="panel panel-info">
+											    <div class="panel-heading">
 
-										        <h1 class="panel-title"><?php echo $proceso['datos']['name'] ?></h1>
-										    </div>
-											<div class="panel-body">
-											    <img src="<?php echo base_url() ?>/public/img/proceso.png">
+											        <h1 class="panel-title"><?php echo $proceso['datos']['name'] ?></h1>
+											    </div>
+												<div class="panel-body">
+												    <img src="<?php echo base_url() ?>/public/img/proceso.png">
 
-											</div>
-										    <div class="panel-footer"> 
-										  		<button type="button" class="btn btn-default btn_apli_eva" aria-label="Left Align" id="<?php echo $proceso['datos']['id'] ?>-<?php echo $proceso['equipo']['id'] ?>">
-												 	Aplicar
-												</button>
-												
-												<a href="#" rel="popover" data-popover-content="#myPopover<?php echo $proceso['datos']['id']  ?>" >Detalles</a>
-												<div id="myPopover<?php echo $proceso['datos']['id']  ?>" class="hide">
-													
-													
-													<h6>Modelo</h6><?php echo $proceso['modelo']['name'] ?>
-
-													<h6>Equipo que lo dio de alta</h6><?php echo $proceso['equipo']['name'] ?>
-													
 												</div>
-										  </div>
-										</div>
-					        		</div>
-					        		<?php endforeach ?>
-					        	</div>
-							</section>
+											    <div class="panel-footer"> 
+											  		<button type="button" class="btn btn-default btn_apli_eva" aria-label="Left Align" id="<?php echo $proceso['datos']['id'] ?>-<?php echo $proceso['equipo']['id'] ?>">
+													 	Aplicar
+													</button>
+													
+													<a href="#" rel="popover" data-popover-content="#myPopover<?php echo $proceso['datos']['id']  ?>" >Detalles</a>
+													<div id="myPopover<?php echo $proceso['datos']['id']  ?>" class="hide">
+														
+														
+														<h6>Modelo</h6><?php echo $proceso['modelo']['name'] ?>
+
+														<h6>Equipo que lo dio de alta</h6><?php echo $proceso['equipo']['name'] ?>
+														
+													</div>
+											  </div>
+											</div>
+						        		</div>
+						        		<?php endforeach ?>
+						        	</div>
+								</section>
+							<?php endif ?>
+							
 							<!--Seccion de seguimiento de los cuestionarios-->
 							<!--<section id="section-bar-2">
 								
@@ -194,37 +199,10 @@
 	        </div>
 
 
-	        <footer class="footer">
-	            <!--<div class="container-fluid">
-	                <nav class="pull-left">
-	                    <ul>
-
-	                        <li>
-	                            <a href="http://www.creative-tim.com">
-	                                Creative Tim
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://blog.creative-tim.com">
-	                               Blog
-	                            </a>
-	                        </li>
-	                        <li>
-	                            <a href="http://www.creative-tim.com/license">
-	                                Licenses
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
-	                <div class="copyright pull-right">
-	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
-	            </div>-->
-	        </footer>
 
 	    </div>
 	</div>
-
+	
 	<!-- Modales-->
 	<div class="modal fade" tabindex="-1" role="dialog" id="modal_elegir_equipos_eva">
 	  <div class="modal-dialog" role="document">
@@ -252,6 +230,7 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	
 </body>
 
 <!--   Core JS Files   -->
@@ -284,17 +263,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*
-			demo.initChartist();
-			$.notify({
-					icon: 'ti-gift',
-					message: "Bienvenido <b>ediel</b> , usted a iniciado sessión."
-
-				},{
-						type: 'success',
-						timer: 4000
-				});
-				*/
+			
 	});
 </script>
 

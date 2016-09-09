@@ -56,19 +56,7 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
-	                <!--<li >
-	                    <a href="">
-	                        <i class="ti-panel"></i>
-	                        <p>Reportes de avance</p>
-	                    </a>
-	                </li>
 	                
-	                <li>
-	                    <a href="">
-	                        <i class="ti-view-list-alt"></i>
-	                        <p>Enviar Correos</p>
-	                    </a>
-	                </li>-->
 	            </ul>
 	    	</div>
 	    </div>
@@ -125,12 +113,7 @@
 	                                    <input type="text" class="form-control border-input" id="username" placeholder="username" name="username" value="<?php echo $estudiante['username'] ?>" required="">
 	                                </div>
 	                            </div>
-	                            <!--<div class="col-md-4">
-	                                <div class="form-group">
-	                                    <label for="exampleInputEmail1">Password</label>
-	                                    <input type="password" class="form-control border-input" placeholder="password" name="password" value="<?php echo $estudiante['password'] ?>" required="">
-	                                </div>
-	                            </div>-->
+	                            
 	                        </div>
 
 	                        <div class="row">

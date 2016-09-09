@@ -13,8 +13,8 @@ $(document).ready(function(){
     });
 
     [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
-					new CBPFWTabs( el );
-				});
+		new CBPFWTabs( el );
+	});
     
 });
 
@@ -121,19 +121,7 @@ var showModalUpdateNameTeam = function(data){
 	$("#modal_act_equipo").modal();
 	$("#nombre_equipo").focus();
 }
-/*
-$(document).on('click','#btn_acept_act_equipo',function(){
-	var id = $("#id_equipo_act").val();
-	var nuevo_nombre = $("#nombre_equipo").val();
 
-	$.ajax({
-	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Equipos/actualizar",
-	  	data: { id:id,nombre:nuevo_nombre},
-	  	success : showAlert
-	})
-
-});*/
 $( "#form_modal_act_equipo" ).submit(function( event ) {
 	var nombre  = $("#nombre_equipo").val();
 
@@ -592,16 +580,9 @@ var showResults = function (data){
 			//console.log("1-> :",resultados.resultados[i].nivel_cobertura )
 		}else{
 			var html = "<tr class='punto_debil'>";
-			/*if ((parseFloat(resultados.resultados[i].nivel_cobertura) <= resultados.modelo.cp) && (parseFloat(resultados.resultados[i].nivel_cobertura) > 50)) {
-				var html = "<tr class='success'>";
-				//console.log("2-> :",resultados.resultados[i].nivel_cobertura )
-			}else{
-				var html = "<tr class='punto_debil'>";
-				//console.log("3-> :",resultados.resultados[i].nivel_cobertura )
-			}*/
+			
 		}
-		//var html = "<tr>";
-			//html += "<td>"+resultados.resultados[i].question_id+"</td><td>"+resultados.resultados[i].S+"</td>";
+		
 			html += "<td>P"+(resultados.resultados.length-i)+"</td><td>"+resultados.resultados[i].S+"</td>";
 			html += "<td>"+resultados.resultados[i].U+"</td><td>"+resultados.resultados[i].A+"</td>";
 			html += "<td>"+resultados.resultados[i].R+"</td><td>"+resultados.resultados[i].N+"</td>";
@@ -628,12 +609,7 @@ var createChart = function(data){
 		if (cuestionario.resultados[i].valor === "fuerte") {
 			color = "#42a5f5";
 		}else{
-			/*
-			if((cuestionario.resultados[i].nivel_cobertura > 50) && (cuestionario.resultados[i].nivel_cobertura < 86)){
-				color = "#26a69a";
-			}else{
-				color = "#42a5f5";
-			}*/
+		
 			color = "#ef5350";
 		}
 		var pre = {
@@ -864,10 +840,7 @@ $("#export2pdf").click(function(){
 
 $(document).on('click','.btnBack',function(){
 	window.location.reload();
-	/*$("#contenedor_secundario").hide();
-	$("#contenedor_principal").show("slow");
-	$("#tercer_contenedor").hide();
-	$("#cuarto_contenedor").hide();*/
+	
 })
 
 /**

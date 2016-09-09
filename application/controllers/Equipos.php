@@ -87,11 +87,8 @@ class Equipos extends CI_Controller {
             $this->load->view('equipos_page',$datos_vista);
 
          }else{//
-            
+            redirect('Home', 'refresh');            
          }
-
-
-
 
 
       }else{
@@ -132,9 +129,9 @@ class Equipos extends CI_Controller {
          $result = $this->equipo->actualizar($nombre,$id);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Equipo Actualizado</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Equipo Actualizado</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
@@ -143,8 +140,6 @@ class Equipos extends CI_Controller {
             $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
             $mensaje.="<strong>No se pudo actualizar la información</strong>";
             $mensaje.="</div>";
-
-            
 
             $this->session->set_flashdata('message', $mensaje);
             
@@ -159,20 +154,24 @@ class Equipos extends CI_Controller {
 
    public function nuevo(){
       if($this->session->userdata('logged_in')){
-         /*$result = $this->equipo->getEquipos();
-         $equipos = array();
-         if($result){
-            foreach ($result as $row ) {
-               $equipo = array(
-                 'id' => $row->id,
-                 'name' => $row->name
-               );
-               array_push($equipos,$equipo);
+         $data = $this->session->userdata('logged_in');
+         if(strcmp($data['rol'],"ADMINISTRADOR")==0){
+            /*$result = $this->equipo->getEquipos();
+            $equipos = array();
+            if($result){
+               foreach ($result as $row ) {
+                  $equipo = array(
+                    'id' => $row->id,
+                    'name' => $row->name
+                  );
+                  array_push($equipos,$equipo);
+               }
             }
+            $datos['equipos'] = $equipos;*/
+            $this->load->view('nuevo_equipo');
+         }else{
+            redirect('Home', 'refresh');   
          }
-         $datos['equipos'] = $equipos;*/
-         $this->load->view('nuevo_equipo');
-
       }else{
          //si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
@@ -188,16 +187,17 @@ class Equipos extends CI_Controller {
          $result = $this->equipo->crearEquipo($nombre);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Equipo creado</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Equipo creado</strong>";
             $mensaje.="</div>";
+
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>Equipo No creado</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Equipo No creado</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
@@ -275,16 +275,17 @@ class Equipos extends CI_Controller {
          $result = $this->user->actualizarRol($id);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Cambio de jefe de equipo echo</b></span>";
+
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Cambio de jefe de equipo echo</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo cambiar de jefe de equipo</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo cambiar de jefe de equipo</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
@@ -305,16 +306,16 @@ class Equipos extends CI_Controller {
          $result = $this->user->setRolJefe($id);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Se agrego jefe de equipo</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Se agrego jefe de equipo</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo agregar jefe de equipo</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo agregar jefe de equipo</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
@@ -333,14 +334,16 @@ class Equipos extends CI_Controller {
          $result = $this->equipo->delete($id); 
 
          if($result){
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Equipo eliminado</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Equipo eliminado</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo eliminar el equipo</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo eliminar el equipo</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);

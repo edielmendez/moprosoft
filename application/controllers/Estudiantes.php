@@ -20,20 +20,24 @@ class Estudiantes extends CI_Controller {
 
    public function nuevo(){
    	if($this->session->userdata('logged_in')){
-         $result = $this->equipo->getEquipos();
-         $equipos = array();
-         if($result){
-            foreach ($result as $row ) {
-               $equipo = array(
-                 'id' => $row->id,
-                 'name' => $row->name
-               );
-               array_push($equipos,$equipo);
+         $data = $this->session->userdata('logged_in');
+         if(strcmp($data['rol'],"ADMINISTRADOR")==0){
+            $result = $this->equipo->getEquipos();
+            $equipos = array();
+            if($result){
+               foreach ($result as $row ) {
+                  $equipo = array(
+                    'id' => $row->id,
+                    'name' => $row->name
+                  );
+                  array_push($equipos,$equipo);
+               }
             }
+            $datos['equipos'] = $equipos;
+      		$this->load->view('nuevo_estudiante',$datos);
+         }else{
+            redirect('Home', 'refresh');
          }
-         $datos['equipos'] = $equipos;
-   		$this->load->view('nuevo_estudiante',$datos);
-
    	}else{
    		//si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
@@ -55,17 +59,18 @@ class Estudiantes extends CI_Controller {
          $result = $this->user->crearUsuario($username,$password,$email,$name,$grupo,$team_id);
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Estudiante guardado</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Estudiante guardado</strong>";
             $mensaje.="</div>";
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>Estudiante No guardado</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Estudiante No guardado</strong>";
             $mensaje.="</div>";
+
 
             $this->session->set_flashdata('message', $mensaje);
             
@@ -129,46 +134,47 @@ class Estudiantes extends CI_Controller {
 
    public function edit($id){
       if($this->session->userdata('logged_in')){
-
-         $result = $this->user->getUsuarioById($id);
-         if($result){
-            $estudiante;
-            foreach ($result as $row ) {
-               $estudiante = array(
-                 'id' => $row->id,
-                 'username' => $row->username,
-                 'password' => $row->password,
-                 'email' => $row->email,
-                 'name' => $row->name,
-                 'rol_id' => $row->rol_id,
-                 'grupo' => $row->grupo,
-                 'team_id' => $row->team_id
-               );
-               
-            }
-            $result = $this->equipo->getEquipos();
-            $equipos = array();
+         $data = $this->session->userdata('logged_in');
+         if(strcmp($data['rol'],"ADMINISTRADOR")==0){
+            $result = $this->user->getUsuarioById($id);
             if($result){
+               $estudiante;
                foreach ($result as $row ) {
-                  $equipo = array(
+                  $estudiante = array(
                     'id' => $row->id,
-                    'name' => $row->name
+                    'username' => $row->username,
+                    'password' => $row->password,
+                    'email' => $row->email,
+                    'name' => $row->name,
+                    'rol_id' => $row->rol_id,
+                    'grupo' => $row->grupo,
+                    'team_id' => $row->team_id
                   );
-                  array_push($equipos,$equipo);
+                  
                }
+               $result = $this->equipo->getEquipos();
+               $equipos = array();
+               if($result){
+                  foreach ($result as $row ) {
+                     $equipo = array(
+                       'id' => $row->id,
+                       'name' => $row->name
+                     );
+                     array_push($equipos,$equipo);
+                  }
+               }
+               /*se obtiene los datos del estudiante a actualizar*/
+               
+               $datos['equipos'] = $equipos;
+               $datos['estudiante'] = $estudiante;
+               $this->load->view('edit_estudiante',$datos);
+
+            }else{
+               redirect('Home', 'refresh');
             }
-            /*se obtiene los datos del estudiante a actualizar*/
-
-            
-            $datos['equipos'] = $equipos;
-            $datos['estudiante'] = $estudiante;
-            $this->load->view('edit_estudiante',$datos);
-
          }else{
             redirect('Home', 'refresh');
          }
-         
-
          
       }else{
          //si no hay session se redirecciona la vista de login
@@ -197,7 +203,6 @@ class Estudiantes extends CI_Controller {
             $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
             $mensaje.="<strong>Estudiante Actualizado</strong>";
             $mensaje.="</div>";
-
             
 
             $this->session->set_flashdata('message', $mensaje);
@@ -224,15 +229,18 @@ class Estudiantes extends CI_Controller {
       $result = $this->user->delete($id); 
       
       if($result){
-         $mensaje.="<div class='alert alert-info'>";
-            $mensaje.="<span><b>Usuario eliminado</b></span>";
+         $mensaje="<div class='alert alert-info fade in'>";
+         $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+         $mensaje.="<strong>Usuario eliminado</strong>";
          $mensaje.="</div>";
 
          $this->session->set_flashdata('message', $mensaje);
       }else{
-         $mensaje.="<div class='alert alert-danger'>";
-            $mensaje.="<span><b>Usuario no eliminado</b></span>";
+         $mensaje="<div class='alert alert-danger fade in'>";
+         $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+         $mensaje.="<strong>Usuario no eliminado</strong>";
          $mensaje.="</div>";
+
 
          $this->session->set_flashdata('message', $mensaje);
       }
@@ -242,40 +250,44 @@ class Estudiantes extends CI_Controller {
 
    public function cambiarEquipo($id){
       if($this->session->userdata('logged_in')){
-         $result = $this->user->getUsuarioById($id);
-         if($result){
-            $estudiante;
-            foreach ($result as $row ) {
-               $estudiante = array(
-                 'id' => $row->id,
-                 'username' => $row->username,
-                 'password' => $row->password,
-                 'email' => $row->email,
-                 'name' => $row->name,
-                 'rol_id' => $row->rol_id,
-                 'grupo' => $row->grupo,
-                 'team_id' => $row->team_id
-               );
-               
-            }
-            $result = $this->equipo->getEquipos();
-            $equipos = array();
+         $data = $this->session->userdata('logged_in');
+         if(strcmp($data['rol'],"ADMINISTRADOR")==0){
+            $result = $this->user->getUsuarioById($id);
             if($result){
+               $estudiante;
                foreach ($result as $row ) {
-                  $equipo = array(
+                  $estudiante = array(
                     'id' => $row->id,
-                    'name' => $row->name
+                    'username' => $row->username,
+                    'password' => $row->password,
+                    'email' => $row->email,
+                    'name' => $row->name,
+                    'rol_id' => $row->rol_id,
+                    'grupo' => $row->grupo,
+                    'team_id' => $row->team_id
                   );
-                  array_push($equipos,$equipo);
+                  
                }
+               $result = $this->equipo->getEquipos();
+               $equipos = array();
+               if($result){
+                  foreach ($result as $row ) {
+                     $equipo = array(
+                       'id' => $row->id,
+                       'name' => $row->name
+                     );
+                     array_push($equipos,$equipo);
+                  }
+               }
+               $datos['equipos'] = $equipos;
+               $datos['estudiante'] = $estudiante;
+               $this->load->view('cambiar_equipo',$datos);
+            }else{
+               redirect('Equipos/');
             }
-            $datos['equipos'] = $equipos;
-            $datos['estudiante'] = $estudiante;
-            $this->load->view('cambiar_equipo',$datos);
          }else{
-            redirect('Equipos/');
+            redirect('Home', 'refresh');   
          }
-         
 
       }else{
          //si no hay session se redirecciona la vista de login
@@ -301,17 +313,19 @@ class Estudiantes extends CI_Controller {
          //}
       
          if($result){
-            
-            $mensaje.="<div class='alert alert-info'>";
-               $mensaje.="<span><b>Cambio de eqiupo exitoso</b></span>";
+            $mensaje="<div class='alert alert-info fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>Cambio de eqiupo exitoso</strong>";
             $mensaje.="</div>";
+
 
             $this->session->set_flashdata('message', $mensaje);
          }else{
-
-            $mensaje.="<div class='alert alert-danger'>";
-               $mensaje.="<span><b>No se pudo cambiar de equipo</b></span>";
+            $mensaje="<div class='alert alert-danger fade in'>";
+            $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+            $mensaje.="<strong>No se pudo cambiar de equipo</strong>";
             $mensaje.="</div>";
+
 
             $this->session->set_flashdata('message', $mensaje);
             

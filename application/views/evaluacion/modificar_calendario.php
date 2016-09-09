@@ -251,10 +251,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
-			/*$( "#fecha_final" ).datepicker({
-				dateFormat: "yy-mm-dd",
-				beforeShowDay: $.datepicker.noWeekends
-			});*/
 			
 	});
 </script>
