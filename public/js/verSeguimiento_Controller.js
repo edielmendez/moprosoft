@@ -247,7 +247,6 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
             $("#to").datepicker({
               beforeShowDay: $.datepicker.noWeekends,
               minDate:new Date(),
-              maxDate: max,
               changeMonth: true
             });
 

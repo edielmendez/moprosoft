@@ -83,7 +83,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                </div>
-									<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio<?php  //print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="<?php echo base_url() ?>index.php/Student_Controller/historial">Historial</a>
+									<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio<?php  //print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="#">Historial</a>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
 	                        <li class="dropdown">

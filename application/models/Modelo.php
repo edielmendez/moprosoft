@@ -65,11 +65,11 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function get_historial_seguimiento($phase){
-			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase ");
+		public function get_historial_seguimiento($phase,$equipo){
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (team_id=$equipo) ");
 			$c=$consulta->row();
 
-			$consulta2=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE tracing_id=$c->id ");
+			$consulta2=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE (tracing_id=$c->id) AND (team_id=$equipo)");
 			if($consulta2->num_rows() >= 1){
 				return $consulta2->result();
 			}else{
@@ -77,9 +77,9 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function getSeguimiento($phase)
+		public function getSeguimiento($phase,$equipo)
 		{
-			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (status=0) AND (team_id=$equipo) ");
 			$c=$consulta->row();
 			return array($c->date_start,$c->date_end,$c->id);
 		}
@@ -94,9 +94,10 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function terminarSeguimiento($fase,$fi,$ff){
+		public function terminarSeguimiento($fase,$fi,$ff,$equipo){
 			$data = array(
 	         'phase_objetive_id' => $fase,
+					 'team_id'=>$equipo,
 					 'date_start' => $fi,
 					 'date_end' => $ff,
 					 'status' => 0,
@@ -127,11 +128,12 @@ class Modelo extends CI_Model
  	    return $consulta->result();
 		}
 
-		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end)
+		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end,$equipo)
 		{
 			$data = array(
 					 'calificacion_questionary_id' => $id,
 					 'tracing_id' => $tracing,
+					 'team_id'=> $equipo,
 					 'activity' => $activity,
 					 'orden' => $orden,
 					 'date_start' => $date_start,
@@ -179,7 +181,7 @@ class Modelo extends CI_Model
 
 	}
 
-	public function updateFollow($id,$fi,$ff){
+	public function updateFollow($id,$fi,$ff,$equipo){
 		$consulta=$this->db->query("
 				UPDATE calification_questionary_tracing SET date_start='$fi',date_end='$ff'  WHERE id=$id;
 				");

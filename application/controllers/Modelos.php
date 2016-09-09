@@ -12,6 +12,7 @@ class Modelos extends CI_Controller {
       $this->load->model('modelo','',TRUE);
 			$this->load->model('Student','',TRUE);
 			$this->load->model('User','',TRUE);
+      $this->load->model('Validate','',TRUE);
 			$this->load->helper('url');
    }
 
@@ -48,7 +49,8 @@ class Modelos extends CI_Controller {
 	{
 		if($this->session->userdata('logged_in')){
 
-			$fechas = $this->modelo->getSeguimiento($phase);
+      $equipo=$this->session->userdata('logged_in')['team_id'];
+			$fechas = $this->modelo->getSeguimiento($phase,$equipo);
 
 			$datos['fi']=$fechas[0];
 			$datos['ff']=$fechas[1];
@@ -84,19 +86,15 @@ class Modelos extends CI_Controller {
 	public function updateFollow()
 	{
 		if($this->session->userdata('logged_in')){
-			$data = $this->session->userdata('logged_in');
+			$equipo = $this->session->userdata('logged_in')['team_id'];
 			$objDatos = json_decode(file_get_contents("php://input"));
 			$fecha_final="";
 
 			foreach ($objDatos->follow as $row) {
-				$result2 = $this->modelo->updateFollow($row->id,$row->fi,$row->ff);
+				$result2 = $this->modelo->updateFollow($row->id,$row->fi,$row->ff,$equipo);
 				$fecha_final=$row->ff;
 			}
-			//$result = $this->modelo->updateFollow_id($objDatos->id,$fecha_final);
-			echo $result;
-			//$result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff);
-			//print_r($objDatos);
-
+			echo $result2;
 		}else{
 			redirect('login', 'refresh');
 		}
@@ -131,6 +129,8 @@ class Modelos extends CI_Controller {
 			$contador=0;
 			$questionary=-1;
 			$name="Sin nombre";
+      $equipo_usuario=$this->session->userdata('logged_in')['team_id'];
+
 
 			 if($result){
 					foreach ($result as $row ) {
@@ -138,12 +138,13 @@ class Modelos extends CI_Controller {
 						if ($questionary!=$row->phase_objetive_id) {
 
 							if ($contador!=0) {
+                $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
 								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
 								$historial = $this->modelo->historial_seguimineto($questionary);
 								$nameModel = $this->modelo->getNameModel($questionary);
 								$nameProcess = $this->modelo->getNameProcess($questionary);
 								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial) );
+								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial,$termino_phase) );
 								$questionary=$row->phase_objetive_id;
 								$name=$row->name;
 								$suma=$row->nivel_cobertura;
@@ -159,12 +160,13 @@ class Modelos extends CI_Controller {
 							$contador++;
 						}
 					}
+          $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
 					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
 					$historial = $this->modelo->historial_seguimineto($questionary);
 					$nameModel = $this->modelo->getNameModel($questionary);
 					$nameProcess = $this->modelo->getNameProcess($questionary);
 					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial) );
+					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial,$termino_phase) );
 			 }
 
 			$datos['cuestionarios']=$Resultado;
@@ -181,12 +183,13 @@ class Modelos extends CI_Controller {
 	 {
 		 if($this->session->userdata('logged_in')){
 
-		 $result=$this->modelo->get_historial_seguimiento($id);
-		 $tracing=$this->modelo->getSeguimiento($id);
+     $equipo=$this->session->userdata('logged_in')['team_id'];
+		 $result=$this->modelo->get_historial_seguimiento($id,$equipo);
+		 $tracing=$this->modelo->getSeguimiento($id,$equipo);
 
 		 $Calificacion = array();
 		 if($result){
-				foreach ($result as $row ) {
+				foreach ($result->result() as $row ) {
 						 $cal = array(
 							'activity' => $row->activity,
 							'orden' => $row->orden,
@@ -279,10 +282,10 @@ class Modelos extends CI_Controller {
 	 public function terminarSeguimiento()
 	 {
 		 if($this->session->userdata('logged_in')){
-			 $data = $this->session->userdata('logged_in');
+			 $equipo = $this->session->userdata('logged_in')['team_id'];
 
 			 $objDatos = json_decode(file_get_contents("php://input"));
-			 $result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff);
+			 $result=$this->modelo->terminarSeguimiento($objDatos->phase,$objDatos->fi,$objDatos->ff,$equipo);
 			 echo $result;
 
 		 }else{
@@ -293,11 +296,11 @@ class Modelos extends CI_Controller {
 	 public function SeguimientoPreguntasPriorizadas()
 	 {
 		 if($this->session->userdata('logged_in')){
-			$data = $this->session->userdata('logged_in');
+			$equipo = $this->session->userdata('logged_in')['team_id'];
 			$objDatos = json_decode(file_get_contents("php://input"));
 
 			foreach ($objDatos->preguntas as $value) {
-				$result=$this->modelo->GuardarPriorizadas($objDatos->id,$value->id,$value->activity,$value->orden,$value->fi,$value->ff);
+				$result=$this->modelo->GuardarPriorizadas($objDatos->id,$value->id,$value->activity,$value->orden,$value->fi,$value->ff,$equipo);
 			}
 			echo "ok";
 		 }else{

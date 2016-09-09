@@ -137,90 +137,93 @@
 											</div>
 											<div class="content">
 												<div class="row">
-
 													<div class="col-md-12">
-														<h5>Integrantes</h5>
-														<?php
-														foreach ($equipos as $value) {
-															echo "Username:"."<b>".$value['username']."</b> ";
-														}
-														?>
+
+														<ul class="nav nav-tabs">
+															<li class="active"><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#resultado" data-seccion="1">Resultados</a></li>
+															<li ><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#historial" data-seccion="1">Historial</a></li>
+														</ul>
+
+														<div class="tab-content">
+
+															<div id="resultado" class="tab-pane fade in active">
+																	<br>
+																	<div class="col-md-12">
+																		<table class="table table-striped">
+																			<thead>
+																				<tr>
+																					<th>Modelo</th>
+																					<th>Proceso</th>
+																					<th>Fase/Objetivo</th>
+																					<th>N.C Obtenida</th>
+																					<th>N.C Requerida</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<?php
+																					foreach($cuestionarios as $q){
+																				?>
+																				<tr>
+																					<td><?=$q[3]; ?></td>
+																					<td><?=$q[4]; ?></td>
+																					<td><?=$q[0]; ?></td>
+																					<?php
+
+																						echo "<td>";
+																						echo $q[2]." ";
+																						if ($q[2]>$q[5]) {
+																							echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:10px; height:20px\" alt=\"Bien\" />";
+																						}else {
+																							echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:10px; height:20px\" alt=\"Mal\" />";
+																						}
+																						echo "</td>";
+
+																					?>
+																					<!--td><?=$q[2]; ?>%</td-->
+																					<td><?=$q[5]; ?>%</td>
+																					<?php
+																					if ($q[8]!=1) {
+																						if ($q[6]>0) {
+																							echo "<td style=\"text-align:center;\"><a  center; class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a>";
+																							if ($q[7]>0) {
+	 																							echo "<a class=\"btn btn-default btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/historial/$q[1]\">Historial</a>";
+	 																					 }
+																					 }else {
+																							echo "<td style=\"text-align:center;\" ><a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
+																					 }
+																				 }else {
+																				 	echo "<td ><p title=\"Todas las actividades, han sido asignados a seguimientos los cuales ya finalizaron.\" style=\"color:white;background-color:#58ACFA; text-align: center;\" >Terminado</p>";
+																				 }
+																					 echo "</td>";
+																					?>
+
+																				</tr>
+																				<?php
+																					}
+																				?>
+																			</tbody>
+																		</table>
+																	</div>
+															</div>
+
+															<div id="historial" class="tab-pane fade">
+																	<br>
+																	<div class="col-xs-12">
+																			<div class="row">
+																					<div class="col-xs-12">
+																						<h1>Soy Historial</h1>
+																					</div>
+																			</div>
+																		</div>
+															</div>
+
+														</div>
+
+
 														<br><br>
 													</div>
 
-													<div class="col-md-12">
-														<table class="table table-striped">
-															<thead>
-																<tr>
-																	<th>Modelo</th>
-																	<th>Proceso</th>
-																	<th>Fase/Objetivo</th>
-																	<th>N.C Obtenida</th>
-																	<th>N.C Requerida</th>
-																</tr>
-															</thead>
-															<tbody>
-																<?php
-																	foreach($cuestionarios as $q){
-																?>
-																<tr>
-																	<td><?=$q[3]; ?></td>
-																	<td><?=$q[4]; ?></td>
-																	<td><?=$q[0]; ?></td>
-																	<?php
 
-																		echo "<td>";
-																		echo $q[2]." ";
-																		if ($q[2]>$q[5]) {
-																			echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:10px; height:20px\" alt=\"Bien\" />";
-																		}else {
-																			echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:10px; height:20px\" alt=\"Mal\" />";
-																		}
-																		echo "</td>";
-
-																	?>
-																	<!--td><?=$q[2]; ?>%</td-->
-																	<td><?=$q[5]; ?>%</td>
-																	<?php
-																	 if ($q[6]>0) {
-																	 		echo "<td><a class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$q[1]\">Ver Seguimiento</a></td>";
-																	 }else {
-																	 		echo "<td><a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($q[1])\">Dar Seguimiento</a>";
-																	 //echo "<a class=\"btn btn-primary btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/Seguimiento/$q[1]\">Dar Seguimiento</a>";
-																	 }
-																	 if ($q[7]>0) {
-																	 		echo "<a class=\"btn btn-default btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/historial/$q[1]\">Historial</a>";
-																	 }
-																	 echo "</td>";
-																	?>
-
-																</tr>
-																<?php
-																	}
-																?>
-															</tbody>
-														</table>
-														<!--h4>Integrantes</h4>
-														<table class="table table-striped">
-															<thead>
-																<tr>
-																	<th>Username</th>
-																</tr>
-															</thead>
-															<tbody>
-
-																	<?php
-																	/*foreach ($equipos as $value) {
-																		echo "<tr>";
-																		echo "<td>".$value['username']."</td>";
-																		echo "</tr>";
-																	}*/
-																	?>
-
-															</tbody>
-														</table-->
-
-													</div>
 												</div>
 											</div>
 										</div>

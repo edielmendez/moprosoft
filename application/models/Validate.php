@@ -5,6 +5,27 @@
 class Validate extends CI_Model
 {
 
+  //funcion que retorna 1 si la fase se ha depurado con "n" seguimientos a terminado tanto sus seguimientos como sus actividades
+  //en caso de que aun no termina su seguimiento o aun no termina de depurar todas las actividades de la fase
+  //se retornada 0
+  public function check_finish_phase($phase_id,$team_id)
+  {
+
+    $query=$this->db->query("SELECT * FROM tracing WHERE (status=0) AND (phase_objetive_id=$phase_id) ");
+    if ($query->num_rows()>0) {
+      return 0;
+    }else {
+      $num_questions=$this->db->query("SELECT * FROM calificacion_questionary WHERE  (phase_objetive_id=$phase_id) AND (team_id=$team_id) AND (valor='debil') AND (bandera=1) ");
+      foreach ($num_questions->result() as $key) {
+          $exist=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE (team_id=$team_id) AND (calificacion_questionary_id=$key->id) ");
+          if ($exist->num_rows()==0) {
+            return 0;
+          }
+      }
+      return 1;
+    }
+  }
+
   //funcion que compara 2 fechas y retorna true si la fecha de hoy es mayor a la recibida
   public function strcmp_date($fecha){
     //formato de fecha yyyy-mm-dd
@@ -51,6 +72,8 @@ class Validate extends CI_Model
     }
   }
 
+  //funcion que determina el numero de dias de atraso o adelantados
+  //una vez que el plazo haya vencido
   public function update_tracing_diferencia_dias($id,$fecha_establecida,$fecha_final)
   {
     $tracing_date = new DateTime($fecha_establecida);

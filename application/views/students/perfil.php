@@ -64,11 +64,11 @@
 			Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
 		-->
 	    	<div class="sidebar-wrapper">
-	            <div class="logo">
-	                <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo" class="simple-text">
-	                    Moprosoft
-	                </a>
-	            </div>
+							<div class="logo">
+									<a href="<?php echo base_url(); ?>index.php/Student_Controller/index" class="simple-text">
+											Inicio
+									</a>
+							</div>
 
 	            <ul class="nav">
 	                <!--li>
