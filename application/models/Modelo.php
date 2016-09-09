@@ -55,6 +55,28 @@ class Modelo extends CI_Model
 	    return $consulta->num_rows();
 		}
 
+		public function historial_seguimineto($phase){
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (status=1) ");
+
+			if($consulta->num_rows() >= 1){
+				return $consulta->num_rows();
+			}else{
+				return false;
+			}
+		}
+
+		public function get_historial_seguimiento($phase){
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase ");
+			$c=$consulta->row();
+
+			$consulta2=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE tracing_id=$c->id ");
+			if($consulta2->num_rows() >= 1){
+				return $consulta2->result();
+			}else{
+				return false;
+			}
+		}
+
 		public function getSeguimiento($phase)
 		{
 			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
@@ -77,7 +99,8 @@ class Modelo extends CI_Model
 	         'phase_objetive_id' => $fase,
 					 'date_start' => $fi,
 					 'date_end' => $ff,
-					 'status' => 0
+					 'status' => 0,
+					 'diferencia_dias' => 0
 	      );
       $id_nuevo_equipo = $this->db->insert('tracing', $data);
 			$this -> db -> select('*');
@@ -100,7 +123,7 @@ class Modelo extends CI_Model
 
 		public function Calificacion($id,$equipo)
 		{
-			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
+			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor,calificacion_questionary.bandera FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
  	    return $consulta->result();
 		}
 

@@ -13,8 +13,44 @@ class Home extends CI_Controller {
       $this->load->model('modelo','',TRUE);
       $this->load->model('user','',TRUE);
       $this->load->model('equipo','',TRUE);
+      $this->load->model('Validate','',TRUE);
        $this->load->helper('url');
    }
+
+
+   //funcion que cambiara los status de los seguiminetos segun sea el caso
+   public function check_status_tracing(){
+      if($this->session->userdata('logged_in')){
+
+        $tracing = $this->Validate->getTracingValid();
+        foreach ($tracing as $key) {
+          //comparo si aun es vigente
+          $bandera = $this->Validate->strcmp_date($key->date_end);
+          if ($bandera) {
+            //actualizo la vigencia de ¿l seguiminetos
+            $this->Validate->update_tracing_status($key->id);
+            //obtengo los seguimientos
+            $tracing_calificacion=$this->Validate->getTracing_calification_questionary($key->id);
+            //auxiliares para editar la diferencia de dias
+            $ultima_fecha='';
+
+            foreach ($tracing_calificacion as $key2) {
+              $this->Validate->update_calification_questionary_bandera($key2->calificacion_questionary_id);
+              $ultima_fecha=$key2->date_end;
+            }
+            //Se actualiza la diferencia de dias
+            $this->Validate->update_tracing_diferencia_dias($key->id,$key->date_end,$ultima_fecha);
+          }
+
+        }
+
+      }else{
+         //si no hay session se redirecciona la vista de login
+         redirect('login', 'refresh');
+      }
+   }
+
+
 
    function index()
    {
@@ -111,8 +147,10 @@ class Home extends CI_Controller {
                }
 
                $datos_vista['modelos'] = $modelos;
-
-
+               ///////////////////////////////////
+               //Aqui se agrega la validación;
+               $this->check_status_tracing();
+               //////////////////////////////////
                $this->load->view('jefe_page',$datos_vista);
 
             }else{

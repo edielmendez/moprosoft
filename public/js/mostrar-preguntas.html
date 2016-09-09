@@ -35,8 +35,9 @@ input[type='checkbox']:checked{
             <tr ng-repeat="p in preguntas" id="o{{p.id}}"  >
               <td id="pre{{p.id}}">{{p.question}}</td>
               <td>
+
                 <input class="pnl_cambio" type="hidden" id="{{p.id}}" value="{{p.question}}"/>
-                <input class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
+                <input ng-show='p.bandera==0' class="pnl_cambio" type="checkbox" id="m{{p.id}}" name="checkPriorizada" value="{{p.id}}"/>
               </td>
             </tr>
           </tbody>

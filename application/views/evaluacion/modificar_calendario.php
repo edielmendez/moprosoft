@@ -25,22 +25,22 @@
 	<link href="<?php echo base_url(); ?>libs/css/demo.css" rel="stylesheet" />-->
 	<link href="<?php echo base_url(); ?>libs/css/tabs.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>libs/css/tabstyles.css" rel="stylesheet" />
-	
+
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 
 
-	
+
 
 	<style type="text/css">
-	
-	
+
+
 
 	</style>
 
 </head>
 <body>
-	
+
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
@@ -81,14 +81,14 @@
 	                        <p>CALENDARIO</p>
 	                    </a>
 	                </li>
-	                
+
 	            </ul>
 	    	</div>
 	    </div>
 
 	    <div class="main-panel">
-	    	
-	    	
+
+
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 
@@ -124,12 +124,12 @@
 
 	        <div class="row">
 	    		<div class="col-md-6 col-md-offset-3">
-	    			<?php 
-	    			
+	    			<?php
+
 	    			echo $this->session->flashdata('message');
 	    			 ?>
-	    			
-	                
+
+
 	    		</div>
 	    	</div>
 
@@ -147,11 +147,11 @@
 	                        	<th>FECHA INICIAL</th>
 	                        	<th>FECHA FINAL</th>
 	                        	<th></th>
-	                        	
+
 	                        </thead>
 	                        <tbody>
 	                        <?php
-	                        for ($i=0; $i < count($fases) ; $i++) { 
+	                        for ($i=0; $i < count($fases) ; $i++) {
 	                        	# code...
 	                        	echo "<tr>";
 	                        		echo "<td>".$fases[$i]['proceso']."</td>";
@@ -159,14 +159,14 @@
 	                        		echo "<td>".$fases[$i]['fecha_inicio']."</td>";
 	                        		echo "<td>".$fases[$i]['fecha_final']."</td>";
 	                        		echo "<td><a class='btn btn-primary changeFechaFinal' id='".$fases[$i]['id']."' href='#'>Actualizar Fecha</a></td>";
-	                        		
+
 	                        	echo "</tr>";
 	                        }
-	                        
+
 	                        ?>
-	                        	
-	                            
-	                            
+
+
+
 	                        </tbody>
 	                    </table>
 
@@ -175,14 +175,14 @@
 	        		<h3>NO HAY ACTIVIDADES EN SEGUIMIENTO</h3>
 	        		<br><br>
 	        		<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-info btn-fill btn-wd'>Regresar</a>
-	        		
+
 	        	<?php endif ?>
-	            
-	            
+
+
 	        </div>
 
 
-	        
+
 
 	    </div>
 	</div>
@@ -201,10 +201,10 @@
 	        <hr>
 	        <div class="row">
 	        	<div class="col-md-6">
-	        		<p>Fecha Inicial<input type="text" id="fecha_inicio" disabled=""></p>
+	        		<p>Fecha Inicial</p><input type="text" id="fecha_inicio" disabled="">
 	        	</div>
 	        	<div class="col-md-6">
-	        		<p>Fecha Final<input type="text" name="fecha_final" id="fecha_final" required=""></p>
+	        		<p>Fecha Final</p><input type="text" name="fecha_final" id="fecha_final" required="">
 	        	</div>
 	        </div>
 	        <input type="hidden" id="id_equipo_hidden" name="id_equipo_hidden" value="<?php echo $equipo['id'] ?>">
@@ -252,6 +252,7 @@
 	$(document).ready(function(){
 			$('#tabla_estudiantes').DataTable();
 			
+
 	});
 </script>
 

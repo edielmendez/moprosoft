@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -73,33 +73,36 @@ class Calendario extends CI_Controller {
                //echo "<br>SIN REPETIR<br><br>";
                $ids = array_unique($ids);
                //print_r($ids);
-               
+
                foreach ($ids as $id) {
                   $data = $this->CalendarModel->getDataTableTracingById($id);
-                  foreach ($data as $key) {
-                     $data_fase = $this->CuestionarioAdmin->getFaseById($key->phase_objetive_id);
-                     $fase;
-                     $id_proceso;
-                     foreach ($data_fase as $value) {
-                        $fase = $value->name;
-                        $id_proceso = $value->process_id;
-                     }
-                     //obtenemos el nombre del proceso
-                     $data_proceso = $this->CuestionarioAdmin->getProcesoById($id_proceso);
-                     $proceso;
-                     foreach ($data_proceso as $value) {
-                        $proceso = $value->name;
-                     }
-                     $fase = array(
-                        'id' => $key->id,
-                        'phase_objetive_id' => $key->phase_objetive_id,
-                        'fase_objetivo' => $fase,
-                        'proceso' => $proceso,
-                        'fecha_inicio' => $key->date_start,
-                        'fecha_final' => $key->date_end,
-                     );
-                     array_push($array_fases,$fase);
-                  }
+									if($data){
+										foreach ($data as $key) {
+	                     $data_fase = $this->CuestionarioAdmin->getFaseById($key->phase_objetive_id);
+	                     $fase;
+	                     $id_proceso;
+	                     foreach ($data_fase as $value) {
+	                        $fase = $value->name;
+	                        $id_proceso = $value->process_id;
+	                     }
+	                     //obtenemos el nombre del proceso
+	                     $data_proceso = $this->CuestionarioAdmin->getProcesoById($id_proceso);
+	                     $proceso;
+	                     foreach ($data_proceso as $value) {
+	                        $proceso = $value->name;
+	                     }
+	                     $fase = array(
+	                        'id' => $key->id,
+	                        'phase_objetive_id' => $key->phase_objetive_id,
+	                        'fase_objetivo' => $fase,
+	                        'proceso' => $proceso,
+	                        'fecha_inicio' => $key->date_start,
+	                        'fecha_final' => $key->date_end,
+	                     );
+	                     array_push($array_fases,$fase);
+	                  }
+									}
+
                }
 
                //return;
@@ -133,7 +136,7 @@ class Calendario extends CI_Controller {
                   }
 
                }*/
-               
+
                //se renderizan los datos a la vista
 
 	            $datos_vista['equipo'] = $equipo;
@@ -143,8 +146,8 @@ class Calendario extends CI_Controller {
          	}else{
          		redirect('Equipos', 'refresh');
          	}
-            
-         	
+
+
          	//$this->load->view('evaluacion/index',$datos_vista);
          }else{
          	redirect('Home', 'refresh');
@@ -156,6 +159,7 @@ class Calendario extends CI_Controller {
 
 
    public function getDataFaseInTableTracingById(){
+
       if($this->session->userdata('logged_in')){
          $id = $this->input->post('id');
 
@@ -170,6 +174,7 @@ class Calendario extends CI_Controller {
             );
          }
 
+
          echo json_encode($fase);
       }else{
          redirect('Home', 'refresh');
@@ -181,11 +186,11 @@ class Calendario extends CI_Controller {
       if($this->session->userdata('logged_in')){
          $data = $this->session->userdata('logged_in');
          if(strcmp($data['rol'],"ADMINISTRADOR")==0){
-            
+
             $id_tracing = $this->input->post('id_tracing');
             $fecha_final = $this->input->post('fecha_final');
             $id_equipo_hidden = $this->input->post('id_equipo_hidden');
-            
+
             if($this->CalendarModel->updateFecha($id_tracing,$fecha_final)){
                $mensaje="<div class='alert alert-info fade in'>";
                $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
@@ -193,7 +198,7 @@ class Calendario extends CI_Controller {
                $mensaje.="</div>";
 
                $this->session->set_flashdata('message', $mensaje);
-               
+
             }else{
                $mensaje="<div class='alert alert-danger fade in'>";
                $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
@@ -212,7 +217,7 @@ class Calendario extends CI_Controller {
       }else{
          redirect('Home', 'refresh');
       }
-      
+
    }
 }
  ?>
