@@ -170,7 +170,8 @@ class Evaluacion extends CI_Controller {
       $id_equipo = $this->input->post('id_equipo');
 
       //obtenemos todas las fases del proceso
-      $query_fases = $this->Phase->getPhase_ProcessId($id_proceso);
+      
+      $query_fases = $this->CuestionarioAdmin->getAllPhaseAvailableByProcess($id_proceso);      
       $fases = array();
       
 
@@ -184,7 +185,7 @@ class Evaluacion extends CI_Controller {
             $b=1;
             $val = $this->CuestionarioAdmin->getUsersByIdTeam($row->id);
           
-            if($val){
+            if( ($val) && ($query_fases)){
                foreach ($query_fases as $key ) {
                   
                   $data = $this->CuestionarioAdmin->getTeamsAssignment($row->id,$key->id);
@@ -239,10 +240,15 @@ class Evaluacion extends CI_Controller {
                   $result = $this->CuestionarioAdmin->getUsersByIdTeam($teams[$i]);
                   if ($result) {
                      foreach ($result as $row) {
-                        $query_fases = $this->Phase->getPhase_ProcessId($id_proceso);
-                        foreach ($query_fases as $key) {
-                           $this->CuestionarioAdmin->setAssignment($row->id,$key->id,$teams[$i]);   
+                        //obtenemos las fases que estan terminadas (es decir 1)
+                        //$query_fases = $this->Phase->getPhase_ProcessId($id_proceso);
+                        $query_fases = $this->CuestionarioAdmin->getAllPhaseAvailableByProcess($id_proceso);
+                        if($query_fases){
+                           foreach ($query_fases as $key) {
+                              $this->CuestionarioAdmin->setAssignment($row->id,$key->id,$teams[$i]);   
+                           }
                         }
+                        
                         
                      }
                   }else{

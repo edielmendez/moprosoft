@@ -1,5 +1,6 @@
 var extra;
 var extra2;
+
 $(document).ready(function(){
 	$('[rel="popover"]').popover({
         container: 'body',
@@ -489,7 +490,8 @@ $(document).on('click','.btn_apli_eva',function(){
 
 var showModalChooseTeamsApplyEvaluation = function(data){
 	var equipos = JSON.parse(data)
-	
+	//console.log(data);
+	//return;
 	$("#form_equipos_apl_cuest").empty();
 	if (equipos.length == 0 ){
 		$("#form_equipos_apl_cuest").append("<h3><b>No hay equipos disponibles</b></h3>");

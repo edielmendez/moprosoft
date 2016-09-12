@@ -13,9 +13,7 @@ class CuestionarioAdmin extends CI_Model
 	public function getProcesosDisponibles(){
       $this->db->select('*');
       $this->db->from('process');
-      $this->db->where('status',1);
       $query = $this->db->get();
-
       if($query -> num_rows() >= 1){
 
          return $query->result();
@@ -345,6 +343,7 @@ class CuestionarioAdmin extends CI_Model
       $this->db->select('*');
       $this->db->from('phase_objetive');
       $this->db->where('process_id',$id_proceso);
+      $this->db->where('status',1);
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
@@ -389,6 +388,22 @@ class CuestionarioAdmin extends CI_Model
          return false;
       }
 
+   }
+
+
+   public function getAllPhaseAvailableByProcess($id_proceso){
+      $this->db->select('*');
+      $this->db->from('phase_objetive');
+      $this->db->where('process_id',$id_proceso);
+      $this->db->where('status',1);
+      $query = $this->db->get();
+      if($query -> num_rows() >= 1){
+
+         return $query->result();
+      }
+      else{
+         return false;
+      }
    }
 
 
