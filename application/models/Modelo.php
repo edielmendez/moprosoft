@@ -65,11 +65,11 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function get_historial_seguimiento($phase){
-			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase ");
+		public function get_historial_seguimiento($phase,$equipo){
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (team_id=$equipo) ");
 			$c=$consulta->row();
 
-			$consulta2=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE tracing_id=$c->id ");
+			$consulta2=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE (tracing_id=$c->id) AND (team_id=$equipo)");
 			if($consulta2->num_rows() >= 1){
 				return $consulta2->result();
 			}else{
@@ -77,9 +77,9 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function getSeguimiento($phase)
+		public function getSeguimiento($phase,$equipo)
 		{
-			$consulta=$this->db->query("SELECT * FROM tracing WHERE phase_objetive_id=$phase  ");
+			$consulta=$this->db->query("SELECT * FROM tracing WHERE (phase_objetive_id=$phase) AND (status=0) AND (team_id=$equipo) ");
 			$c=$consulta->row();
 			return array($c->date_start,$c->date_end,$c->id);
 		}
@@ -94,9 +94,10 @@ class Modelo extends CI_Model
 			}
 		}
 
-		public function terminarSeguimiento($fase,$fi,$ff){
+		public function terminarSeguimiento($fase,$fi,$ff,$equipo){
 			$data = array(
 	         'phase_objetive_id' => $fase,
+					 'team_id'=>$equipo,
 					 'date_start' => $fi,
 					 'date_end' => $ff,
 					 'status' => 0,
@@ -121,17 +122,29 @@ class Modelo extends CI_Model
  	    return $consulta->result();
     }
 
+    public function getResultado_phase($equipo,$phase)
+    {
+      $consulta=$this->db->query("SELECT * FROM calificacion_questionary WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$phase)   ");
+      if($consulta->num_rows() >= 1){
+				return $consulta->result();
+			}else{
+				return false;
+			}
+    }
+
+
 		public function Calificacion($id,$equipo)
 		{
 			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor,calificacion_questionary.bandera FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
  	    return $consulta->result();
 		}
 
-		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end)
+		public function GuardarPriorizadas($tracing,$id,$activity,$orden,$date_start,$date_end,$equipo)
 		{
 			$data = array(
 					 'calificacion_questionary_id' => $id,
 					 'tracing_id' => $tracing,
+					 'team_id'=> $equipo,
 					 'activity' => $activity,
 					 'orden' => $orden,
 					 'date_start' => $date_start,
@@ -147,6 +160,25 @@ class Modelo extends CI_Model
 			$c = $consulta->row();
  	    return $c->cp;
 		}
+
+    public function getNamePhase($phase)
+		{
+			$consulta=$this->db->query("SELECT phase_objetive.name FROM  phase_objetive WHERE id='$phase'  " );
+			$c = $consulta->row();
+ 	    return $c->name;
+		}
+
+    public function save_result_team($model,$process,$phase,$nco,$ncr)
+    {
+      $date = date_create();
+      $fecha = date_format($date, 'Y-m-d H:i:s');
+      $result=$this->db->query("INSERT INTO historial_result VALUES(NULL,'$model','$process','$phase','$nco','$ncr','$fecha');");
+      if($result==true){
+        return 0;
+      }else{
+        return 1;
+      }
+    }
 
 		public function getNameProcess($phase)
 		{
@@ -179,7 +211,7 @@ class Modelo extends CI_Model
 
 	}
 
-	public function updateFollow($id,$fi,$ff){
+	public function updateFollow($id,$fi,$ff,$equipo){
 		$consulta=$this->db->query("
 				UPDATE calification_questionary_tracing SET date_start='$fi',date_end='$ff'  WHERE id=$id;
 				");

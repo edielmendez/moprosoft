@@ -69,10 +69,34 @@ class Student extends CI_Model
 
   }
 
-  public function Phase_Historial($id,$team)
+  public function Phase_Historial($id)
   {
-    $consulta=$this->db->query("SELECT phase_objetive.name as phase,process.name as process,model.name as model FROM phase_objetive,assignment,process,model WHERE (assignment.status=100) AND (assignment.user_id=$id) AND (assignment.team_id=$team) AND (assignment.phase_objetive_id=phase_objetive.id) AND (phase_objetive.process_id=process.id) AND (process.model_id=model.id)  ");
-    return $consulta->result();
+    $consulta=$this->db->query("SELECT * FROM historial_phase_answered WHERE (user_id=$id) ");
+    if ($consulta->num_rows()>0) {
+      return $consulta->result();
+    }else {
+      return false;
+    }
+  }
+
+  public function get_model_process($phase)
+  {
+      $consulta=$this->db->query("SELECT phase_objetive.name as phase,process.name as process,model.name as model FROM phase_objetive,process,model WHERE (phase_objetive.process_id=process.id)  AND (process.model_id=model.id)  ");
+      $c= $consulta->row();
+      return array($c->model,$c->process,$c->phase);
+  }
+
+  public function save_historial($user,$model,$process,$phase)
+  {
+
+    $date = date_create();
+    $fecha = date_format($date, 'Y-m-d H:i:s');
+    $result=$this->db->query("INSERT INTO historial_phase_answered VALUES(NULL,'$model','$process','$phase','$fecha','$user');");
+    if($result==true){
+      return 0;
+    }else{
+      return 1;
+    }
   }
 
   public function Phase($id)

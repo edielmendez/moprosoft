@@ -19,7 +19,7 @@
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
 	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
 	<script src="<?php echo base_url(); ?>public/js/question_Controller.js"></script>
-	<script src="<?php echo base_url(); ?>public/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+
 
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -91,7 +91,7 @@
 											</a>
 									</li>
 									<li>
-											<a href="<?php echo base_url(); ?>index.php/Modelos/actividad">
+											<a href="<?php echo base_url(); ?>index.php/Modelos/resultado">
 													<i class="ti-check"></i>
 													<p>Resultados</p>
 											</a>
@@ -172,10 +172,10 @@
 
 								<?php
 									if ($cuestionario['status']==0) {
-										if ($numPreguntas>4) {
+										if ($numPreguntas>1) {
 											echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/Question_Controller/Liberar">Liberar</a><br><br>';
 										}else {
-											echo '<br><br><p>Para la liberación de un cuestionario se necesitan 5 preguntas como mínimo.</p>';
+											echo '<br><br><p>Para la liberación de un cuestionario se necesitan 2 preguntas como mínimo.</p>';
 										}
 									}
 								?>

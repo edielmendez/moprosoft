@@ -17,7 +17,7 @@ class Student_Controller extends CI_Controller {
 	 public function historial()
 	 {
 			 $data = $this->session->userdata('logged_in');
-			 $result = $this->Student->Phase_Historial($data['id'],$data['team_id']);
+			 $result = $this->Student->Phase_Historial($data['id']);
 
 			 $Questionary = array();
 				if($result){
@@ -26,6 +26,7 @@ class Student_Controller extends CI_Controller {
 								'phase' => $row->phase,
 								'process' => $row->process,
 								'model' => $row->model,
+                'f' => $row->f,
 							);
 							array_push($Questionary,$questionary);
 					 }
@@ -245,9 +246,6 @@ class Student_Controller extends CI_Controller {
 	 		 $NumCuestionarios = $this->Student->NumCuestionarioEquipo($cuestionario,$equipo);
 			 $Contestados=$this->Student->NumCuestionarioEquipoContestados($cuestionario,$equipo);
 
-			 echo "Numero de cuestionarios:".$NumCuestionarios;
-			 echo "Numero de cuestionarios resueltos:".$Contestados;
-
 			 if ($NumCuestionarios==$Contestados) {
 				 echo "entro";
 			 	//se obtienen los usuarios de ese equipo
@@ -306,6 +304,73 @@ class Student_Controller extends CI_Controller {
 					foreach ($Preguntas as $row) {
 						$calificar = $this->calificarPregunta(sizeof($Usuarios),$equipo,$cuestionario,$row['id'],$row['siempre'],$row['usualmente'],$row['aveces'],$row['rara'],$row['nunca'],$cp);
 					}
+          //Se añade codigo para sacar resultados de la calificación
+
+    			$result = $this->modelo->getResultado_phase($data['team_id'],$cuestionario);
+
+          $suma=0;
+          $contador=0;
+          if ($result) {
+            foreach ($result as $row) {
+              	$suma=$suma+$row->nivel_cobertura;
+                $contador++;
+            }
+            $namePhase = $this->modelo->getNamePhase($questionary);
+            $nameModel = $this->modelo->getNameModel($questionary);
+            $nameProcess = $this->modelo->getNameProcess($questionary);
+            $cp = $this->modelo->getNameProcessPorcentaje($nameModel);
+            $guardar = $this->modelo->save_result_team($nameModel,$nameProcess,$namePhase,round($suma/$contador,0),$cp);
+          }
+
+          			/*$Resultado = array();
+
+          			$suma=0;
+          			$contador=0;
+          			$questionary=-1;
+          			$name="Sin nombre";
+                $equipo_usuario=$this->session->userdata('logged_in')['team_id'];
+
+
+          			 if($result){
+          					foreach ($result as $row ) {
+
+          						if ($questionary!=$row->phase_objetive_id) {
+
+          							if ($contador!=0) {
+                          $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
+          								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
+          								$historial = $this->modelo->historial_seguimineto($questionary);
+          								$nameModel = $this->modelo->getNameModel($questionary);
+          								$nameProcess = $this->modelo->getNameProcess($questionary);
+          								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
+          								array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial,$termino_phase) );
+          								$questionary=$row->phase_objetive_id;
+          								$name=$row->name;
+          								$suma=$row->nivel_cobertura;
+          								$contador=1;
+          							}elseif ($contador==0) {
+          								$questionary=$row->phase_objetive_id;
+          								$suma=$suma+$row->nivel_cobertura;
+          								$contador++;
+          							}
+          						}else {
+          							$name=$row->name;
+          							$suma=$suma+$row->nivel_cobertura;
+          							$contador++;
+          						}
+          					}
+                    $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
+          					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
+          					$historial = $this->modelo->historial_seguimineto($questionary);
+          					$nameModel = $this->modelo->getNameModel($questionary);
+          					$nameProcess = $this->modelo->getNameProcess($questionary);
+          					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
+          					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial,$termino_phase) );
+          			 }*/
+
+          			//$datos['cuestionarios']=$Resultado;
+          			//$datos['equipos']=$Equipos;
+             		//$this->load->view('questionnaires_jefe/resultado',$datos);
 			 }
 	 }
 
@@ -385,6 +450,8 @@ class Student_Controller extends CI_Controller {
 		$result = $this->Student->finalizarCuestionario($user,$datos[0],$equipo);
 		if ($result==0) {
 			$calificar = $this->calificar($user,$equipo,$datos[0]);
+      $datos_historial=$this->Student->get_model_process($datos[0]);
+      $res = $this->Student->save_historial($user,$datos_historial[0],$datos_historial[1],$datos_historial[2]);
 			echo "La consulta se realizo exitosamente";
 		}else {
 			echo "Ocurrio un problema al guardar los datos en la Base de Datos";

@@ -1,4 +1,4 @@
-var app = angular.module('question', ['ui.bootstrap']);
+var app = angular.module('question', []);
 var url="http://localhost/moprosoft/index.php/";
 app.controller('question_Controller', function($scope, $http) {
 
