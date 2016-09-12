@@ -194,7 +194,7 @@
                                   <div class="footer">
                                       <hr />
                                       <div class="stats">
-                                          <i class="ti-eye"></i><a href="#">Ver Fases/Objetivos</a>
+                                          <!--i class="ti-eye"></i><a href="#">Ver Fases/Objetivos</a-->
                                       </div>
                                   </div>
                               </div>

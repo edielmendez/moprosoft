@@ -102,27 +102,57 @@ class Modelos extends CI_Controller {
 
 	 public function resultado(){
    	if($this->session->userdata('logged_in')){
+			//Se obtiene el hisyorial
+			$historial = $this->modelo->get_historial_result( $this->session->userdata('logged_in')['team_id'] );
+			$Historial = array();
+			if ($historial) {
+				foreach ($historial as $row) {
+					$namePhase = $this->modelo->getNamePhase($row->phase);
+					$nameModel = $this->modelo->getNameModel($row->phase);
+					$nameProcess = $this->modelo->getNameProcess($row->phase);
 
-			$data = $this->session->userdata('logged_in');
-			$equipos = $this->User->getByEquipo($data['team_id']);
-			$Equipos = array();
-
-			if($equipos){
-				 foreach ($equipos as $row ) {
-					 if ($row->rol_id!=2) {
-						 $eq = array(
-  						 'id' => $row->id,
-  						 'username' => $row->username,
-  						 'name' => $row->name,
-  						 'grupo' => $row->grupo,
-  						 'team_id' => $row->team_id
-  					 );
-  					 array_push($Equipos,$eq);
-					 }
-				 }
+					$his = array(
+						'model'=> $nameModel,
+						'process' => $nameProcess,
+						'phase' => $namePhase,
+						'nco' => $row->nco,
+						'ncr' => $row->ncr,
+						'f' => $row->f
+					);
+					array_push($Historial,$his);
+				}
 			}
+			//////////////////////////////////////////
+			//Se obtiene los cuestionarios en seguimiento o los que estan por dar seguimientos
+			$data = $this->session->userdata('logged_in');
+			$resultado = $this->modelo->getResultado_historial($data['team_id']);
+			$Resultado_phase = array();
 
-			$result = $this->modelo->getResultado($data['team_id']);
+			if ($resultado) {
+				foreach ($resultado as $row) {
+					$namePhase = $this->modelo->getNamePhase($row->phase);
+					$nameModel = $this->modelo->getNameModel($row->phase);
+					$nameProcess = $this->modelo->getNameProcess($row->phase);
+
+					$Seguimiento = $this->modelo->ExisteSeguimiento($row->phase,$data['team_id']);
+					$historial = $this->modelo->historial_seguimineto($row->phase,$data['team_id']);
+
+					$res = array(
+						'model'=> $nameModel,
+						'process' => $nameProcess,
+						'phase' => $namePhase,
+						'phase_id' => $row->phase,
+						'nco' => $row->nco,
+						'ncr' => $row->ncr,
+						'seguimiento' => $Seguimiento,
+						'historial' => $historial
+					);
+					array_push($Resultado_phase,$res);
+				}
+			}
+			///////////////////////////////////////////////////////////////////////
+
+			/*$result = $this->modelo->getResultado($data['team_id']);
 			$Resultado = array();
 
 			$suma=0;
@@ -139,8 +169,8 @@ class Modelos extends CI_Controller {
 
 							if ($contador!=0) {
                 $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
-								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
-								$historial = $this->modelo->historial_seguimineto($questionary);
+								$Seguimiento = $this->modelo->ExisteSeguimiento($questionary,$equipo_usuario);
+								$historial = $this->modelo->historial_seguimineto($questionary,$equipo_usuario);
 								$nameModel = $this->modelo->getNameModel($questionary);
 								$nameProcess = $this->modelo->getNameProcess($questionary);
 								$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
@@ -161,16 +191,17 @@ class Modelos extends CI_Controller {
 						}
 					}
           $termino_phase = $this->Validate->check_finish_phase($questionary,$equipo_usuario);
-					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary);
-					$historial = $this->modelo->historial_seguimineto($questionary);
+					$Seguimiento = $this->modelo->ExisteSeguimiento($questionary,$equipo_usuario);
+					$historial = $this->modelo->historial_seguimineto($questionary,$equipo_usuario);
 					$nameModel = $this->modelo->getNameModel($questionary);
 					$nameProcess = $this->modelo->getNameProcess($questionary);
 					$cp = $this->modelo->getNameProcessPorcentaje($nameModel);
 					array_push($Resultado,array($name,$questionary,round($suma/$contador,0),$nameModel,$nameProcess,$cp,$Seguimiento,$historial,$termino_phase) );
-			 }
+			 }*/
 
-			$datos['cuestionarios']=$Resultado;
-			$datos['equipos']=$Equipos;
+			//$datos['cuestionarios']=$Resultado;
+			$datos['resultado']=$Resultado_phase;
+			$datos['historial']=$Historial;
    		$this->load->view('questionnaires_jefe/resultado',$datos);
    	}else{
    		//si no hay session se redirecciona la vista de login

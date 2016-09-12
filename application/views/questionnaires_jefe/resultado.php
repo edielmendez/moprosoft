@@ -161,6 +161,53 @@
 																			</thead>
 																			<tbody>
 																				<?php
+																					foreach($resultado as $q){
+																				?>
+																				<tr>
+																					<td><?=$q['model']; ?></td>
+																					<td><?=$q['process']; ?></td>
+																					<td><?=$q['phase']; ?></td>
+																					<?php
+																						echo "<td>";
+																						echo $q['nco']." ";
+																						if ($q['nco']>=$q['ncr']) {
+																							echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:10px; height:20px\" alt=\"Bien\" />";
+																						}else {
+																							echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:10px; height:20px\" alt=\"Mal\" />";
+																						}
+																						echo "</td>";
+																					?>
+																					<td><?=$q['ncr']; ?></td>
+																					<?php
+																						if ($q['seguimiento']>0) {
+																							$aux=$q['phase_id'];
+																							echo "<td ><a  center; class=\"btn btn-info btn-fill btn-wd\" href=\"".base_url()."index.php/Modelos/VerSeguimiento/$aux\">Ver Seguimiento</a>";
+																					 }else {
+																						  $aux = $q['phase_id'];
+																							echo "<td  ><a class=\"btn btn-primary btn-fill btn-wd\" href=\"#\" ng-click=\"getPreguntas($aux)\">Dar Seguimiento</a>";
+																					 }
+																					 echo "</td>";
+																					?>
+
+																				</tr>
+																				<?php
+																					}
+																				?>
+																			</tbody>
+																		</table>
+
+																		<!--table class="table table-striped">
+																			<thead>
+																				<tr>
+																					<th>Modelo</th>
+																					<th>Proceso</th>
+																					<th>Fase/Objetivo</th>
+																					<th>N.C Obtenida</th>
+																					<th>N.C Requerida</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<?php
 																					foreach($cuestionarios as $q){
 																				?>
 																				<tr>
@@ -179,7 +226,7 @@
 																						echo "</td>";
 
 																					?>
-																					<!--td><?=$q[2]; ?>%</td-->
+
 																					<td><?=$q[5]; ?>%</td>
 																					<?php
 																					if ($q[8]!=1) {
@@ -202,7 +249,7 @@
 																					}
 																				?>
 																			</tbody>
-																		</table>
+																		</table-->
 																	</div>
 															</div>
 
@@ -211,7 +258,43 @@
 																	<div class="col-xs-12">
 																			<div class="row">
 																					<div class="col-xs-12">
-																						<h1>Soy Historial</h1>
+
+																						<table class="table table-striped">
+																							<thead>
+																								<tr>
+																									<th>Modelo</th>
+																									<th>Proceso</th>
+																									<th>Fase/Objetivo</th>
+																									<th>N.C Obtenida</th>
+																									<th>N.C Requerida</th>
+																								</tr>
+																							</thead>
+																							<tbody>
+																								<?php
+																									foreach($historial as $q){
+																								?>
+																								<tr>
+																									<td><?=$q['model']; ?></td>
+																									<td><?=$q['process']; ?></td>
+																									<td><?=$q['phase']; ?></td>
+
+																									<?php
+																										echo "<td>";
+																										echo $q['nco']." ";
+																										if ($q['nco']>=$q['ncr']) {
+																											echo "<img src=\"".base_url()."public/img/mal.png\" style=\"width:10px; height:20px\" alt=\"Bien\" />";
+																										}else {
+																											echo "<img src=\"".base_url()."public/img/bien.png\" style=\"width:10px; height:20px\" alt=\"Mal\" />";
+																										}
+																										echo "</td>";
+																									?>
+																									<td><?=$q['ncr']; ?></td>
+																								</tr>
+																								<?php
+																									}
+																								?>
+																							</tbody>
+																						</table>
 																					</div>
 																			</div>
 																		</div>
