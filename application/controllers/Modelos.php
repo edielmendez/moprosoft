@@ -354,7 +354,7 @@ class Modelos extends CI_Controller {
 
 				 //historial
 
-	 			 $result2 = $this->Student->Phase_Historial($data['id'],$data['team_id']);
+	 			 $result2 = $this->Student->Phase_Historial($data['id']);
 				 //print_r($result2);
 	 			 $Questionary2 = array();
 	 				if($result2){
@@ -362,7 +362,8 @@ class Modelos extends CI_Controller {
 	 							$questionary2 = array(
 	 								'model' => $row2->model,
 									'process' => $row2->process,
-									'phase' => $row2->phase
+									'phase' => $row2->phase,
+                  'f' => $row2->f
 	 							);
 	 							array_push($Questionary2,$questionary2);
 	 					 }

@@ -178,6 +178,7 @@
 															<th>Modelo</th>
 															<th>Proceso</th>
 															<th>Fase/Objetivo</th>
+															<th>Fecha</th>
 														</tr>
 													</thead>
                           <tbody>
@@ -188,6 +189,7 @@
                               <td><?=$c['model']; ?></td>
 															<td><?=$c['process'];?></td>
 															<td><?=$c['phase']; ?></td>
+															<td><?=$c['f']; ?></td>
                             </tr>
                             <?php } ?>
                           </tbody>

@@ -122,6 +122,17 @@ class Modelo extends CI_Model
  	    return $consulta->result();
     }
 
+    public function getResultado_phase($equipo,$phase)
+    {
+      $consulta=$this->db->query("SELECT * FROM calificacion_questionary WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$phase)   ");
+      if($consulta->num_rows() >= 1){
+				return $consulta->result();
+			}else{
+				return false;
+			}
+    }
+
+
 		public function Calificacion($id,$equipo)
 		{
 			$consulta=$this->db->query("SELECT calificacion_questionary.id,calificacion_questionary.team_id,calificacion_questionary.phase_objetive_id,question.question,calificacion_questionary.question_id,calificacion_questionary.valor,calificacion_questionary.bandera FROM calificacion_questionary,question WHERE (calificacion_questionary.team_id=$equipo) AND (calificacion_questionary.phase_objetive_id=$id) AND (question.phase_objetive_id=calificacion_questionary.phase_objetive_id) AND (question.id=calificacion_questionary.question_id) ");
@@ -149,6 +160,25 @@ class Modelo extends CI_Model
 			$c = $consulta->row();
  	    return $c->cp;
 		}
+
+    public function getNamePhase($phase)
+		{
+			$consulta=$this->db->query("SELECT phase_objetive.name FROM  phase_objetive WHERE id='$phase'  " );
+			$c = $consulta->row();
+ 	    return $c->name;
+		}
+
+    public function save_result_team($model,$process,$phase,$nco,$ncr)
+    {
+      $date = date_create();
+      $fecha = date_format($date, 'Y-m-d H:i:s');
+      $result=$this->db->query("INSERT INTO historial_result VALUES(NULL,'$model','$process','$phase','$nco','$ncr','$fecha');");
+      if($result==true){
+        return 0;
+      }else{
+        return 1;
+      }
+    }
 
 		public function getNameProcess($phase)
 		{
