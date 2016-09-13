@@ -30,6 +30,14 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
+	<style type="text/css">
+
+	input[type=radio]{
+	  width: 18px;
+	  height: 18px;
+		font-size: 15px;
+	}
+	</style>
 
 </head>
 <body ng-Controller="student_Controller"  ng-init="index()">
@@ -150,11 +158,11 @@
                                   <div class="col-xs-12">
 																		<span id="ultimavalidacion"></span>
                                     <ul class="nav nav-tabs">
-                                      <li class="active"><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#menu1" data-seccion="1">Seccion 1</a></li>
+                                      <li class="active"><a data-toggle="tab" id="tabMostrar1" ng-click="secciones(1)" href="#menu1" data-seccion="1">Sección 1</a></li>
 																			<?php
 																			for ($i = 1; $i <$numpreguntas; $i++) {
 																					$var=$i+1;
-																				  echo "<li><a data-toggle=tab id=tabMostrar$var ng-click=secciones($var) href=#menu1 data-seccion=$var>Seccion $var</a></li>";
+																				  echo "<li><a data-toggle=tab id=tabMostrar$var ng-click=secciones($var) href=#menu1 data-seccion=$var>Sección $var</a></li>";
 																			}
 																			?>
                                     </ul>
@@ -222,7 +230,7 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <nav class="pull-left">
+	                <!--nav class="pull-left">
 	                    <ul>
 
 	                        <li>
@@ -244,7 +252,7 @@
 	                </nav>
 	                <div class="copyright pull-right">
 	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
+	                </div-->
 	            </div>
 	        </footer>
 
