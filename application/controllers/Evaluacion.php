@@ -245,7 +245,10 @@ class Evaluacion extends CI_Controller {
                         $query_fases = $this->CuestionarioAdmin->getAllPhaseAvailableByProcess($id_proceso);
                         if($query_fases){
                            foreach ($query_fases as $key) {
-                              $this->CuestionarioAdmin->setAssignment($row->id,$key->id,$teams[$i]);   
+                              //si es el administrador entonces no es asignado
+                              if($row->id != 1 ){
+                                 $this->CuestionarioAdmin->setAssignment($row->id,$key->id,$teams[$i]);
+                              }   
                            }
                         }
                         
@@ -840,6 +843,120 @@ class Evaluacion extends CI_Controller {
       }else{
          redirect('Home/', 'refresh');
       }
+   }
+
+
+   public function again($id_proceso,$id_equipo){
+      if($this->session->userdata('logged_in')){
+
+         $data = $this->session->userdata('logged_in');
+         if(strcmp($data['rol'],"ADMINISTRADOR")==0){
+            $query_fases = $this->CuestionarioAdmin->getAllPhaseAvailableByProcess($id_proceso);      
+            $fases = array();
+            //obtenemos los equipos que no hicieron  este proceso y que esten asignados 
+            $result = $this->CuestionarioAdmin->getTeamsWithoutThisId($id_equipo);
+            $equipos=array();
+            if($result){
+
+               foreach ($result as $row) {
+                  $b=1;
+                  $val = $this->CuestionarioAdmin->getUsersByIdTeam($row->id);
+                  if( ($val) && ($query_fases)){
+                     foreach ($query_fases as $key ) {
+                        
+                        $data = $this->CuestionarioAdmin->getTeamsAssignment($row->id,$key->id);
+                        if($data){
+                           $b=0;
+
+                           break;
+                        }
+                     }
+                  
+                     if($b == 0){
+                        $equipo = array(
+                           'id' => $row->id,
+                           'name' => $row->name,
+                        );
+                        array_push($equipos,$equipo);
+                     }
+                  }else{
+                     $mensaje="<div class='alert alert-info fade in'>";
+                     $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+                     $mensaje.="<strong>no hay datos</strong>";
+                     $mensaje.="</div>";
+                     $this->session->set_flashdata('message', $mensaje);
+                     redirect('Evaluacion/', 'refresh');
+                  }
+                  
+               }
+            }
+
+            $datos_vista['equipos'] = $equipos;
+            $datos_vista['id_proceso'] = $id_proceso;
+            $this->load->view('evaluacion/again_page',$datos_vista);
+
+         }else{
+            redirect('Home/', 'refresh');
+         }
+      }else{
+         redirect('Login/', 'refresh');
+      }
+   }
+
+   public function deleteAssigment(){
+      $id_equipo = $this->input->post('id_equipo');
+      $id_proceso = $this->input->post('id_proceso');
+
+      /*echo "id_proceso ".$id_proceso."<br>";
+      echo "id_equipo ".$id_equipo."<br>";
+      return;*/
+      //obtenemos todas las fases de este proceso
+      $data_fases = $this->CuestionarioAdmin->obtenerTodasLasFasesPorIdProceso($id_proceso);
+      try{
+         if($data_fases){
+            //se elimina todo de  la tabla asignación de este proceso y este equipo
+            foreach ($data_fases as $key => $value) {
+               $this->CuestionarioAdmin->deleteAsignacion($value->id,$id_equipo);
+            }
+            //eliminamos todo de la tabla question_answer de este proceso y equipo
+            foreach ($data_fases as $key => $value) {
+               $this->CuestionarioAdmin->deleteAnswer($value->id,$id_equipo);
+            }
+
+            //ponemos el status a 1 de la tabla historial_result
+            foreach ($data_fases as $key => $value) {
+               $this->CuestionarioAdmin->setStatusHistorialResult($value->id,$id_equipo);
+            }
+            //eliminamos todo de la tabla tracing
+            foreach ($data_fases as $key => $value) {
+               $this->CuestionarioAdmin->deleteTracing($value->id,$id_equipo);
+            }
+         
+         }
+
+         //eliminamos todo de la tabla calificación_questionary de este equipo y proceso
+         $this->CuestionarioAdmin->deleteCalificacion($id_proceso,$id_equipo);
+
+         $mensaje="<div class='alert alert-info fade in'>";
+         $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+         $mensaje.="<strong>Echo , para asignar este proceso con todas sus fases a un equipo haga click en el boton Aplicar</strong>";
+         $mensaje.="</div>";
+         $this->session->set_flashdata('message', $mensaje);
+         redirect('Evaluacion/', 'refresh');
+
+      }catch(Exception $e){
+         $mensaje="<div class='alert alert-danger fade in'>";
+         $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
+         $mensaje.="<strong>Error , vuelva a intentarlo</strong>";
+         $mensaje.="</div>";
+         $this->session->set_flashdata('message', $mensaje);
+         redirect('Evaluacion/', 'refresh');
+         //echo $e->getMessage();
+         //return;
+      }
+
+      
+
    }
 
 

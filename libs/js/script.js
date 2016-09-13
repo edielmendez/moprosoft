@@ -916,3 +916,26 @@ var showModalChangeDate = function(data){
  ***********************************************************************
  ***********************************************************************
  */
+
+
+/**
+ *
+ * CÓDIGO PARA QUE SE PUEDA VOLVER A APLICAR UN PROCESO CON TODAS SUS FACES A UN EQUIPO
+ * 
+ * 
+ */
+
+
+$(document).on('click','.btn_again_aplicacion',function(){
+	
+	var id = $(this).attr('id');
+	var ids = id.split('-')
+	id_proceso = ids[1];
+	id_equipo = ids[0];
+	
+	$("#id_equipo_again").val(id_equipo);
+	$("#id_proceso_again").val(id_proceso);
+	$("#modal_aviso").modal()
+})
+
+

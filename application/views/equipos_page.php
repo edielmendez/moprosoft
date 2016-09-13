@@ -142,7 +142,7 @@
                     		# code...
                     		
                     	?>
-                    	<div class="col-lg-10 col-sm-12">
+                    	<div class="col-lg-12 col-sm-12">
 	                        <div class="card">
 	                            <div class="content">
 	                                <div class="row">
@@ -175,6 +175,8 @@
 	                                        ?>
 	                                        &nbsp;&nbsp;&nbsp;
 	                                        <a href="<?php echo base_url(); ?>index.php/Calendario/modificar/<?php echo $equipo['id']?>" id="<?php echo $equipo['id']?>" class="btn"><i class="ti-calendar"></i>Modificar Calendario</a>
+
+	                                        <a href="<?php echo base_url(); ?>index.php/Historial/index/<?php echo $equipo['id']?>" id="<?php echo $equipo['id']?>" class="btn btn-sucess btn-fill"><i class="ti-layout-cta-left"></i>Historial de Evaluaciones</a>
 	                                        <?php
 	                                        $b=1;
 	                                        foreach ($equipo['integrantes'] as $integrante) {

@@ -354,6 +354,21 @@ class CuestionarioAdmin extends CI_Model
          return false;
       }
    }
+   //metodo auxilar
+   public function obtenerTodasLasFasesPorIdProceso($id_proceso){
+      $this->db->select('*');
+      $this->db->from('phase_objetive');
+      $this->db->where('process_id',$id_proceso);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
 
    public function getAllFasesByProcessIdCalificadas($id_proceso){
 
@@ -404,6 +419,48 @@ class CuestionarioAdmin extends CI_Model
       else{
          return false;
       }
+   }
+
+
+   public function getHistorial($id_equipo){
+      $this->db->select('*');
+      $this->db->from('historial_result');
+      $this->db->where('team_id',$id_equipo);
+      $query = $this->db->get();
+      if($query -> num_rows() >= 1){
+
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
+   public function deleteAsignacion($id_fase,$id_equipo){
+      return $this->db->delete('assignment', array('phase_objetive_id' => $id_fase,'team_id' => $id_equipo));
+   }
+
+   public function deleteAnswer($id_fase,$id_equipo){
+      return $this->db->delete('question_answer', array('phase_objetive_id' => $id_fase,'team_id' => $id_equipo));
+   }
+   
+
+   public function deleteCalificacion($id_proceso,$id_equipo){
+      return $this->db->delete('calificacion_questionary', array('process_id' => $id_proceso,'team_id' => $id_equipo));
+   }
+
+   public function deleteTracing($id_fase,$id_equipo){
+      return $this->db->delete('tracing', array('phase_objetive_id' => $id_fase,'team_id' => $id_equipo));
+   }
+
+   public function setStatusHistorialResult($id_fase,$id_equipo){
+      $data = array(
+         'status' => 1
+      );
+      $this->db->where('phase', $id_fase);
+      $this->db->where('team_id', $id_equipo);
+      $rowAfects  = $this->db->update('historial_result', $data);
+      return $rowAfects;
    }
 
 
