@@ -29,7 +29,7 @@
 
 </head>
 <body>
-	
+
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
@@ -71,14 +71,14 @@
 	                        <p>HISTORIAL</p>
 	                    </a>
 	                </li>
-	                
+
 	            </ul>
 	    	</div>
 	    </div>
 
 	    <div class="main-panel">
-	    	
-	    	
+
+
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 
@@ -113,12 +113,12 @@
 
 	        <div class="row">
 	    		<div class="col-md-6 col-md-offset-3">
-	    			<?php 
-	    			
+	    			<?php
+
 	    			echo $this->session->flashdata('message');
 	    			 ?>
-	    			
-	                
+
+
 	    		</div>
 	    	</div>
 			<?php// print_r($datos); ?>
@@ -136,11 +136,11 @@
 	                        	<th>NIVEL DE COBERTURA REQUERIDO</th>
 	                        	<th>NIVEL DE COBERTURA ALCANZADO</th>
 	                        	<th>FECHA</th>
-	                        	
+
 	                        </thead>
 	                        <tbody>
 	                        <?php
-	                        for ($i=1; $i < count($datos) ; $i++) { 
+	                        for ($i=0; $i < count($datos) ; $i++) { 
 	                        	# code...
 	                        	echo "<tr>";
 	                        		echo "<td>".$datos[$i]['model']."</td>";
@@ -151,9 +151,9 @@
 	                        		echo "<td>".$datos[$i]['fecha']."</td>";
 	                        	echo "</tr>";
 	                        }
-	                        
+
 	                        ?>
-	                            
+
 	                        </tbody>
 	                    </table>
 
@@ -167,11 +167,11 @@
 	        			</div>
 	        		</div>
 	        	<?php endif ?>
-	            
+
 	        </div>
 
 
-	        
+
 
 	    </div>
 	</div>
