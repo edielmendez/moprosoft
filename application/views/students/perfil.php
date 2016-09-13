@@ -121,7 +121,7 @@
 																			<b class="caret"></b>
 	                              </a>
 	                              <ul class="dropdown-menu">
-	                                <!--li><a href="#">Perfil</a></li-->
+																	<li><a href="<?php echo base_url(); ?>index.php/Student_Controller/perfil">Perfil</a></li>
 	                                <li><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></li>
 	                              </ul>
 	                        </li>

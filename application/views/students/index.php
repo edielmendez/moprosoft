@@ -65,7 +65,7 @@
 		-->
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="<?php echo base_url(); ?>index.php/Student_Controller/index" class="simple-text">
+	                <a href="#" class="simple-text">
 	                    Inicio
 	                </a>
 	            </div>
@@ -110,7 +110,7 @@
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
 	                </div>
-									<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Student_Controller/index">Inicio</a>
+									<a class="navbar-brand" href="#">Inicio</a>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
 	                        <li class="dropdown">
@@ -207,7 +207,7 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <nav class="pull-left">
+	                <!--nav class="pull-left">
 	                    <ul>
 
 	                        <li>
@@ -229,7 +229,7 @@
 	                </nav>
 	                <div class="copyright pull-right">
 	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
+	                </div-->
 	            </div>
 	        </footer>
 
@@ -242,7 +242,6 @@
 <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js" type="text/javascript"></script>
 
 <!--  Checkbox, Radio & Switch Plugins -->
-<script src="<?php echo base_url(); ?>public/js/bootstrap-checkbox-radio.js"></script>
 
 <!--  Charts Plugin -->
 <!--script src="<?php echo base_url(); ?>public/js/chartist.min.js"></script-->
