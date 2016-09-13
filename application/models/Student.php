@@ -81,7 +81,7 @@ class Student extends CI_Model
 
   public function get_model_process($phase)
   {
-      $consulta=$this->db->query("SELECT phase_objetive.name as phase,process.name as process,model.name as model FROM phase_objetive,process,model WHERE (phase_objetive.process_id=process.id)  AND (process.model_id=model.id)  ");
+      $consulta=$this->db->query("SELECT phase_objetive.name as phase,process.name as process,model.name as model FROM phase_objetive,process,model WHERE (phase_objetive.id=$phase)  AND  (phase_objetive.process_id=process.id)  AND (process.model_id=model.id)  ");
       $c= $consulta->row();
       return array($c->model,$c->process,$c->phase);
   }
@@ -149,7 +149,8 @@ class Student extends CI_Model
 
   public function getRespuestas($cuestionario,$pregunta)
   {
-    $consulta=$this->db->query("SELECT question_answer.answer_id FROM question_answer WHERE (phase_objetive_id=$cuestionario) AND (question_id=$pregunta) ");
+    $equipo=$this->session->userdata('logged_in')['team_id'];
+    $consulta=$this->db->query("SELECT question_answer.answer_id FROM question_answer WHERE (phase_objetive_id=$cuestionario) AND (question_id=$pregunta) AND (team_id=$equipo) ");
     return $consulta->result();
   }
 
@@ -170,7 +171,8 @@ class Student extends CI_Model
       }
     }else{
       //Se agrega
-      $result=$this->db->query("INSERT INTO question_answer VALUES(NULL,'$id_cuestionary','$question_id1','$answer_id1','$user');");
+      $equipo=$this->session->userdata('logged_in')['team_id'];
+      $result=$this->db->query("INSERT INTO question_answer VALUES(NULL,'$id_cuestionary','$question_id1','$answer_id1','$user','$equipo');");
       if($result==true){
         return 0;
       }else{

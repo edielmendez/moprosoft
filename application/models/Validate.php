@@ -15,6 +15,10 @@ class Validate extends CI_Model
     if ($query->num_rows()>0) {
       return 0;
     }else {
+      $num_questions_sin_responder=$this->db->query("SELECT * FROM calificacion_questionary WHERE  (phase_objetive_id=$phase_id) AND (team_id=$team_id) AND (valor='debil') AND (bandera=0) ");
+      if ($num_questions_sin_responder->num_rows()>0) {
+        return 0;
+      }
       $num_questions=$this->db->query("SELECT * FROM calificacion_questionary WHERE  (phase_objetive_id=$phase_id) AND (team_id=$team_id) AND (valor='debil') AND (bandera=1) ");
       foreach ($num_questions->result() as $key) {
           $exist=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE (team_id=$team_id) AND (calificacion_questionary_id=$key->id) ");
@@ -42,7 +46,8 @@ class Validate extends CI_Model
 
   //funcion que obtiene los seguimientos que aun siguen vigentes
   public function getTracing_calification_questionary($id){
-    $query=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE tracing_id=$id ");
+    $equipo=$this->session->userdata('logged_in')['team_id'];
+    $query=$this->db->query("SELECT * FROM calification_questionary_tracing WHERE (tracing_id=$id) AND (team_id=$equipo) ");
     if($query->num_rows() >= 1){
 			return $query->result();
 		}else{
@@ -52,7 +57,8 @@ class Validate extends CI_Model
 
   //funcion que obtiene los seguimientos que aun siguen vigentes
   public function getTracingValid(){
-    $query=$this->db->query("SELECT * FROM tracing WHERE status=0 ");
+    $equipo=$this->session->userdata('logged_in')['team_id'];
+    $query=$this->db->query("SELECT * FROM tracing WHERE (status=0) AND  (team_id=$equipo) ");
     if($query->num_rows() >= 1){
 			return $query->result();
 		}else{
@@ -108,6 +114,29 @@ class Validate extends CI_Model
   {
     $consulta=$this->db->query("
         UPDATE calificacion_questionary SET bandera='1' WHERE id=$id;
+        ");
+    if($consulta==true){
+        return 0;
+    }else{
+        return 1;
+    }
+  }
+
+  public function get_historial_result()
+  {
+    $equipo=$this->session->userdata('logged_in')['team_id'];
+    $query=$this->db->query("SELECT * FROM historial_result WHERE (status=0) AND (team_id=$equipo) ");
+    if($query->num_rows() >= 1){
+			return $query->result();
+		}else{
+			return false;
+		}
+  }
+
+  public function update_historial_result($id)
+  {
+    $consulta=$this->db->query("
+        UPDATE historial_result SET status='1' WHERE id=$id;
         ");
     if($consulta==true){
         return 0;

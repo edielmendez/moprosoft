@@ -19,7 +19,7 @@ class Home extends CI_Controller {
 
 
    //funcion que cambiara los status de los seguiminetos segun sea el caso
-   public function check_status_tracing(){
+   /*public function check_status_tracing(){
       if($this->session->userdata('logged_in')){
 
         $tracing = $this->Validate->getTracingValid();
@@ -36,6 +36,7 @@ class Home extends CI_Controller {
               $ultima_fecha='';
 
               foreach ($tracing_calificacion as $key2) {
+
                 $this->Validate->update_calification_questionary_bandera($key2->calificacion_questionary_id);
                 $ultima_fecha=$key2->date_end;
               }
@@ -45,6 +46,60 @@ class Home extends CI_Controller {
 
           }
         }
+      }else{
+         //si no hay session se redirecciona la vista de login
+         redirect('login', 'refresh');
+      }
+   }*/
+
+   public function check_status_historial()
+   {
+     $equipo=$this->session->userdata('logged_in')['team_id'];
+     $historial = $this->Validate->get_historial_result();
+     if ($historial) {
+       foreach ($historial as $row) {
+         $termino_phase = $this->Validate->check_finish_phase($row->phase,$equipo);
+         if ($termino_phase==1) {
+           $upate = $this->Validate->update_historial_result($row->id);
+         }
+       }
+     }
+
+   }
+
+   public function check_status_tracing(){
+      if($this->session->userdata('logged_in')){
+
+        $tracing = $this->Validate->getTracingValid();
+        if ($tracing) {
+          foreach ($tracing as $key) {
+            //obtengo los seguimientos
+            $tracing_calificacion=$this->Validate->getTracing_calification_questionary($key->id);
+            $ultima_fecha='';
+            foreach ($tracing_calificacion as $key2) {
+              $ultima_fecha=$key2->date_end;
+            }
+            //comparo si aun es vigente
+            $bandera = $this->Validate->strcmp_date($ultima_fecha);
+            if ($bandera) {
+              //actualizo la vigencia del seguiminetos
+              $this->Validate->update_tracing_status($key->id);
+
+              //obtengo los seguimientos
+              $tracing_calificacion2=$this->Validate->getTracing_calification_questionary($key->id);
+
+              foreach ($tracing_calificacion2 as $key2) {
+                $this->Validate->update_calification_questionary_bandera($key2->calificacion_questionary_id);
+              }
+              //Se actualiza la diferencia de dias
+              $this->Validate->update_tracing_diferencia_dias($key->id,$key->date_end,$ultima_fecha);
+            }
+
+          }
+        }
+        //checar si ya se termino una fase y actualizarlo en el historial
+        $this->check_status_historial();
+
       }else{
          //si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');

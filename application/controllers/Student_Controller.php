@@ -306,7 +306,7 @@ class Student_Controller extends CI_Controller {
 					}
           //Se añade codigo para sacar resultados de la calificación
 
-    			$result = $this->modelo->getResultado_phase($data['team_id'],$cuestionario);
+    			$result = $this->modelo->getResultado_phase($this->session->userdata('logged_in')['team_id'],$cuestionario);
 
           $suma=0;
           $contador=0;
@@ -315,11 +315,17 @@ class Student_Controller extends CI_Controller {
               	$suma=$suma+$row->nivel_cobertura;
                 $contador++;
             }
-            $namePhase = $this->modelo->getNamePhase($questionary);
-            $nameModel = $this->modelo->getNameModel($questionary);
-            $nameProcess = $this->modelo->getNameProcess($questionary);
+            //$namePhase = $this->modelo->getNamePhase($cuestionario);
+            $nameModel = $this->modelo->getNameModel($cuestionario);
+            //$nameProcess = $this->modelo->getNameProcess($cuestionario);
+						$IDProcess = $this->modelo->getIdProcess($cuestionario);
+						$IDModel = $this->modelo->getIdModel($cuestionario);
             $cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-            $guardar = $this->modelo->save_result_team($nameModel,$nameProcess,$namePhase,round($suma/$contador,0),$cp);
+						$bandera=0;
+						if (round($suma/$contador,0)>=$cp) {
+							$bandera=1;
+						}
+            $guardar = $this->modelo->save_result_team($IDModel,$IDProcess,$cuestionario,round($suma/$contador,0),$cp,$this->session->userdata('logged_in')['team_id'],$bandera);
           }
 
           			/*$Resultado = array();
