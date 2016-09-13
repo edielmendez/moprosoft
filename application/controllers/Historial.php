@@ -26,6 +26,19 @@ class Historial extends CI_Controller {
 		   	$data_historial = $this->CuestionarioAdmin->getHistorial($id);
 		   	$datos = array();
 		   	if($data_historial){
+		   		//obtenemos los datos de este equipo
+		   		$equipo;
+		   		$result = $this->equipo->getEquipoById($id);
+		         if ($result) {
+		           
+		            foreach ($result as $row ) {
+		               $equipo = array(
+		                 'id' => $row->id,
+		                 'name' => $row->name,
+		               );
+		               
+		            }
+		         }
 
 		   		foreach ($data_historial as $value) {
 		   			$fase;
@@ -62,6 +75,7 @@ class Historial extends CI_Controller {
 		   			array_push($datos,$item);
 		   		}
 		   		$datos_vista['datos'] = $datos;
+		   		$datos_vista['equipo'] = $equipo;
 		   		$this->load->view('evaluacion/historial_page',$datos_vista);
 		   	}else{
 		   		$mensaje="<div class='alert alert-info fade in'>";
