@@ -43,6 +43,9 @@ app.controller('student_Controller', function($scope, $http) {
       $scope.preguntasFiltradas=response.slice($scope.startt,$scope.end);
       RecuperarRespuestas();
       $scope.porcentaje=Math.round((calculoAvanze()*100)/$scope.longitud);
+      if (response.length==2) {
+        $scope.terminar=1;
+      }
       }
     );
   }
