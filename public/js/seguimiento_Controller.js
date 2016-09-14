@@ -80,6 +80,7 @@ app.service('serveData', [function () {
 app.controller('inicio_Controller', ['$scope', 'serveData', '$http' ,function ($scope, serveData,$http) {
   //Se obtienen todas las actividades debiles de la base de datso
   $scope.getPreguntas = function (phase) {
+    console.log("Este es tu metodo");
     $http.get(url+"Modelos/getSeguimiento/"+phase).success(function(response){
       if (response.length>0) {
         //guardamos los las actividades en memoria
@@ -91,8 +92,9 @@ app.controller('inicio_Controller', ['$scope', 'serveData', '$http' ,function ($
         } else {
             console.log("No se pudo guardar las preguntas.");
         }
-        window.location.href = url+"Modelos/Seguimiento/"+phase;
+        console.log("Estas redirigiendo");
       }
+      window.location.href = url+"Modelos/Seguimiento/"+phase;
     });
 
     if (typeof(Storage) !== "undefined") {

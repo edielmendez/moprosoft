@@ -212,7 +212,7 @@
 
                 </div>
                 <div class="row" id="contenido" style="height:40px">
-                     <div class="col-lg-6 col-sm-6" ng-repeat="fase in phases | filter:buscar">
+                     <div class="col-lg-3 col-sm-6" ng-repeat="fase in phases | filter:buscar">
                          <div class="card">
                              <div class="content">
                                  <div class="row">

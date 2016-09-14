@@ -42,6 +42,10 @@ app.controller('jefe_Controller', function($scope, $http) {
       $scope.preguntasFiltradas=response.slice($scope.startt,$scope.end);
       RecuperarRespuestas();
       $scope.porcentaje=Math.round((calculoAvanze()*100)/$scope.longitud);
+      if (response.length==2) {
+        $scope.terminar=1;
+      }
+
       }
     );
   }
@@ -165,9 +169,9 @@ app.controller('jefe_Controller', function($scope, $http) {
           console.log("Esto tenia inicio:"+$scope.startt);
           $http.post(url+"Student_Controller/terminar", asignacion ).success(function(data){
             console.log("Peticion realizada exitosamente:"+data);
-            $('#aviso').append('<div class="alert alert-success"><strong>Bien!</strong> Encuesta Terminada.</div>');
+            $('#aviso').append('<div class="alert alert-success"><strong>Bien!</strong>Cuestionario Terminado.</div>');
             $('#menu1').empty();
-            $('#menu1').append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Encuesta Terminada</h1><h3>Tus respuestas se han guardado.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
+            $('#menu1').append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Cuestionario Terminado</h1><h3>Tus respuestas se han guardado.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
             setInterval(tiempoContador, 1000);
           }).error(function(data){
             console.log(data);

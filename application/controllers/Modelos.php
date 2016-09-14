@@ -249,6 +249,7 @@ class Modelos extends CI_Controller {
 			 $Calificacion = array();
 			 $Phase=0;
 			 $terminado_proceso=0;
+			 $todosFortalezas=1;
 	 		 if($result){
 	 				foreach ($result as $row ) {
 						 $Phase=$row->phase_objetive_id;
@@ -256,6 +257,7 @@ class Modelos extends CI_Controller {
 						 	$terminado_proceso=1;
 						 }
 						 if ($row->valor=='debil') {
+							 $todosFortalezas=0;
 							 $cal = array(
 								'id' => $row->id,
 								'team_id' => $row->team_id,
@@ -269,6 +271,13 @@ class Modelos extends CI_Controller {
 						 }
 	 				}
 	 		 }
+
+			 if ($terminado_proceso==0) {
+			 	if ($todosFortalezas==1) {
+					$idresult=$this->Validate->get_historial_result_teamid_phase($Phase,$data['team_id']);
+					$result=$this->Validate->update_historial_result($idresult);
+			 	}
+			 }
 			 $datos['actividades']=$Calificacion;
 			 $datos['Equipo']=$data['team_id'];
 			 $datos['Phase']=$Phase;
