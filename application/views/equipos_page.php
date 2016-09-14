@@ -142,7 +142,7 @@
                     		# code...
                     		
                     	?>
-                    	<div class="col-lg-12 col-sm-12">
+                    	<div class="col-lg-12 col-sm-12 col-md-12">
 	                        <div class="card">
 	                            <div class="content">
 	                                <div class="row">
@@ -162,8 +162,12 @@
 	                                <div class="footer">
 	                                    <hr />
 	                                    <div class="stats">
+	                                        <?php
+	                                        if ($equipo['id'] != 1) {
+	                                        	echo "<button class='btn btn-danger btn_elim_equipo' id='".$equipo['id']."'><i class='ti-trash'></i> Eliminar</button>";
+	                                        }
+	                                        ?>
 	                                        
-	                                        <button class='btn btn-danger btn_elim_equipo' id='<?php echo $equipo['id']?>'><i class="ti-trash"></i> Eliminar</button>
 	                                        <button class='btn btn-primary btn_act_name_equipo' id='<?php echo $equipo['id']?>'> Actualizar</button>
 	                                        &nbsp;&nbsp;&nbsp;
 	                                        <?php
@@ -245,17 +249,15 @@
 		                                            </div>
 
 		                                            <?php
-		                                                	/*echo "<div class='col-xs-2' >";
+		                                                	echo "<div class='col-xs-2' >";
 				                                                echo "<a class='btn btn-sm btn-info btn-icon' href='".base_url()."index.php/Estudiantes/cambiarEquipo/".$miembro['id']."'>Cambiar de equipo</a>";
-				                                            echo "</div>";*/
+				                                            echo "</div>";
 		                                                
 		                                            ?>
 
 		                                            
 		                                            
-		                                            <!--<div class="col-xs-2 ">
-		                                                <btn class="btn btn-sm btn-danger btn-icon btnEnviarMails" id='<?php echo $miembro['id']?>'><i class="fa fa-envelope"></i> Enviar correo</btn>
-		                                            <!--</div>-->
+		                                            
 		                                        </div>
 		                                    </li>
 		                                    
@@ -333,7 +335,8 @@
 	        <h4 class="modal-title">Eliminar Equipo</h4>
 	        </div>
 	      <div class="modal-body">
-	        <p>Esta seguro de eliminar el equipo ?</p>
+	        <h3>Esta seguro de eliminar el equipo ?</h3>
+	        <p class="text-red">Tenga en cuenta que se eliminar todo lo relacionado a este equipo (modelos,procesos,fases,historial,resultados,etc.)</p>
 	        <input type="hidden" name="" id="id_equipo_elim" value="">
 	      </div>
 	      <div class="modal-footer">

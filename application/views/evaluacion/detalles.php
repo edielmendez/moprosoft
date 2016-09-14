@@ -409,6 +409,7 @@
 	        </div><!-- fin del tercer container-->
 
 	        <div class="container" style="display: none;" id="cuarto_contenedor"><!--inicio del cuarto container-->
+	        	<a href="#"  class='btn btn-danger btnBack'><i class="ti-arrow-left"></i>  Regresar</a><hr>
 	        	<div class="row">
 	        		<div class="col-md-8">
 	        					

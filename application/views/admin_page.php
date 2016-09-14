@@ -177,7 +177,8 @@
 	        <h4 class="modal-title">Eliminar Estudiante</h4>
 	        </div>
 	      <div class="modal-body">
-	        <p>Esta seguro de eliminar el estudiante ?</p>
+	        <h3>Esta seguro de eliminar el estudiante ?</h3>
+	        <p>Tenga en cuenta que también se eliminara todo lo relacionado a este estudiante.</p>
 	        <input type="hidden" name="" id="id_est_elim" value="">
 	      </div>
 	      <div class="modal-footer">

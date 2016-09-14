@@ -108,11 +108,10 @@ class User extends CI_Model
 
    public function actualizarEquipo($team_id,$id){
       /*elimnados los datos de la tabla asignación*/
-      //$this->db->delete('assignment', array('user_id' => $id));
+      $this->db->delete('assignment', array('user_id' => $id));
       //eliminados los datos de la tabla question_answer
-      //$this->db->delete('question_answer', array('user_id' => $id));
-      /**/
-
+      $this->db->delete('question_answer', array('user_id' => $id));
+      
       $data = array('team_id' => $team_id,'rol_id' => 3 );
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
@@ -126,13 +125,30 @@ class User extends CI_Model
       $rowAfects  = $this->db->update('user', $data);
       return $rowAfects;
    }
-
+   //eliminacion de un usuario
    public function eliminar($id){
       //se eliminan todos los datos de este usuario de la tabla asignación
       return $this->db->delete('user', array('id' => $id));
-      
-
    }
+
+   function delete($id){
+      return $this->db->delete('user', array('id' => $id));
+   }
+
+   public function deleteAssignment($id){
+      return $this->db->delete('assignment', array('user_id' => $id));
+   }
+
+   public function deleteHistorial($id){
+      return $this->db->delete('historial_phase_answered', array('user_id' => $id));
+   }
+
+   public function deleteQuestionAnswer($id){
+      return $this->db->delete('question_answer', array('user_id' => $id));
+   }
+   
+   
+   //////////////////////////
 
    public function getUsuarioByUsername($username){
       $this -> db -> select('*');
@@ -140,9 +156,7 @@ class User extends CI_Model
      	$this-> db-> where('username', $username);
      	
      	$this -> db -> limit(1);
-
      	$query = $this -> db -> get();
-
      	if($query -> num_rows() == 1){
       	return $query->result();
      	}
@@ -168,10 +182,7 @@ class User extends CI_Model
      	}
    }
 
-   function delete($id){
-      $this->db->delete('assignment', array('user_id' => $id));
-   	return $this->db->delete('user', array('id' => $id));
-  	}
+   
 
   	public function getRolUsuario($id){
   		$this -> db -> select('*');

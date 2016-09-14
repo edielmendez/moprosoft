@@ -226,8 +226,13 @@ class Estudiantes extends CI_Controller {
    }
 
    public function eliminar($id){
-      $result = $this->user->delete($id); 
-      
+      $result = $this->user->delete($id);
+      //eliminamos todo de la tabla asigment
+      $this->user->deleteAssignment($id);
+      //eliminamos todo de la tabla historial_phase_answered
+      $this->user->deleteHistorial($id);
+      //eliminamos todo de la tabla question_answer
+      $this->user->deleteQuestionAnswer($id);
       if($result){
          $mensaje="<div class='alert alert-info fade in'>";
          $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
@@ -303,19 +308,45 @@ class Estudiantes extends CI_Controller {
          echo "id_equipo : ".$id_equipo."<br>";
          return;*/
          
-         $result = $this->user->actualizarEquipo($id_equipo,$id_usuario);
-         /*codigo para cambiar de equipo a un integrante y asignarle los cuationarios de su nuevo equipo*/
-         //$cuestionarios_asignados = $this->CuestionarioAdmin->getCuestionariosInAssignment($id_equipo);
-         //print_r($cuestionarios_asignados);
-         //return;
-         //foreach ($cuestionarios_asignados as $row) {
-           //$this->CuestionarioAdmin->setAssignment($id_usuario,$row->questionary_id,$id_equipo);
-         //}
-      
+         //actualizamos los datos del usuario y ademas borramos los registros de las asignaciones en la tabla assigment
+         $aviso = $this->user->actualizarEquipo($id_equipo,$id_usuario);
+         
+         
+         $records = $this->CuestionarioAdmin->getFasesInAssignmentComplete($id_equipo);
+         $temp = array( );
+         if($records){
+            foreach ($records as $row) {
+               array_push($temp,$row->phase_objetive_id);
+            }
+         }
+
+         /*obtenemos los fases a los que esta asignado este equipo pero que no estan terminados*/
+         $result = $this->CuestionarioAdmin->getFasesInAssignment($id_equipo);
+         $temp2= array( );
          if($result){
+            foreach ($result as $row) {
+               array_push($temp2,$row->phase_objetive_id);
+            }
+         }
+         
+         //echo "<br><br>result<br>";
+         //print_r($temp2);
+         
+         $fases_incompletas = array_diff($temp2, $temp);
+         //$diff = array_diff($temp2, $temp);
+         //echo "<br><br>diff : <br><br>";
+         //print_r($diff);
+         
+         //codigo para cambiar de equipo a un integrante y asignarle los cuationarios de su nuevo equipo
+         
+         foreach ($fases_incompletas as $row) {
+           $this->CuestionarioAdmin->setAssignment($id_usuario,$row,$id_equipo);
+         }
+      
+         if($aviso){
             $mensaje="<div class='alert alert-info fade in'>";
             $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
-            $mensaje.="<strong>Cambio de eqiupo exitoso</strong>";
+            $mensaje.="<strong>Cambio de equipo exitoso</strong>";
             $mensaje.="</div>";
 
 

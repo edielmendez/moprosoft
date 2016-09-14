@@ -331,8 +331,21 @@ class Equipos extends CI_Controller {
 
    public function eliminar($id){
       if($this->session->userdata('logged_in')){
-         $result = $this->equipo->delete($id); 
-
+         //eliminados el equipo
+         $result = $this->equipo->delete($id);
+         //eliminados sus asignaciones
+         $this->equipo->deleteAssigment($id);
+         //eliminamos todo de la tabla calificacion_cuestionario
+         $this->equipo->deleteCalificacion($id);
+         //eliminamos todo de la tabla calificacion_cuestionario_tracing
+         $this->equipo->deleteCalificacionTracing($id);
+         //eliminamos todo de la tabla historial_result
+         $this->equipo->deleteHistorialResult($id);
+         //eliminamos todo de la tabla question_answer
+         $this->equipo->deleteQuestionAnswer($id);
+         //eliminamos todo de la tabla tracing
+         $this->equipo->deleteTracing($id);
+         
          if($result){
             $mensaje="<div class='alert alert-info fade in'>";
             $mensaje.="<a href='#' class='close' data-dismiss='alert'>&times;</a>";
