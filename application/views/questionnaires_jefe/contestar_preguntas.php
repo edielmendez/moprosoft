@@ -26,7 +26,14 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
+	<style type="text/css">
 
+	input[type=radio]{
+	  width: 18px;
+	  height: 18px;
+		font-size: 15px;
+	}
+	</style>
 
 </head>
 <body ng-Controller="jefe_Controller"  ng-init="index()">

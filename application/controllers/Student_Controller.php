@@ -310,8 +310,16 @@ class Student_Controller extends CI_Controller {
 
           $suma=0;
           $contador=0;
+					$banderadebil=0;
+					$banderainde=0;
           if ($result) {
             foreach ($result as $row) {
+								if ($row->valor=='debil') {
+									$banderadebil=1;
+								}
+								if ($row->valor=='indeterminado') {
+									$banderainde=1;
+								}
               	$suma=$suma+$row->nivel_cobertura;
                 $contador++;
             }
@@ -321,11 +329,14 @@ class Student_Controller extends CI_Controller {
 						$IDProcess = $this->modelo->getIdProcess($cuestionario);
 						$IDModel = $this->modelo->getIdModel($cuestionario);
             $cp = $this->modelo->getNameProcessPorcentaje($nameModel);
-						$bandera=0;
-						if (round($suma/$contador,0)==100) {
-							$bandera=1;
+						$valor=0;
+						if ($banderadebil==0) {
+							$valor=1;
 						}
-            $guardar = $this->modelo->save_result_team($IDModel,$IDProcess,$cuestionario,round($suma/$contador,0),$cp,$this->session->userdata('logged_in')['team_id'],$bandera);
+						if ($banderainde==1) {
+							$valor=0;
+						}
+            $guardar = $this->modelo->save_result_team($IDModel,$IDProcess,$cuestionario,round($suma/$contador,0),$cp,$this->session->userdata('logged_in')['team_id'],$valor);
           }
 
           			/*$Resultado = array();

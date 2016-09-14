@@ -163,18 +163,19 @@
                   ?>
 
 
-                  <!-- ///////////////////////////////////////////////////////////////////////////////7 -->
-                  <?php
-                  //Si la fase ya fue finalizada por el administrador
-                  if ($valor==0) {
-                  ?>
+									<!-- ///////////////////////////////////////////////////////////////////////////////7 -->
+									<?php
+									//Si la fase ya fue finalizada por el administrador
+									if ($valor==0) {
+									?>
 
 									<div id="main">
 										<div ng-view></div>
 									</div>
-                  <?php
-                  }
-                  ?>
+									<?php
+									}
+									?>
+
 
 								</div>
 							</div>

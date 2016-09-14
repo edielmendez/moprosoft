@@ -145,6 +145,17 @@ class Validate extends CI_Model
     }
   }
 
+  public function get_historial_result_teamid_phase($phase,$equipo)
+  {
+    $query=$this->db->query("SELECT * FROM historial_result WHERE (phase=$phase) AND (team_id=$equipo) AND (status=0) ");
+    if($query->num_rows() >= 1){
+      $c=$query->row();
+      return $c->id;
+		}else{
+			return false;
+		}
+  }
+
 
 
 }
