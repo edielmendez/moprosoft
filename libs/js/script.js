@@ -1,6 +1,6 @@
 var extra;
 var extra2;
-
+var host = "localhost";
 $(document).ready(function(){
 	$('[rel="popover"]').popover({
         container: 'body',
@@ -41,7 +41,7 @@ $( "#form_nuevo_estudiante" ).submit(function( event ) {
    $.ajax({
 	 	method: "POST",
 	 	async:false,
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/validarUsername",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/validarUsername",
 	  	data: { username: username }
 	}).done(function( msg ) {
 		console.log(msg);
@@ -65,7 +65,7 @@ $("#form_actualizar_estudiante").submit(function(event){
 	$.ajax({
 	 	method: "POST",
 	 	async:false,
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/validarUsernameActualizar",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/validarUsernameActualizar",
 	  	data: { username: username, id:id}
 	}).done(function( msg ) {
 		console.log(msg);
@@ -96,7 +96,7 @@ $(document).on('click','.eliminarUsuario',function(){
 $(document).on('click','#btn_acept_elim_est',function(){
 	var id = $("#id_est_elim").val();
 	
-	window.location.href = "http://localhost/moprosoft/index.php/Estudiantes/eliminar/"+id;
+	window.location.href = "http://"+host+"/moprosoft/index.php/Estudiantes/eliminar/"+id;
 
 });
 
@@ -107,7 +107,7 @@ $(document).on('click','.btn_act_name_equipo',function(){
 	//console.log(id);
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Equipos/getEquipoById",
+	  	url: "http://"+host+"/moprosoft/index.php/Equipos/getEquipoById",
 	  	data: { id:id},
 	  	success : showModalUpdateNameTeam
 	})
@@ -142,7 +142,7 @@ $(document).on('click','.btn_elim_equipo',function(){
 	console.log(id);
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
 	  	data: { id:id},
 	  	success : showModalDeleteTeam
 	})
@@ -166,7 +166,7 @@ var showModalDeleteTeam = function(data){
 $(document).on('click','#btn_acept_elim_equipo',function(){
 	var id = $("#id_equipo_elim").val();
 	console.log("se eliminara",id);
-	window.location.href = "http://localhost/moprosoft/index.php/Equipos/eliminar/"+id;
+	window.location.href = "http://"+host+"/moprosoft/index.php/Equipos/eliminar/"+id;
 
 });
 
@@ -194,7 +194,7 @@ $(document).on('click','.btn_cambiar_res',function(){
 	
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
 	  	data: { id:id},
 	  	success : showModalChangeResponsable
 	})
@@ -236,7 +236,7 @@ $(document).on('click','.btn_select_jefe',function(){
 	
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/getEstudiantesByEquipo",
 	  	data: { id:id},
 	  	success : showModalChooseResponsable
 	})
@@ -283,7 +283,7 @@ $(document).on('change','#select_modelo',function(){
 	}else{
 		$.ajax({
 		 	method: "POST",
-		  	url: "http://localhost/moprosoft/index.php/process_Controller/getProcessByProject",
+		  	url: "http://"+host+"/moprosoft/index.php/process_Controller/getProcessByProject",
 		  	data: { id:idModelo},
 		  	success : setValueSelectProcess
 		})
@@ -321,7 +321,7 @@ $(document).on('change','#select_proceso',function(){
 	}else{
 		$.ajax({
 		 	method: "POST",
-		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getFaseByProcessId",
+		  	url: "http://"+host+"/moprosoft/index.php/SelectCuestionario/getFaseByProcessId",
 		  	data: { id:idProceso},
 		  	success : setValueSelectFases
 		})
@@ -364,7 +364,7 @@ $(document).on('change','#select_fase',function(){
 	}else{
 		$.ajax({
 		 	method: "POST",
-		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getCuestionariosByFaseId",
+		  	url: "http://"+host+"/moprosoft/index.php/SelectCuestionario/getCuestionariosByFaseId",
 		  	data: { id:idFase},
 		  	success : setValueSelectCuestionarios
 		})
@@ -407,7 +407,7 @@ $(document).on('change','#select_cuestionario',function(){
 	}else{
 		$.ajax({
 		 	method: "POST",
-		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getDatosByCuestionarioId",
+		  	url: "http://"+host+"/moprosoft/index.php/SelectCuestionario/getDatosByCuestionarioId",
 		  	data: { id:idCuestionario},
 		  	success : setValueCardCuestionario
 		})
@@ -478,7 +478,7 @@ $(document).on('click','.btn_apli_eva',function(){
 
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getTeamsOnlyApplyForThisQuestionary",
+	  	url: "http://"+host+"/moprosoft/index.php/Evaluacion/getTeamsOnlyApplyForThisQuestionary",
 	  	data: { id_proceso:id_proceso,id_equipo:id_equipo},
 	  	success : showModalChooseTeamsApplyEvaluation
 	})
@@ -564,7 +564,7 @@ $(document).one('click','.btnVerResultados',function(){
 
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getResultadosEvaluation",
+	  	url: "http://"+host+"/moprosoft/index.php/Evaluacion/getResultadosEvaluation",
 	  	data: { id_fase:id_fase,id_equipo:id_equipo},
 	  	success : showResults
 	})
@@ -740,7 +740,7 @@ $("#btn_ver_grafica_kiviat").click(function(){
 	$.ajax({
 
 		method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getPorcentajePorProceso",
+	  	url: "http://"+host+"/moprosoft/index.php/Evaluacion/getPorcentajePorProceso",
 	  	data: { id_equipo:id_equipo,id_fase:extra,id_proceso:extra2},
 	    beforeSend: function(){
 	     	console.log("Enviando......")
@@ -858,7 +858,7 @@ $(document).on('click','.btnEnviarMails',function(){
 	
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Estudiantes/getEstudiantesById",
+	  	url: "http://"+host+"/moprosoft/index.php/Estudiantes/getEstudiantesById",
 	  	data: { id:idUsuario},
 	  	success : showModalSendMail
 	})
@@ -888,7 +888,7 @@ $(document).on('click','.changeFechaFinal',function(){
 	var id = $(this).attr('id');
 	$.ajax({
 	 	method: "POST",
-	  	url: "http://localhost/moprosoft/index.php/Calendario/getDataFaseInTableTracingById",
+	  	url: "http://"+host+"/moprosoft/index.php/Calendario/getDataFaseInTableTracingById",
 	  	data: { id:id},
 	  	success : showModalChangeDate
 	})

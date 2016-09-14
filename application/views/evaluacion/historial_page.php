@@ -25,7 +25,11 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-
+	<style type="text/css">
+		td{
+			border: solid 3px solid;
+		}
+	</style>
 
 </head>
 <body>
@@ -126,9 +130,9 @@
 	        	<a href="<?php echo base_url() ?>index.php/Equipos/" class='btn btn-danger btn-fill btn-wd'><i class="ti-arrow-left"></i>Regresar</a><br><br><hr>
 				
 	        	<?php if (count($datos) != 0): ?>
-	        		<div class="content table-responsive table-full-width centered">
-
-	                    <table class="table table-striped" id="tabla_historial">
+	        		<div class="row">
+						<div class="col-md-12 col-lg-12">
+	                    <table class="display" cellspacing="0" width="100%" id="tabla_historial">
 	                        <thead>
 	                            <th>MODELO</th>
 	                        	<th>PROCESO</th>
@@ -156,7 +160,7 @@
 
 	                        </tbody>
 	                    </table>
-
+						</div>
 	                </div>
 	        	<?php else: ?>
 	        		<div class="row">
