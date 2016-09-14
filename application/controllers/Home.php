@@ -76,11 +76,16 @@ class Home extends CI_Controller {
             //obtengo los seguimientos
             $tracing_calificacion=$this->Validate->getTracing_calification_questionary($key->id);
             $ultima_fecha='';
-            foreach ($tracing_calificacion as $key2) {
-              $ultima_fecha=$key2->date_end;
+            if ($tracing_calificacion) {
+              foreach ($tracing_calificacion as $key2) {
+                $ultima_fecha=$key2->date_end;
+              }
             }
             //comparo si aun es vigente
             $bandera = $this->Validate->strcmp_date($ultima_fecha);
+            if ($bandera=='') {
+              $bandera=false;
+            }
             if ($bandera) {
               //actualizo la vigencia del seguiminetos
               $this->Validate->update_tracing_status($key->id);

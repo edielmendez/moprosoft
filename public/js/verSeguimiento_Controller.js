@@ -280,6 +280,7 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
      /* config object */
      $scope.uiConfig = {
        calendar:{
+         lang: 'es',
          height: 450,
          editable: true,
          header:{
@@ -299,7 +300,8 @@ app.controller('vercalendario_Controller', ['$scope', '$http','$compile','$timeo
        $http.get(url+"Modelos/getActividades/"+$("#tracing").val() ).success(function(response){
          if (response) {
            $scope.dateOriginal=response;
-           //console.log(JSON.stringify($scope.dateOriginal) );
+           console.log(JSON.stringify($scope.dateOriginal) );
+           console.log("tracing:"+$("#tracing").val());
            ///////////////////////////////////////////////////////////////////////
            //otra clase customFeed
            var newEvents = [];

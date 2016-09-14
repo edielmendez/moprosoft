@@ -31,6 +31,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/fullcalendar.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/gcal.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/js/all-lang.js"></script>
 
 
   <!--link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">

@@ -330,11 +330,10 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
            $("#contenido").empty();
            $("#cabezera").empty();
            $("#contenido").append('<div class="text-center" id="aviso_en_preguntas"><br><br><br><h1>Seguimiento Realizado</h1><h3>Tu plan de acción se puso en marcha.</h3><h4>Redireccionar en <span id="tiempoSpan">5</span></h4></div>');
-           setInterval(tiempoContador, 1000);
          }).error(function(data){
            console.log(data);
          });
-
+          setInterval(tiempoContador, 1000);
        }).error(function(data){
          console.log(data);
        });
@@ -434,6 +433,7 @@ app.controller('calendario_Controller', ['$scope', '$http','$compile','$timeout'
      /* config object */
      $scope.uiConfig = {
        calendar:{
+         lang: 'es',
          height: 450,
          editable: true,
          header:{
