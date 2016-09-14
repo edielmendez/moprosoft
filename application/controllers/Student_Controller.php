@@ -322,7 +322,7 @@ class Student_Controller extends CI_Controller {
 						$IDModel = $this->modelo->getIdModel($cuestionario);
             $cp = $this->modelo->getNameProcessPorcentaje($nameModel);
 						$bandera=0;
-						if (round($suma/$contador,0)>=$cp) {
+						if (round($suma/$contador,0)==100) {
 							$bandera=1;
 						}
             $guardar = $this->modelo->save_result_team($IDModel,$IDProcess,$cuestionario,round($suma/$contador,0),$cp,$this->session->userdata('logged_in')['team_id'],$bandera);

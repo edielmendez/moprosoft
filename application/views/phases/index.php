@@ -211,8 +211,8 @@
                   </div>
 
                 </div>
-                <div class="row" id="contenido" >
-                     <div class="col-lg-3 col-sm-6" ng-repeat="fase in phases | filter:buscar">
+                <div class="row" id="contenido" style="height:40px">
+                     <div class="col-lg-6 col-sm-6" ng-repeat="fase in phases | filter:buscar">
                          <div class="card">
                              <div class="content">
                                  <div class="row">
@@ -225,6 +225,7 @@
                                    </div>
                                    <div class="col-xs-12" style="text-align: right;">
                                      <br>
+																		 <br>
  																			  <a href="<?php echo base_url(); ?>index.php/Phase_Controller/edit/{{fase.id}}" >Editar</a>
                                        <br>
                                    </div>
@@ -245,7 +246,7 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <nav class="pull-left">
+	                <!--nav class="pull-left">
 	                    <ul>
 
 	                        <li>
@@ -267,7 +268,7 @@
 	                </nav>
 	                <div class="copyright pull-right">
 	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
+	                </div-->
 	            </div>
 	        </footer>
 
