@@ -9,8 +9,17 @@
 	<h1>Administrador</h1>
 	<?php print_r($this->session->userdata('logged_in'));?>
 	<br>
-	<h1>modelos</h1>
-	<?php print_r($modelos); ?>
+	<h1>Usuarios</h1>
+	<?php print_r($usuarios); ?>
+	<br>
+	<br>
+	<h1>Equipos</h1>
+	<?php print_r($equipos); ?>
+	<br>
+	<br>
 <b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
+<br>
+<br>
+<a href="<?php echo base_url() ?>index.php/Estudiantes/nuevo" class='btn btn-default'>Nuevo Estudiante</a>
 </body>
 </html>

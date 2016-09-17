@@ -49,6 +49,34 @@ class User extends CI_Model
       }
   }
 
+   public function getUsers(){
+      $this->db->select('*');
+      $this->db->from('user');
+
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+
+   }
+
+   public function getByEquipo($team_id){
+      $this->db->select('*');
+      $this->db->from('user');
+      $this->db->where('team_id',$team_id);
+      $query = $this->db->get();
+      if($query->num_rows() >= 1){
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
 
 }
 
