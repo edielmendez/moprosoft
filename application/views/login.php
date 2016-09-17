@@ -12,12 +12,20 @@
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<link href="<?php echo base_url("libs/css/styles.css"); ?>" rel="stylesheet">
+    <style type="text/css">
+      .alerta{
+        margin-top: 400px;
+      }
+    </style>
 	</head>
 	<body>
 	
+
+
 	
 <!--login modal-->
 <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+
   <div class="modal-dialog">
   <div class="modal-content">
       <div class="modal-header">
@@ -48,13 +56,18 @@
   </div>
 </div>
 
-<?php 
-if (isset($error_message)) {
-echo $error_message;
-$error_message='';
-}
-//echo validation_errors();
- ?>
+<div class="container">
+  <div class="row alerta">
+    <div class="col-md-6 col-md-offset-3 col-sm-12">
+      <div class="alert alert-warning">
+        <b><?php echo validation_errors(); ?></b>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
 	<!-- script references -->
 		<script src="<?php echo base_url("libs/js/jquery-3.1.0.min.js"); ?>"></script>
 		<script src="<?php echo base_url("libs/js/bootstrap.min.js"); ?>"></script>
