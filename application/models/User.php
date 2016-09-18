@@ -72,6 +72,55 @@ class User extends CI_Model
       }
    }
 
+   public function crearUsuario($username,$password,$email,$name,$grupo,$team_id){
+      $data = array(
+         'username' => $username,
+         'password' => MD5($password),
+         'email' => $email,
+         'name' => $name,
+         'rol_id' => 3,
+         'grupo' => $grupo,
+         'team_id' => $team_id,
+      );
+      
+
+      $id_nuevo_usuario = $this->db->insert('user', $data);
+
+      return $id_nuevo_usuario;
+
+   }
+
+   public function actualizar($username,$password,$email,$name,$grupo,$id){
+      $data = array(
+         'username' => $username,
+         'password' => MD5($password),
+         'email' => $email,
+         'name' => $name,
+         'grupo' => $grupo
+      );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+   }
+
+   public function actualizarEquipo($team_id,$id){
+      $data = array('team_id' => $team_id, );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+   }
+
+   public function actualizarRol($rol,$id){
+      $data = array('rol_id' => $rol_id, );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+   }
+
+   public function eliminar($id){
+      return $this->db->delete('user', array('id' => $id));
+   }
+
 
 }
 
