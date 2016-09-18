@@ -101,12 +101,15 @@ class User extends CI_Model
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
       return $rowAfects;
+
+
    }
 
    public function actualizarEquipo($team_id,$id){
       $data = array('team_id' => $team_id, );
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
+      //si se pudo
       return $rowAfects;
    }
 
