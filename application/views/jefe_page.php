@@ -136,7 +136,7 @@
 										<?php
 											}
 										?>
-
+										<h1>hola mundo</h1>
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
