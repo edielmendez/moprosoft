@@ -71,12 +71,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li class="active">
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -109,7 +109,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/process_Controller/index">Procesos</a>
+	                    <a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a><a class="navbar-brand" href="<?php echo base_url() ?>index.php/process_Controller/index">Procesos</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -208,7 +208,7 @@
 
 	        <footer class="footer">
 	            <div class="container-fluid">
-	                <nav class="pull-left">
+	                <!--nav class="pull-left">
 	                    <ul>
 
 	                        <li>
@@ -230,7 +230,7 @@
 	                </nav>
 	                <div class="copyright pull-right">
 	                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-	                </div>
+	                </div-->
 	            </div>
 	        </footer>
 
