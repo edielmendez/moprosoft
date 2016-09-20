@@ -63,6 +63,7 @@ class User extends CI_Model
       $this->db->select('*');
       $this->db->from('user');
       $this->db->where('team_id',$team_id);
+      $this->db->where('id != ',1);
       $query = $this->db->get();
       if($query->num_rows() >= 1){
          return $query->result();
@@ -90,13 +91,12 @@ class User extends CI_Model
 
    }
 
-   public function actualizar($username,$password,$email,$name,$grupo,$id){
+   public function actualizar($username,$email,$name,$grupo,$id){
       $data = array(
          'username' => $username,
-         'password' => MD5($password),
          'email' => $email,
          'name' => $name,
-         'grupo' => $grupo
+         'grupo' => $grupo,
       );
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
@@ -113,8 +113,8 @@ class User extends CI_Model
       return $rowAfects;
    }
 
-   public function actualizarRol($rol,$id){
-      $data = array('rol_id' => $rol_id, );
+   public function actualizarRol($id){
+      $data = array('rol_id' => 2);
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
       return $rowAfects;
@@ -122,6 +122,89 @@ class User extends CI_Model
 
    public function eliminar($id){
       return $this->db->delete('user', array('id' => $id));
+   }
+
+   public function getUsuarioByUsername($username){
+      $this -> db -> select('*');
+     	$this-> db-> from('user');
+     	$this-> db-> where('username', $username);
+     	
+     	$this -> db -> limit(1);
+
+     	$query = $this -> db -> get();
+
+     	if($query -> num_rows() == 1){
+      	return $query->result();
+     	}
+     	else{
+      	return false;
+     	}
+   }
+
+   public function getUsuarioById($id){
+   	$this -> db -> select('*');
+     	$this-> db-> from('user');
+     	$this-> db-> where('id', $id);
+     	
+     	$this -> db -> limit(1);
+
+     	$query = $this -> db -> get();
+
+     	if($query -> num_rows() == 1){
+      	return $query->result();
+     	}
+     	else{
+      	return false;
+     	}
+   }
+
+   function delete($id){
+   	return $this->db->delete('user', array('id' => $id));
+  	}
+
+  	public function getRolUsuario($id){
+  		$this -> db -> select('*');
+     	$this-> db-> from('rol');
+     	$this-> db-> where('id', $id);
+     	
+     	$this -> db -> limit(1);
+
+     	$query = $this -> db -> get();
+
+     	if($query -> num_rows() == 1){
+      	return $query->result();
+     	}
+     	else{
+      	return false;
+     	}
+  	}
+
+  	public function getUsuarioEmpty(){
+  		$this->db->select('*');
+      $this->db->from('user');
+      $this->db->where('team_id','');
+      
+      $query = $this->db->get();
+      if($query->num_rows() >= 1){
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+  	}
+
+   public function quitarRolJefe($id){
+      $data = array('rol_id' => 3 );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
+   }
+
+   public function setRolJefe($id){
+      $data = array('rol_id' => 2 );
+      $this->db->where('id', $id);
+      $rowAfects  = $this->db->update('user', $data);
+      return $rowAfects;
    }
 
 

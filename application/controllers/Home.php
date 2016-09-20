@@ -132,6 +132,15 @@ class Home extends CI_Controller {
       }
    }
 
+   public function equipos(){
+      if($this->session->userdata('logged_in')){
+
+      }else{
+         //si no hay session se redirecciona la vista de login
+         redirect('login', 'refresh');
+      }
+   }
+
    function logout()
    {
       $this->session->unset_userdata('logged_in');

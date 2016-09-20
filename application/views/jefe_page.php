@@ -28,7 +28,7 @@
 
 </head>
 <body>
-	<h1>ediel</h1>
+	
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
@@ -136,7 +136,7 @@
 										<?php
 											}
 										?>
-										<h1>hola mundo</h1>
+										
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
