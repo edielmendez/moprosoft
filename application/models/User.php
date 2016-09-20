@@ -106,7 +106,7 @@ class User extends CI_Model
    }
 
    public function actualizarEquipo($team_id,$id){
-      $data = array('team_id' => $team_id, );
+      $data = array('team_id' => $team_id,'rol_id' => 3 );
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
       //si se pudo

@@ -38,7 +38,7 @@
 
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="http://www.creative-tim.com" class="simple-text">
+	                <a  class="simple-text">
 	                    ESTUDIANTES
 	                </a>
 	            </div>
@@ -56,7 +56,7 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
-	                <li >
+	                <!--<li >
 	                    <a href="">
 	                        <i class="ti-panel"></i>
 	                        <p>Reportes de avance</p>
@@ -68,7 +68,7 @@
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Enviar Correos</p>
 	                    </a>
-	                </li>
+	                </li>-->
 	            </ul>
 	    	</div>
 	    </div>

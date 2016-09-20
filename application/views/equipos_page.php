@@ -47,8 +47,8 @@
 
 	    	<div class="sidebar-wrapper">
 	            <div class="logo">
-	                <a href="http://www.creative-tim.com" class="simple-text">
-	                    ESTUDIANTES
+	                <a  class="simple-text">
+	                    EQUIPOS
 	                </a>
 	            </div>
 
@@ -93,7 +93,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="#">ESTUDIANTES</a>
+	                    <a class="navbar-brand" href="#">EQUIPOS</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -221,21 +221,17 @@
 		                                                <br />
 		                                                <?php if ($miembro['rol']['type'] == "JEFE") {
 		                                                	echo "<span class='text-success'>Jefe de equipo</span>";
-
+		                                                	echo "<br><span class='text-danger'><a href='#' class='btn_cambiar_res text-danger' id='".$equipo['id']."'>Cambiar</a></span>";
 		                                                }	
 		                                                ?>
 		                                                
 		                                            </div>
 
-		                                            <?php if ($miembro['rol']['type'] != "JEFE") {
+		                                            <?php
 		                                                	echo "<div class='col-xs-2' >";
 				                                                echo "<a class='btn btn-sm btn-info btn-icon' href='".base_url()."index.php/Estudiantes/cambiarEquipo/".$miembro['id']."'>Cambiar de equipo</a>";
 				                                            echo "</div>";
-		                                                }else{
-		                                                	echo "<div class='col-xs-2' >";
-				                                                echo "<a href='#' class='btn_cambiar_res' id='".$equipo['id']."'>Cambiar</a>";
-				                                            echo "</div>";
-		                                                }
+		                                                
 		                                            ?>
 
 		                                            

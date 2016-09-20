@@ -207,10 +207,7 @@
 										<?php
 											}
 										?>
-<<<<<<< HEAD
-										
-=======
->>>>>>> origin/master
+
 										<!--Mostrar información-->
 										<!--h1>JEFE</h1>
 										<?php
