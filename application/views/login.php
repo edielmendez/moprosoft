@@ -61,6 +61,7 @@
     <div class="col-md-6 col-md-offset-3 col-sm-12">
       <div class="alert alert-warning">
         <b><?php echo validation_errors(); ?></b>
+        <b><?php echo $this->session->flashdata('message'); ?></b>
       </div>
       
     </div>

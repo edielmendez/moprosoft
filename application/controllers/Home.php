@@ -148,5 +148,69 @@ class Home extends CI_Controller {
       redirect('home', 'refresh');
    }
 
+   public function perfil(){
+      if($this->session->userdata('logged_in')){
+         $this->load->view('users/perfil');
+      }else{
+         redirect('login', 'refresh');
+      }
+   }
+
+   public function update_perfil(){
+      if($this->session->userdata('logged_in')){
+         $id = $this->input->post('id');
+         $username = $this->input->post('username');
+         $password = $this->input->post('password');
+         $email = $this->input->post('email');
+
+         if(trim($password," ") == ''){
+            $result = $this->user->actualizarPerfilSinPassword($username,$email,$id);
+         }else{
+            $result = $this->user->actualizarPerfil($username,$password,$email,$id);
+         }
+         
+
+         
+      
+         if($result){
+            /*
+            $mensaje.="<div class='alert alert-info'>";
+               $mensaje.="<span><b>Perfil actualizado , inicie sesión otra vez</b></span>";
+            $mensaje.="</div>";
+
+            $this->session->set_flashdata('message', $mensaje);
+            $this->session->unset_userdata('logged_in');
+            session_destroy();*/
+            redirect('Home/logout');
+         }else{
+
+            $mensaje.="<div class='alert alert-danger'>";
+               $mensaje.="<span><b>No se actualizo el perfil</b></span>";
+            $mensaje.="</div>";
+
+            $this->session->set_flashdata('message', $mensaje);
+            redirect('Home/');
+         }
+         
+
+      }else{
+         redirect('login', 'refresh');
+      }
+   }
+
+   public function email(){
+      $this->load->library('email');
+
+      $this->email->from('mendezediel@gmail.com', 'Ediel');
+      $this->email->to('mendezjunior2015@gmail.com');
+   
+
+      $this->email->subject('Email Test');
+      $this->email->message('Testing the email class.');
+
+      $a = $this->email->send();
+      echo $a;
+   }
+
 }
  ?>
