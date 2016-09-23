@@ -16,6 +16,9 @@
       .alerta{
         margin-top: 400px;
       }
+      .container{
+        margin-top:100px;
+      }
     </style>
 	</head>
 	<body>
@@ -35,6 +38,14 @@
       <div class="modal-body">
           <!--<form class="form col-md-12 center-block">-->
           <?php echo form_open('Login',array('class'=>'form col-md-12 center-block')); ?>
+            <div class="form-group">
+            <label for="sel1">Tipo de usuario</label>
+            <select class="form-control" id="sel1" name="tipo">
+              <option value="ADMINISTRADOR">Administrador</option>
+              <option value="JEFE">Jefe</option>
+              <option value="ESTUDIANTE">Estudiante</option>
+            </select>
+          </div>
             <div class="form-group">
               <input type="text" class="form-control input-lg" placeholder="Usuario" name="username" required="">
             </div>

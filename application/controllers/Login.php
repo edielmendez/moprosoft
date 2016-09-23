@@ -29,8 +29,8 @@ class Login extends CI_Controller {
 			redirect('Home', 'refresh');
 		}else{
 			$this->form_validation->set_rules('username', 'username', 'trim|required');
-
-   		$this->form_validation->set_rules('password', 'password', 'trim|required|callback_check_database');
+			$this->form_validation->set_rules('tipo', 'tipo', 'trim|required');
+   			$this->form_validation->set_rules('password', 'password', 'trim|required|callback_check_database');
 
 			if($this->form_validation->run() == FALSE)
 		   {
@@ -90,6 +90,8 @@ class Login extends CI_Controller {
 
 	   //Field validation succeeded.  Validate against database
 	   $username = $this->input->post('username');
+	   $tipo = $this->input->post('tipo');
+
 
 	   //query the database
 	   $result = $this->User->login($username, $password);
@@ -113,6 +115,9 @@ class Login extends CI_Controller {
 	       //$this->session->set_userdata('logged_in', $sess_array);
 	     }
 
+
+
+
 	     	$datos_rol = $this->User->getRol($sess_array['rol_id']);
 
 	     	foreach($datos_rol as $row)
@@ -121,9 +126,16 @@ class Login extends CI_Controller {
 
 	     }
 
-	     	$this->session->set_userdata('logged_in', $sess_array);
+	     	if(strcmp($sess_array["rol"],$tipo) == 0){
+	     		$this->session->set_userdata('logged_in', $sess_array);
 
-	     return TRUE;
+	     		return TRUE;
+	     	}else{
+	     		$this->form_validation->set_message('check_database', 'Tipo de usuario incorrecto');
+	     		return false;
+	     	}
+
+	     	
 	   }
 	   else
 	   {
