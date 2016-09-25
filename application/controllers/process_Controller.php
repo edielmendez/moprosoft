@@ -102,6 +102,30 @@ class process_Controller extends CI_Controller {
         }
   	}
 
+  	/*e*/
+  	public function getProcessByProject(){
+  		$id = $this->input->post("id");
+  		$result = $this->Process->getProcessByModelId($id);
+
+    
+        $procesos = array();
+        if($result){
+        	
+			if($result){
+				 foreach ($result as $row ) {
+
+						$process = array(
+							'id' => $row->id,
+							'name' => $row->name,
+							'model_id' => $row->model_id
+						);
+						array_push($procesos,$process);
+				 }
+			}
+       }
+       echo json_encode($procesos);
+  	}
+
 
 }
 ?>

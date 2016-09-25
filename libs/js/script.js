@@ -259,3 +259,195 @@ var showModalChooseResponsable = function(data){
     $("#modal_select_resp").modal();
 
 }
+
+/**
+ *
+ * *****************************************************************************************
+ * codigo para el modulo de elegir cuestionario                                            *
+ *                                                                                         *
+ * *****************************************************************************************
+ */
+///cambio de el select de modelos
+$(document).on('change','#select_modelo',function(){
+	var idModelo = $(this).val();
+	var txt = $("#select_modelo option:selected").text();
+	if(txt === "Seleccione un modelo"){
+		toastr.info('Seleccione un modelo por favor');
+	}else{
+		$.ajax({
+		 	method: "POST",
+		  	url: "http://localhost/moprosoft/index.php/process_Controller/getProcessByProject",
+		  	data: { id:idModelo},
+		  	success : setValueSelectProcess
+		})
+	}
+	
+});
+
+var setValueSelectProcess = function(data){
+	var procesos = JSON.parse(data);
+	if(procesos.length == 0){
+		$("#select_proceso").empty();	
+		$("#select_proceso").append("<option selected>Sin Procesos</option>");
+		$("#select_fase").empty();	
+		$("#select_fase").append("<option selected>Sin Fases</option>");
+		$("#select_cuestionario").empty();	
+		$("#select_cuestionario").append("<option selected>Sin Cuestionarios</option>");
+		return;
+	}
+	$("#select_proceso").empty();	
+	$("#select_proceso").append("<option selected>Seleccione un proceso</option>");
+	for (var i = 0; i < procesos.length; i++) {
+		$("#select_proceso").append("<option value='"+procesos[i].id+"'>"+procesos[i].name+"</option>");
+
+	}	
+}
+
+//código para el evento de cambio del select de procesos
+//
+$(document).on('change','#select_proceso',function(){
+	var idProceso = $(this).val();
+	var txt = $("#select_proceso option:selected").text();
+	//console.log("id : ",idProceso,"txt : ",txt)
+	if(txt === "Seleccione un proceso"){
+		toastr.info('Seleccione un proceso por favor');
+	}else{
+		$.ajax({
+		 	method: "POST",
+		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getFaseByProcessId",
+		  	data: { id:idProceso},
+		  	success : setValueSelectFases
+		})
+	}
+	
+});
+
+var setValueSelectFases = function(data){
+	var fases = JSON.parse(data);
+	console.log(fases);
+	
+	if(fases.length == 0){
+		
+		$("#select_fase").empty();	
+		$("#select_fase").append("<option selected>Sin fases</option>");
+		$("#select_cuestionario").empty();	
+		$("#select_cuestionario").append("<option selected>Sin Cuestionarios</option>");
+		return;
+	}
+	$("#select_fase").empty();	
+	$("#select_fase").append("<option selected>Seleccione un fase</option>");
+	for (var i = 0; i < fases.length; i++) {
+		$("#select_fase").append("<option value='"+fases[i].id+"'>"+fases[i].name+"</option>");
+
+	}
+	
+}
+
+
+/**
+ * SELECT FASES
+ */
+
+$(document).on('change','#select_fase',function(){
+	var idFase = $(this).val();
+	var txt = $("#select_fase option:selected").text();
+	//console.log("id : ",idFase,"txt : ",txt)
+	if(txt === "Seleccione un fase"){
+		toastr.info('Seleccione un fase por favor');
+	}else{
+		$.ajax({
+		 	method: "POST",
+		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getCuestionariosByFaseId",
+		  	data: { id:idFase},
+		  	success : setValueSelectCuestionarios
+		})
+	}
+	
+});
+
+var setValueSelectCuestionarios = function(data){
+	var cuestionarios = JSON.parse(data);
+	console.log(cuestionarios);
+	
+	if(cuestionarios.length == 0){
+		
+		$("#select_cuestionario").empty();	
+		$("#select_cuestionario").append("<option selected>Sin cuestionarios</option>");
+		return;
+	}
+	$("#select_cuestionario").empty();	
+	$("#select_cuestionario").append("<option selected>Seleccione un cuestionario</option>");
+	for (var i = 0; i < cuestionarios.length; i++) {
+		$("#select_cuestionario").append("<option value='"+cuestionarios[i].id+"'>"+cuestionarios[i].name+"</option>");
+
+	}
+	
+}
+
+/**
+ * SELECT CUESTIONARIOS
+ */
+
+$(document).on('change','#select_cuestionario',function(){
+	var idCuestionario = $(this).val();
+	var txt = $("#select_cuestionario option:selected").text();
+	//console.log("id : ",idCuestionario,"txt : ",txt)
+	if(txt === "Seleccione un cuestionario"){
+		$("#titulo_cuestionario").empty()
+		$("#num_preguntas").empty();
+		toastr.info('Seleccione un cuestionario por favor');
+
+	}else{
+		$.ajax({
+		 	method: "POST",
+		  	url: "http://localhost/moprosoft/index.php/SelectCuestionario/getDatosByCuestionarioId",
+		  	data: { id:idCuestionario},
+		  	success : setValueCardCuestionario
+		})
+	}
+	
+});
+
+var setValueCardCuestionario = function(data){
+	var datos = JSON.parse(data);
+	console.log(datos);
+	$("#titulo_cuestionario").prepend(datos.cuestionario.name)
+	$("#num_preguntas").prepend(datos.preguntas.length);
+	/*
+	if(datos.length == 0){
+		
+		$("#select_cuestionario").empty();	
+		$("#select_cuestionario").append("<option selected>Sin datos</option>");
+		return;
+	}
+	$("#select_cuestionario").empty();	
+	$("#select_cuestionario").append("<option selected>Seleccione un cuestionario</option>");
+	for (var i = 0; i < datos.length; i++) {
+		$("#select_cuestionario").append("<option value='"+datos[i].id+"'>"+datos[i].name+"</option>");
+
+	}*/
+	
+}
+
+
+
+
+
+
+/**
+ *
+ * *****************************************************************************************
+ * fin de los selects                                                                      *
+ * *****************************************************************************************
+ */
+
+
+$( "#form_start_cuestionario" ).submit(function( event ) {
+	var cuestionario = $("#select_cuestionario").val();
+	if (cuestionario === "Seleccione un cuestionario") {
+		toastr.info('Seleccione un cuestionario para empezar');
+		event.preventDefault();
+	}
+	
+	
+});
