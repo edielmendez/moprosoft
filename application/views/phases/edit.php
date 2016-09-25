@@ -24,7 +24,24 @@
 	<!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/style.css">
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
-
+	<script type="text/javascript">
+	function Eliminar() {
+		var id = $("#id_phase").val();
+		$.ajax({
+			url : '<?php echo base_url(); ?>index.php/phase_Controller/Eliminar/'+id,
+			type : 'POST',
+			dataType : 'json',
+			success : function(json) {
+				//alert("Bien")
+				window.location.href= '<?php echo base_url(); ?>index.php/phase_Controller/index';
+			},
+			error : function(xhr, status) {
+				//alert('Disculpe, existió un problema');
+				window.location.href= '<?php echo base_url(); ?>index.php/phase_Controller/index';
+			}
+		});
+	}
+</script>
 
 </head>
 <body>
@@ -41,8 +58,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control border-input" placeholder="Nombre" >
+																	<div class="form-group">
+																		<p>Al eliminar la Fase/Objetivo se <b>eliminarán</b> todos los <b>Cuestionarios y preguntas</b> relacionados con esta Fase/Objetivo.</p>
+																	</div>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +68,7 @@
 									</div>
 									<div class="modal-footer">
 											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
+											<button onclick="Eliminar()" type="button" class="btn btn-danger btn-fill btn-wd" data-dismiss="modal">Eliminar</button>
 									</div>
 							</div>
 					</div>
@@ -69,12 +87,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -107,7 +125,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -143,44 +161,27 @@
                                 <h4 class="title">Editar Fase</h4>
                             </div>
                             <div class="content">
-                                <form>
+                                <form action="" method="POST" >
+																	<?php foreach ($phase as $phas){ ?>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Nombre</label>
-                                                <input type="text" class="form-control border-input" placeholder="Nombre" >
+                                                <input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" value="<?php echo $phas->name ?>">
+																								<input type="hidden" name="id_phase" id="id_phase" value="<?php echo $phas->id ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <br><br>
                                     <a href="<?php echo base_url() ?>index.php/phase_Controller/index" class="btn btn-default btn-wd">Cancelar</a>
-                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Guardar</button>
-                                    <button type="submit" class="btn btn-danger btn-fill btn-wd">Eliminar</button><br><br>
+																		<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+																		<button  type="button" class="btn btn-danger btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Cuidado !!!" >Eliminar</button><br><br>
+																		<?php } ?>
                                 </form>
                             </div>
                         </div>
                     </div>
                   </div>
-
-	                <div class="row">
-
-
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
-	                </div>
 	            </div>
 	        </div>
 

@@ -7,37 +7,133 @@ class question_Controller extends CI_Controller {
    {
       parent::__construct();
       $this->load->model('Question','',TRUE);
+			$this->load->model('Questionary','',TRUE);
 			$this->load->helper('url');
    }
 
+	 public function back(){
+		  	$this->load->view('questions/index');
+	 }
+
    public function index(){
    	if($this->session->userdata('logged_in')){
-				$this->load->view('questions/index');
+			$result=$this->Question->getQuestions();
+			$questions = array();
+			if($result){
+				 foreach ($result as $row ) {
+						$question = array(
+							'id' => $row->id,
+							'question' => $row->question,
+							'answer_id' => $row->answer_id,
+							'questionary_id' => $row->questionary_id
+						);
+						array_push($questions,$question);
+				 }
+			}
+			echo json_encode($questions);
    	}else{
    		//si no hay session se redirecciona la vista de login
          redirect('login', 'refresh');
    	}
    }
 
-	 public function edith(){
+	 public function Preguntas($id){
 		 if($this->session->userdata('logged_in')){
-			 $this->load->view('questions/edith');
+
+				$result=$this->Questionary->getQ($id);
+				$sess_array = array();
+				foreach($result as $row)
+			 {
+				 $sess_array = array(
+					 'id' => $row->id,
+					 'name' => $row->name,
+					 'phase_objetive_id' => $row->phase_objetive_id
+				 );
+			 }
+
+			 if (!isset($_SESSION['Questionary_id'])) {
+				 $_SESSION['Questionary_id'] = $sess_array['id'];
+			 } else {
+				 $_SESSION['Questionary_id'] = $sess_array['id'];
+			 }
+
+			 if (!isset($_SESSION['Questionary_name'])) {
+				 $_SESSION['Questionary_name'] = $sess_array['name'];
+			 } else {
+				 $_SESSION['Questionary_name'] = $sess_array['name'];
+			 }
+
+			redirect('question_Controller/back', 'refresh');
+
 		 }else{
 			 //si no hay session se redirecciona la vista de login
 				 redirect('login', 'refresh');
 		 }
 	 }
+
 
 	 public function save(){
+
+		 if($this->input->post("submit")){
+			 //llamo al metodo add
+			 $add=$this->Question->add(
+							 $this->input->post("pregunta")
+							 );
+			 }
+
+			if($add==0){
+				$this->session->set_flashdata('correcto', 'La Pregunta ha sido creado de forma satisfactoria');
+			}elseif ($add==1) {
+				$this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
+			}elseif ($add==2) {
+				$this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
+			}
+
+			redirect('question_Controller/back', 'refresh');
+		}
+
+	 public function edit($id){
 		 if($this->session->userdata('logged_in')){
+			 $aux["question"]=$this->Question->getQuestion($id);
+			 $this->load->view('questions/edith',$aux);
 
+				if($this->input->post("submit")){
+					 $mod=$this->Question->update(
+						 $id,
+						 $this->input->post("pregunta")
+						 );
 
-
+						 if($mod==0){
+							 $this->session->set_flashdata('correcto', 'La Pregunta se ha actualizado de forma satisfactoria');
+						 }elseif ($mod==1) {
+							 $this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
+						 }elseif ($mod==2) {
+							 $this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
+						 }
+						 redirect('question_Controller/back', 'refresh');
+					}
 		 }else{
 			 //si no hay session se redirecciona la vista de login
 				 redirect('login', 'refresh');
 		 }
 	 }
+
+	 public function Eliminar($id){
+		 if(is_numeric($id)){
+					$eliminar=$this->Question->delete($id);
+				 if($eliminar==0){
+					 $this->session->set_flashdata('correcto', 'La Pregunta se ha Eliminado de forma satisfactoria');
+				 }elseif ($mod==1) {
+					 $this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
+				 }elseif ($mod==2) {
+					 $this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
+				 }
+				 redirect('phase_Controller/back', 'refresh');
+				}else{
+				 redirect('phase_Controller/back', 'refresh');
+				}
+	 }
+
 
 }
 ?>

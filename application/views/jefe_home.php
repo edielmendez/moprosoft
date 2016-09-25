@@ -55,7 +55,7 @@
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
-	                <!--li>
+	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/phase_Controller/index">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
@@ -66,7 +66,7 @@
 	                        <i class="ti-book"></i>
 	                        <p>Cuestionarios</p>
 	                    </a>
-	                </li-->
+	                </li>
 	            </ul>
 	    	</div>
 	    </div>

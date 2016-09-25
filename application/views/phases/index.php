@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="phase" lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Jefe</title>
@@ -17,6 +17,9 @@
   <link href="<?php echo base_url(); ?>public/css/paper-dashboard.css" rel="stylesheet"/>
   <link href="<?php echo base_url(); ?>public/css/demo.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>public/css/themify-icons.css" rel="stylesheet">
+	<script src="<?php echo base_url(); ?>public/js/angular.min.js"></script>
+	<script src="<?php echo base_url(); ?>public/js/phase_Controller.js"></script>
+
 
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
@@ -25,9 +28,8 @@
 	<script type='text/javascript' src="<?php echo base_url(); ?>public/js/jquery.min.js"></script-->
 	<!-- -->
 
-
 </head>
-<body>
+<body ng-controller="phase_Controller" ng-init="index()">
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
@@ -37,20 +39,31 @@
 											<h4 class="modal-title">Nuevo Fase</h4>
 									</div>
 									<div class="modal-body">
-                    <form>
+                    <form action="<?php echo base_url() ?>index.php/phase_Controller/save" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nombre</label>
-                                    <input type="text" class="form-control border-input" placeholder="Nombre" >
+                                    <input required="true" name="nombre" id="nombre" type="text" class="form-control border-input" placeholder="Nombre" >
+                                </div>
+                            </div>
+														<div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Proceso</label>
+																		<select class="form-control" id="procesomodal" name="procesomodal">
+																			<?php foreach($procesos as $proceso){
+																				echo '<option value='.$proceso['id'].'>'.$proceso['name'].'</option>';
+																				}
+																			?>
+																		</select>
                                 </div>
                             </div>
                         </div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
+															<input type="submit"  class="btn btn-info btn-fill btn-wd" name="submit" value="Guardar" />
+												</div>
                     </form>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-default btn-wd" data-dismiss="modal">Cancelar</button>
-											<button type="button" class="btn btn-info btn-fill btn-wd ">Guardar</button>
 									</div>
 							</div>
 					</div>
@@ -69,12 +82,12 @@
 	            </div>
 
 	            <ul class="nav">
-	                <li>
+	                <!--li>
 	                    <a href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo">
 	                        <i class="ti-star"></i>
 	                        <p>Modelos</p>
 	                    </a>
-	                </li>
+	                </li-->
 	                <li>
 	                    <a href="<?php echo base_url() ?>index.php/process_Controller/index">
 	                        <i class="ti-direction-alt"></i>
@@ -107,7 +120,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
+												<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a> <p class="navbar-brand" >/</p> <a class="navbar-brand" href="<?php echo base_url() ?>index.php/phase_Controller/index">Fases</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
@@ -131,11 +144,14 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<!--a  data-toggle="modal" data-target="#myModal" data-title="Contact Us" href="<?php echo base_url() ?>index.php/Modelos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Modelo</a><br><br-->
-								<!--button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Proceso">Nuevo</button><br><br-->
-	              <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
-                <!--a href="nuevo_proceso.html" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</a><br><br-->
-                <!--button type="submit" class="btn btn-info btn-fill btn-wd">Nuevo Proceso</button><br><br-->
+								<?php
+				        //Si existen las sesiones flasdata que se muestren
+				            if($this->session->flashdata('correcto'))
+											echo '<div class="alert alert-success"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Bien - </b>'.$this->session->flashdata('correcto').'</span></div>';
+
+				            if($this->session->flashdata('incorrecto'))
+				              echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
+				        ?>
                 <div class="row">
                   <div class="col-md-12">
                       <div class="card">
@@ -148,16 +164,19 @@
                                       <div class="col-md-8">
                                           <div class="form-group">
                                               <label>Nombre</label>
-                                              <input type="text" class="form-control border-input" placeholder="Nombre" >
+                                              <input type="text" ng-model="buscar" name="buscar" id="buscar" class="form-control border-input" placeholder="Nombre" >
                                           </div>
                                       </div>
                                       <div class="col-md-4">
                                           <div class="form-group">
                                               <label>Proceso</label>
-                                              <select class="form-control" id="exampleSelect1">
-                                                <option>Recursos Humanos y Ambiente de trabajo</option>
-                                                <option>Gestión de Negocion</option>
-                                              </select>
+
+																								<select class="form-control" id="proceso" name="proceso" ng-model="proceso"  ng-change="cargarProcess()">
+																									<option value="Todos" selected>Todos</option>
+																									<option ng-repeat="proceso in process" value="{{proceso.id}}">{{proceso.name}}</option>
+	                                              </select>
+
+
                                           </div>
                                       </div>
                                   </div>
@@ -166,62 +185,48 @@
                                   </div>
                                   <div class="clearfix"></div-->
                                   <br>
-                                  <button type="submit" class="btn btn-default  btn-wd">Mostrar</button>
 																	<button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nuevo Fase">Nuevo</button><br><br>
 
                               </form>
                           </div>
                       </div>
+											<?php
+												if ($fases==false) {
+													echo "<br><br>";
+													echo '<h2>Por el momento no existe ningún Fase/Objetivo<h2>';
+												}
+											?>
                   </div>
+
                 </div>
-
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card">
-                            <div class="content">
-                                <div class="row">
-                                  <div class="col-xs-2">
-                                    <img src="<?php echo base_url() ?>public/img/fase.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
-                                  </div>
-                                  <div class="col-xs-10">
-                                    <p><p>Recursos Humanos y Ambiente de trabajo, ya no se que mas poner para probar. final final jejejejejjejej jeje </p></p>
-                                  </div>
-                                  <div class="col-xs-12" style="text-align: right;">
-                                    <br>
-                                      <a href="<?php echo base_url() ?>index.php/phase_Controller/edit">Editar</a>
-                                      <br>
-                                  </div>
-                                </div>
-                                <div class="footer">
-                                    <hr/>
-                                    <div class="stats">
-                                        <i class="ti-eye"></i><a href="#">Cuestionarios</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row" id="contenido" >
+                     <div class="col-lg-3 col-sm-6" ng-repeat="fase in phases | filter:buscar">
+                         <div class="card">
+                             <div class="content">
+                                 <div class="row">
+                                   <div class="col-xs-2">
+                                     <img src="<?php echo base_url() ?>public/img/fase.png" style="width:50px; height:60px" alt="Procesos" /><br><br><br>
+                                   </div>
+                                   <div class="col-xs-10">
+ 																		<br>
+                                     <p ng-bind="fase.name"></p>
+                                   </div>
+                                   <div class="col-xs-12" style="text-align: right;">
+                                     <br>
+ 																			  <a href="<?php echo base_url(); ?>index.php/phase_Controller/edit/{{fase.id}}" >Editar</a>
+                                       <br>
+                                   </div>
+                                 </div>
+                                 <div class="footer">
+                                     <hr/>
+                                     <div class="stats">
+                                         <i class="ti-eye"></i><a href="#">Cuestionarios</a>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
                 </div>
-
-	                <div class="row">
-
-
-										<!--Mostrar información-->
-										<!--h1>JEFE</h1>
-										<?php
-											foreach($modelos as $modelo){
-												echo "Nombre:" . $modelo['name'].'<br>';
-											}
-										?>
-										<?php print_r($this->session->userdata('logged_in'));?>
-										<br-->
-										<!--?php print_r($modelos); ?-->
-										<!--b id="logout"><a href="<?php echo base_url() ?>index.php/Home/logout">Logout</a></b>
-										<br>
-										<br-->
-
-									<!--                          -->
-	                </div>
 	            </div>
 	        </div>
 
@@ -290,6 +295,9 @@
         	var titleData = button.data('title'); // Extract value from data-* attributes
         	$(this).find('.modal-title').text(titleData);
     		});
+
+				//$('#proceso option[value="13"]').attr("selected", "selected");
+
 	});
 </script>
 

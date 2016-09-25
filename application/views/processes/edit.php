@@ -99,7 +99,7 @@
 	                        <p>Procesos</p>
 	                    </a>
 	                </li>
-	                <!--li>
+	                <li>
 	                    <a href="table.html">
 	                        <i class="ti-view-list-alt"></i>
 	                        <p>Fases/Objetivos</p>
@@ -110,7 +110,7 @@
 													<i class="ti-book"></i>
 													<p>Cuestionarios</p>
 											</a>
-									</li-->
+									</li>
 	            </ul>
 	    	</div>
 	    </div>
@@ -125,7 +125,7 @@
 	                        <span class="icon-bar bar2"></span>
 	                        <span class="icon-bar bar3"></span>
 	                    </button>
-											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a><a class="navbar-brand" href="<?php echo base_url() ?>index.php/process_Controller/index">Procesos</a>
+											<a class="navbar-brand" href="<?php echo base_url(); ?>index.php/Modelos/abrir_modelo"><?php  print_r($_SESSION['modelsessioname']) ?></a><p class="navbar-brand" >/</p><a class="navbar-brand" href="<?php echo base_url() ?>index.php/process_Controller/index">Procesos</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
 	                    <ul class="nav navbar-nav navbar-right">
