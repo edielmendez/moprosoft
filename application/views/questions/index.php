@@ -29,7 +29,7 @@
 	<!-- -->
 
 </head>
-<body ng-controller="question_Controller as vm" ng-init="index()">
+<body ng-controller="question_Controller" ng-init="index()">
 	<div class="wrapper">
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
@@ -54,7 +54,6 @@
 												</div>
                     </form>
 									</div>
-
 							</div>
 					</div>
 			</div>
@@ -135,7 +134,6 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-								<h1>Todos</h1>
 								<?php
 								//Si existen las sesiones flasdata que se muestren
 										if($this->session->flashdata('correcto'))
@@ -144,7 +142,17 @@
 										if($this->session->flashdata('incorrecto'))
 											echo '<div class="alert alert-danger"><button type="button" aria-hidden="true" class="close" data-dismiss="alert">×</button><span><b> Error - </b>'.$this->session->flashdata('incorrecto').'</span></div>';
 								?>
-                <button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nueva Pregunta">Nuevo</button><br><br>
+                <button  type="button" class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#myModal" data-title="Nueva Pregunta">Nuevo</button>
+								<?php
+									if ($cuestionario['status']==0) {
+										if ($numPreguntas>4) {
+											echo '<a class="btn btn-default btn-wd" href="'.base_url().'index.php/question_Controller/Liberar">Liberar</a><br><br>';
+										}else {
+											echo '<br><br><p>Para la liberación de un cuestionario se necesitan 5 preguntas como mínimo.</p>';
+										}
+									}
+								?>
+
 	                <div class="row">
 										<div style='height:20px;'></div>
                     <div class="col-md-12">
@@ -156,6 +164,14 @@
                              <div class="header">
                                  <h4 class="title">Preguntas</h4>
                                  <p class="category">Cuestionario <?php echo $_SESSION['Questionary_name'] ?></p>
+																 <p class="category">Status:
+																	 <?php
+																		 if ($cuestionario['status']==0) {
+																			 echo "Sin Liberar";
+																		 }else {
+																		 	 echo "Liberado";
+																		 }
+																	 ?></p>
                              </div>
                              <div class="content table-responsive table-full-width"  >
                                  <table class="table table-striped">
@@ -237,7 +253,7 @@
 				$("#myModal").on('show.bs.modal', function(event){
         	var button = $(event.relatedTarget);  // Button that triggered the modal
         	var titleData = button.data('title'); // Extract value from data-* attributes
-        	$(this).find('.modal-title').text(titleData);
+					$(this).find('.modal-title').text(titleData);
     		});
 	});
 </script>

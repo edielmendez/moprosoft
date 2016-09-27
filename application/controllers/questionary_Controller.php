@@ -45,7 +45,8 @@ class questionary_Controller extends CI_Controller {
 						 $questionary = array(
 							 'id' => $row->id,
 							 'name' => $row->name,
-							 'phase_objetive_id' => $row->phase_objetive_id
+							 'phase_objetive_id' => $row->phase_objetive_id,
+							 'status' => $row->status
 						 );
 						 array_push($questionnaires,$questionary);
 					}
@@ -145,13 +146,14 @@ public function getCuestionary_PhaseId($id){
 		 if($this->session->userdata('logged_in')){
 
 			$questionary["cuestionario"]=$this->Questionary->getQ($id);
+			$questionary["numPreguntas"]=$this->Questionary->getCountQuestion($id);
 			$this->load->view('questionnaires/edith',$questionary);
 
 			 if($this->input->post("submit")){
 					$mod=$this->Questionary->update(
 						$id,
-						$this->input->post("nombre")
-						//$this->input->post("fase_id")
+						$this->input->post("nombre"),
+						$this->input->post("liberacion")
 						);
 
 						if($mod==0){

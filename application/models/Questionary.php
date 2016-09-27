@@ -31,6 +31,17 @@ class Questionary extends CI_Model
 
   }
 
+  public function liberar(){
+  $modelo=$_SESSION['modelsessionid'];
+  $consulta=$this->db->query("SELECT questionary.* FROM questionary WHERE questionary.phase_objetive_id=$id ");
+  if($consulta->num_rows() >= 1){
+    return $consulta->result();
+  }else{
+    return false;
+  }
+
+  }
+
   public function add($nombre,$phase_objetive_id){
     if ($this->validate($nombre,$phase_objetive_id)) {
       $consulta=$this->db->query("INSERT INTO questionary VALUES(NULL,'$nombre','$phase_objetive_id');");
@@ -45,11 +56,15 @@ class Questionary extends CI_Model
 
    }
 
+   public function getCountQuestion($id){
+     $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
+     return $consulta->num_rows();
+   }
 
-  public function update($id,$nombre){
+  public function update($id,$nombre,$liberacion){
     if ( !empty($nombre) ) {
        $consulta=$this->db->query("
-           UPDATE questionary SET name='$nombre' WHERE id=$id;
+           UPDATE questionary SET name='$nombre',status='$liberacion' WHERE id=$id;
            ");
        if($consulta==true){
            return 0;
@@ -61,6 +76,20 @@ class Questionary extends CI_Model
      }
 
    }
+
+   public function updateStatus($id){
+       $consulta=$this->db->query("
+        UPDATE questionary SET status='1' WHERE id=$id;
+        ");
+
+      if($consulta==true){
+        return 0;
+      }else{
+        return 1;
+      }
+
+      return 2;
+    }
 
   public function delete($id){
     $consulta=$this->db->query("DELETE FROM questionary WHERE id=$id");

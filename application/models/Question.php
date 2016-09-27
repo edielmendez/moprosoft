@@ -15,6 +15,11 @@ class Question extends CI_Model
    }
   }
 
+  public function getCountQuestion($id){
+    $consulta=$this->db->query("SELECT * FROM question WHERE questionary_id=$id");
+    return $consulta->num_rows();
+  }
+
   public function add($nombre){
     $Questionary=$_SESSION['Questionary_id'];
     if ($this->validate($nombre)) {

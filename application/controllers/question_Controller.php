@@ -12,7 +12,24 @@ class question_Controller extends CI_Controller {
    }
 
 	 public function back(){
-		  	$this->load->view('questions/index');
+		  $Questionary=$_SESSION['Questionary_id'];
+		 	$result=$this->Questionary->getQ($Questionary);
+			$sess_array = array();
+			foreach($result as $row)
+		 {
+			 $sess_array = array(
+				 'id' => $row->id,
+				 'name' => $row->name,
+				 'phase_objetive_id' => $row->phase_objetive_id,
+				 'status' => $row->status
+			 );
+		 }
+
+		 	$result2=$this->Question->getCountQuestion($Questionary);
+
+		 	$aux['cuestionario']=$sess_array;
+			$aux['numPreguntas']=$result2;
+			$this->load->view('questions/index',$aux);
 	 }
 
    public function index(){
@@ -36,6 +53,22 @@ class question_Controller extends CI_Controller {
          redirect('login', 'refresh');
    	}
    }
+
+	 public function Liberar(){
+		 $Questionary=$_SESSION['Questionary_id'];
+		 $result=$this->Questionary->updateStatus($Questionary);
+
+		 if($result==0){
+			 $this->session->set_flashdata('correcto', 'Se ha liberado el cuestionario de forma satisfactoria');
+		 }elseif ($result==1) {
+			 $this->session->set_flashdata('incorrecto', 'Ha ocurrido un error en la base de datos, porfavor contactar con el departamento de desarrollo');
+		 }elseif ($result==2) {
+			 $this->session->set_flashdata('incorrecto', 'Ingrese los datos de manera correcta');
+		 }
+
+		 	redirect('question_Controller/back', 'refresh');
+			
+	 }
 
 	 public function Preguntas($id){
 		 if($this->session->userdata('logged_in')){
