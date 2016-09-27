@@ -107,7 +107,7 @@
 	        </nav>
 
 	        <div class="content container">
-	        	<a href="<?php echo base_url() ?>index.php/Home" class='btn btn-info'><i class="ti-arrow-left"></i>  Regresar</a><br><br><br><hr>
+	        	<a href="<?php echo base_url() ?>index.php/Equipos" class='btn btn-info'><i class="ti-arrow-left"></i>  Regresar</a><br><br><br><hr>
 	        	<div class="card">
 		            <div class="content">
 	                    <?php echo form_open('Equipos/crear_equipo',array('id'=>'form_nuevo_equipo')); ?>

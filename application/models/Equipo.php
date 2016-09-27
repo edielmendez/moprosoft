@@ -62,6 +62,21 @@ class Equipo extends CI_Model
    	return $this->db->delete('team', array('id' => $id));
   	}
 
+  	public function getDataTeamInAssignment($id){
+      $this->db->select('*');
+      $this->db->from('assignment');
+      $this->db->where('team_id',$id);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
 	
 
 

@@ -65,19 +65,14 @@
 	                        <p>Equipos</p>
 	                    </a>
 	                </li>
-	                <!--<li >
-	                    <a href="">
-	                        <i class="ti-panel"></i>
-	                        <p>Reportes de avance</p>
+	                <li >
+	                    <a href="<?php echo base_url() ?>index.php/Evaluacion/">
+	                        <i class="ti-settings"></i>
+	                        <p>Evaluación</p>
 	                    </a>
 	                </li>
 	                
-	                <li>
-	                    <a href="">
-	                        <i class="ti-view-list-alt"></i>
-	                        <p>Enviar Correos</p>
-	                    </a>
-	                </li>-->
+	                
 	            </ul>
 	    	</div>
 	    </div>
@@ -131,7 +126,7 @@
 	            <div class="content table-responsive table-full-width">
 	            	
 
-                    <?php //print_r($equipos); ?>
+                    <?php// print_r($equipos); ?>
                     <div class="row">
                     	<?php foreach ($equipos as $equipo) {
                     		# code...
@@ -160,6 +155,14 @@
 	                                        
 	                                        <button class='btn btn-danger btn_elim_equipo' id='<?php echo $equipo['id']?>'><i class="ti-trash"></i> Eliminar</button>
 	                                        <button class='btn btn-primary btn_act_name_equipo' id='<?php echo $equipo['id']?>'> Actualizar</button>
+	                                        <?php
+	                                        if(strcmp($equipo['estadistica'],"con") == 0){
+	                                        	echo "<a href='".base_url()."index.php/Evaluacion/detalles/".$equipo['id']."' id='".$equipo['id']."' ><i class='ti-settings'></i>Estadisticas de evaluación</a>";
+	                                        }else{
+												echo "<a  id=''><i class='ti-settings'></i>sin estadisticas</a>";
+	                                        }
+	                                        ?>
+	                                        <!--<a href="#" id='<?php echo $equipo['id']?>'><i class="ti-settings"></i>Estadisticas de evaluación</a>-->
 	                                        <?php
 	                                        $b=1;
 	                                        foreach ($equipo['integrantes'] as $integrante) {

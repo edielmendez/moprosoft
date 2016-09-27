@@ -39,6 +39,12 @@ class Equipos extends CI_Controller {
                     'id' => $row->id,
                     'name' => $row->name
                   );
+                  $aux = $this->equipo->getDataTeamInAssignment($row->id);
+                  if($aux){
+                     $equipo['estadistica'] = "con";
+                  }else{
+                     $equipo['estadistica'] = "sin";
+                  }
                   $integrantes =  array();
                   $result2 = $result = $this->user->getByEquipo($row->id);
                   if($result2){

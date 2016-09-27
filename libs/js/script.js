@@ -1,4 +1,18 @@
-
+$(document).ready(function(){
+	$('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
+    [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+					new CBPFWTabs( el );
+				});
+});
 
 $( "#form_nuevo_estudiante" ).submit(function( event ) {
   var equipo = $("#equipo").val();
@@ -451,3 +465,62 @@ $( "#form_start_cuestionario" ).submit(function( event ) {
 	
 	
 });
+
+/**
+ ****************************************************************************
+ * FUNCION PARA ESCOJER LOS EQUIPOS A LOS CUALES SE VAN EVALUAR             *
+ * **************************************************************************
+ */
+
+
+$(document).on('click','.btn_apli_eva',function(){
+	var id = $(this).attr('id');
+	var ids = id.split('-')
+	id_cuestionario = ids[0];
+	id_equipo = ids[1];
+	$("#id_cuestionario").val(id_cuestionario);
+
+	$.ajax({
+	 	method: "POST",
+	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getTeamsOnlyApplyForThisQuuestionary",
+	  	data: { id_cuestionario:id_cuestionario,id_equipo:id_equipo},
+	  	success : showModalChooseTeamsApplyEvaluation
+	})
+	
+	//console.log(id_cuestionario,id_equipo)
+	
+});
+
+
+var showModalChooseTeamsApplyEvaluation = function(data){
+	var equipos = JSON.parse(data)
+	console.log(equipos);
+
+	$("#form_equipos_apl_cuest").empty();
+
+	for (var i = 0; i < equipos.length; i++) {
+		
+		var cad = "<div class='row'>";
+      		cad += "<div class='col-md-3'>";
+                cad += "<div class='form-group'>";
+                    cad += "<input type='checkbox' class='css-checkbox' id='checkbox"+i+"' name='equipo_eva[]' value='"+equipos[i].id+"'/>";
+					cad += "<label for='checkbox"+i+"' name='checkbox10_lbl' class='css-label mac-style'>"+equipos[i].name+"</label>";
+                cad += "</div>";
+            cad += "</div>";
+      	cad += "</div>";
+      	cad += "<hr>";
+		$("#form_equipos_apl_cuest").append(cad);      	
+		
+	}
+
+	$("#modal_elegir_equipos_eva").modal();
+
+}
+
+
+
+/**
+ **************************************************************************************
+ * ************************************************************************************
+ */
+
