@@ -746,3 +746,7 @@ $("#export2pdf").click(function(){
 		    filename: 'my-pdf'
 		});
 });
+
+/**
+ * final
+ */
