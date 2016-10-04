@@ -165,6 +165,23 @@ class CuestionarioAdmin extends CI_Model
       $this->db->select('DISTINCT(questionary_id)');
       $this->db->from('assignment');
       $this->db->where('team_id =',$id);
+      $this->db->where('status !=',100);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
+   public function getCuestionariosInAssignmentComplete($id){
+      $this->db->select('DISTINCT(questionary_id)');
+      $this->db->from('assignment');
+      $this->db->where('team_id =',$id);
+      $this->db->where('status =',100);
       $query = $this->db->get();
 
       if($query -> num_rows() >= 1){
@@ -209,6 +226,88 @@ class CuestionarioAdmin extends CI_Model
          return false;
       }
    }
+   /*
+   public function getTotalPreguntasContestadasOpc1($id_cuestionario){
+      $this->db->select('COUNT(question_id) as total');
+      $this->db->from('question_answer');
+      $this->db->where('questionary_id',$id_cuestionario);
+      $this->db->where('answer_id',1);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
+   public function getTotalPreguntasContestadasOpc2($id_cuestionario){
+      $this->db->select('COUNT(question_id) as total');
+      $this->db->from('question_answer');
+      $this->db->where('questionary_id',$id_cuestionario);
+      $this->db->where('answer_id',2);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
+   public function getTotalPreguntasContestadasOpc3($id_cuestionario){
+      $this->db->select('COUNT(question_id) as total');
+      $this->db->from('question_answer');
+      $this->db->where('questionary_id',$id_cuestionario);
+      $this->db->where('answer_id',3);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
+   public function getTotalPreguntasContestadasOpc4($id_cuestionario){
+      $this->db->select('COUNT(question_id) as total');
+      $this->db->from('question_answer');
+      $this->db->where('questionary_id',$id_cuestionario);
+      $this->db->where('answer_id',4);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }*/
+
+   
+   public function getResultadosEvaluation($id_cuestionario,$id_equipo){
+      $this->db->select('*');
+      $this->db->from('calificacion_questionary');
+      $this->db->where('team_id',$id_equipo);
+      $this->db->where('questionary_id',$id_cuestionario);
+      $query = $this->db->get();
+
+      if($query -> num_rows() >= 1){
+         
+         return $query->result();
+      }
+      else{
+         return false;
+      }
+   }
+
 
    
 }

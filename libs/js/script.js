@@ -12,6 +12,7 @@ $(document).ready(function(){
     [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
 					new CBPFWTabs( el );
 				});
+    
 });
 
 $( "#form_nuevo_estudiante" ).submit(function( event ) {
@@ -497,6 +498,11 @@ var showModalChooseTeamsApplyEvaluation = function(data){
 	console.log(equipos);
 
 	$("#form_equipos_apl_cuest").empty();
+	if (equipos.length == 0 ){
+		$("#form_equipos_apl_cuest").append("<h3><b>No hay equipos disponibles</b></h3>");
+		$("#modal_elegir_equipos_eva").modal();
+		return;
+	}
 
 	for (var i = 0; i < equipos.length; i++) {
 		
@@ -524,3 +530,219 @@ var showModalChooseTeamsApplyEvaluation = function(data){
  * ************************************************************************************
  */
 
+/**
+ * ***************************************************************************************************
+ * Código para los radio buttons del cambio de equipo
+ * **************************************************************************************************
+ */
+
+$(document).on('click','.radio_btn',function(){
+	
+
+	$(".radio_btn").prop("checked",false)
+	$(this).prop("checked",true)
+	
+
+});
+
+/**
+ ***************************************************************************************************
+ * Código para ver detalles de un cuestionario terminado                                           *
+ * *************************************************************************************************
+ */
+
+$(document).on('click','.btnVerResultados',function(){
+	var id = $(this).attr('id');
+
+	var ids = id.split('-')
+	id_cuestionario = ids[0];
+	id_equipo = ids[1];
+	$("#contenedor_principal").hide("slow");
+	
+
+	$.ajax({
+	 	method: "POST",
+	  	url: "http://localhost/moprosoft/index.php/Evaluacion/getResultadosEvaluation",
+	  	data: { id_cuestionario:id_cuestionario,id_equipo:id_equipo},
+	  	success : showResults,createChart
+	})
+});
+
+var showResults = function (data){
+	createChart(data);
+	var resultados = JSON.parse(data);
+	var suma=0;
+	for (var i = 0; i < resultados.resultados.length; i++) {
+		suma+= parseInt(resultados.resultados[i].nivel_cobertura)
+		if (parseFloat(resultados.resultados[i].nivel_cobertura)> 85) {
+			var html = "<tr class='punto_fuerte'>";
+			console.log("1-> :",resultados.resultados[i].nivel_cobertura )
+		}else{
+			if ((parseFloat(resultados.resultados[i].nivel_cobertura) <= 85) && (parseFloat(resultados.resultados[i].nivel_cobertura) > 50)) {
+				var html = "<tr class='success'>";
+				console.log("2-> :",resultados.resultados[i].nivel_cobertura )
+			}else{
+				var html = "<tr class='punto_debil'>";
+				console.log("3-> :",resultados.resultados[i].nivel_cobertura )
+			}
+		}
+		//var html = "<tr>";
+			html += "<td>"+resultados.resultados[i].question_id+"</td><td>"+resultados.resultados[i].S+"</td>";
+			html += "<td>"+resultados.resultados[i].U+"</td><td>"+resultados.resultados[i].A+"</td>";
+			html += "<td>"+resultados.resultados[i].R+"</td><td>"+resultados.resultados[i].N+"</td>";
+			html += "<td>"+resultados.resultados[i].nivel_cobertura+"  % </td><td>"+resultados.resultados[i].media+"</td><td>"+resultados.resultados[i].desviacion+"</td>";
+			html += "</tr>";
+		$("#body_table").prepend(html);
+		
+	}
+	console.log(suma);
+	$("#total_cobertura").append("<b>"+Math.round((suma/resultados.resultados.length)) + " % </b>");
+	$("#titulo_tabla").append(resultados.name)
+	$("#contenedor_secundario").show("slow");
+
+	console.log(resultados);
+}
+
+
+var createChart = function(data){
+	var cuestionario = JSON.parse(data);
+	preguntas = []
+	media_desviacion = [];
+	var color;
+	for (var i = 0; i < cuestionario.resultados.length; i++) {
+		if (cuestionario.resultados[i].nivel_cobertura <= 50) {
+			color = "#ef5350";
+		}else{
+			if((cuestionario.resultados[i].nivel_cobertura > 50) && (cuestionario.resultados[i].nivel_cobertura < 86)){
+				color = "#26a69a";
+			}else{
+				color = "#42a5f5";
+			}
+		}
+		var pre = {
+			name:"P"+(i+1),
+
+			color:color,
+			y: parseFloat(cuestionario.resultados[i].nivel_cobertura),
+			drilldown:"media_desviacion"+i
+		}
+		//console.log("normal : ",cuestionario.resultados[i].nivel_cobertura,"  con parseFloat : ",parseFloat(cuestionario.resultados[i].nivel_cobertura))
+
+		preguntas.push(pre);
+
+		var m = {
+            name: "P"+(i+1),
+            id: "media_desviacion"+i,
+            data: [
+                [
+                    'MEDIA',
+                    parseFloat(cuestionario.resultados[i].media)
+                ],
+                [
+                    'DESVIACIÓN ESTANDAR',
+                    parseFloat(cuestionario.resultados[i].desviacion)
+                ],
+            ]
+        }
+
+        media_desviacion.push(m);
+        	
+	}
+
+	$('#grafica').highcharts({
+        chart: {
+            type: 'column',
+            events: {
+	            drilldown: function(e) {
+	                
+	                this.yAxis[0].update({
+			            title:{
+			                text:"Media y desviacion estandar"
+			            }
+			        });
+	            },
+	            drillup: function(e) {
+	                this.yAxis[0].update({
+			            title:{
+			                text:"Porcentaje del nivel de cobertura"
+			            }
+			        });
+	            }
+	        }
+        },
+        title: {
+            text: 'Porcentaje del nivel de cobertura alcanzado por pregunta del cuestionario '+cuestionario.name 
+        },
+        subtitle: {
+            text: 'Click par ver su media y desviacion'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+        	max:100,
+            title: {
+                text: 'Porcentaje del nivel de cobertura'
+            }
+
+        },
+        exporting: {
+            enabled: true
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+        },
+
+        series: [{
+            name: 'Nivel de cobertura',
+            colorByPoint: true,
+            data: preguntas
+        }],
+        drilldown: {
+        	
+            series: media_desviacion
+        }
+    });
+    
+}
+
+/**
+ ***************************************************************************************************************
+ * Código pára ver las graficas de los resultados de un cuestionario                                           *
+ * *************************************************************************************************************
+ */
+
+$(document).on('click','#btn_ver_graficas',function(){
+	$("#contenedor_secundario").hide("slow");
+	$("#tercer_contenedor").show("slow");
+});
+
+$(document).on('click','#btn_ver_resultados',function(){
+	$("#tercer_contenedor").slideUp("slow");
+	$("#contenedor_secundario").show("slow");
+});
+
+
+
+
+$("#export2pdf").click(function(){
+		var chart = $('#grafica').highcharts();
+		chart.exportChart({
+		    type: 'application/pdf',
+		    filename: 'my-pdf'
+		});
+});

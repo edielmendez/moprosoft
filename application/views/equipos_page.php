@@ -36,6 +36,8 @@
 	</style>
 </head>
 <body>
+
+
 	
 	<div class="wrapper">
 	    <div class="sidebar" data-background-color="white" data-active-color="danger">
@@ -77,7 +79,7 @@
 	    	</div>
 	    </div>
 
-	    <div class="main-panel">
+	    <div class="main-panel" >
 	        <nav class="navbar navbar-default">
 	            <div class="container-fluid">
 
@@ -121,7 +123,7 @@
 	    		</div>
 	    	</div>
 
-	        <div class="content container">
+	        <div class="content container" >
 	        	<a href="<?php echo base_url() ?>index.php/Equipos/nuevo" class='btn btn-info btn-fill btn-wd'>Nuevo Equipo</a><br><br>
 	            <div class="content table-responsive table-full-width">
 	            	
@@ -157,7 +159,7 @@
 	                                        <button class='btn btn-primary btn_act_name_equipo' id='<?php echo $equipo['id']?>'> Actualizar</button>
 	                                        <?php
 	                                        if(strcmp($equipo['estadistica'],"con") == 0){
-	                                        	echo "<a href='".base_url()."index.php/Evaluacion/detalles/".$equipo['id']."' id='".$equipo['id']."' ><i class='ti-settings'></i>Estadisticas de evaluación</a>";
+	                                        	echo "<a href='".base_url()."index.php/Evaluacion/detalles/".$equipo['id']."' id='".$equipo['id']."'  ><i class='ti-settings'></i>Estadisticas de evaluación</a>";
 	                                        }else{
 												echo "<a  id=''><i class='ti-settings'></i>sin estadisticas</a>";
 	                                        }
@@ -263,6 +265,8 @@
                 </div>
 	        </div>
 
+	        
+
 
 	        <footer class="footer">
 	            <!--<div class="container-fluid">
@@ -293,6 +297,11 @@
 	        </footer>
 
 	    </div>
+
+	    
+
+	   
+
 	</div>
 
 	<!--Modales-->

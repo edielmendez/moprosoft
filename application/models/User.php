@@ -107,6 +107,12 @@ class User extends CI_Model
    }
 
    public function actualizarEquipo($team_id,$id){
+      /*elimnados los datos de la tabla asignación*/
+      //$this->db->delete('assignment', array('user_id' => $id));
+      //eliminados los datos de la tabla question_answer
+      //$this->db->delete('question_answer', array('user_id' => $id));
+      /**/
+
       $data = array('team_id' => $team_id,'rol_id' => 3 );
       $this->db->where('id', $id);
       $rowAfects  = $this->db->update('user', $data);
